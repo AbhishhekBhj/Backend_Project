@@ -6,3 +6,6 @@ const loginHereText = "Login Here";
 const login = "Login";
 const signupHere = "SignUp Here";
 const signup = "Signup";
+
+const idealBuddy = "Your Ideal Fitness Buddy";
+const welcome = 'Let us Start Your Journey';

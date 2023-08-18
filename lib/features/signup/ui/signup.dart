@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-class SignUp extends StatelessWidget {
-  const SignUp({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
+  State<Signup> createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      
-    );
+    return Container();
   }
 }
