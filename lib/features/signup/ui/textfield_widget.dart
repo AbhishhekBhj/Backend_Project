@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mygymbuddy/colours/colours.dart';
 
 class UserModelFormFields extends StatelessWidget {
   final TextEditingController fullNameController;
@@ -9,6 +10,20 @@ class UserModelFormFields extends StatelessWidget {
   final String selectedActivityLevel; // Store the selected activity level
   final TextEditingController ageController;
 
+  final String fullNameLabel;
+  final String emailLabel;
+  final String phoneNumberLabel;
+  final String usernameLabel;
+  final String passwordLabel;
+  final String ageLabel;
+
+  final String fullNameHintText;
+  final String emailHintText;
+  final String phoneNumberHintText;
+  final String usernameHintText;
+  final String passwordHintText;
+  final String ageHintText;
+
   UserModelFormFields({
     required this.fullNameController,
     required this.emailController,
@@ -17,6 +32,18 @@ class UserModelFormFields extends StatelessWidget {
     required this.passwordController,
     required this.selectedActivityLevel,
     required this.ageController,
+    required this.fullNameLabel,
+    required this.emailLabel,
+    required this.phoneNumberLabel,
+    required this.usernameLabel,
+    required this.passwordLabel,
+    required this.ageLabel,
+    required this.fullNameHintText,
+    required this.emailHintText,
+    required this.phoneNumberHintText,
+    required this.usernameHintText,
+    required this.passwordHintText,
+    required this.ageHintText,
   });
 
   // Define the available activity levels
@@ -28,26 +55,68 @@ class UserModelFormFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // ... other fields ...
-        DropdownButtonFormField<String>(
-          value: selectedActivityLevel,
-          onChanged: (newValue) {
-            // TODO: Update the selected activity level
-          },
-          items: activityLevels.map((level) {
-            return DropdownMenuItem<String>(
-              value: level,
-              child: Text(level),
-            );
-          }).toList(),
-          decoration: InputDecoration(
-            labelText: 'Activity Level',
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: MyColors.darkPurple, width: 4.0),
+          borderRadius: BorderRadius.circular(4.0)),
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          TextFormField(
+            controller: fullNameController,
+            decoration: InputDecoration(
+                labelText: fullNameLabel, hintText: fullNameHintText),
           ),
-        ),
-        
-      ],
+          SizedBox(height: 2.0),
+          TextFormField(
+            controller: emailController,
+            decoration:
+                InputDecoration(labelText: emailLabel, hintText: emailHintText),
+          ),
+          SizedBox(height: 2.0),
+          TextFormField(
+            controller: phoneNumberController,
+            decoration: InputDecoration(
+                labelText: phoneNumberLabel, hintText: phoneNumberHintText),
+          ),
+          SizedBox(height: 2.0),
+          TextFormField(
+            controller: usernameController,
+            decoration: InputDecoration(
+                labelText: usernameLabel, hintText: usernameHintText),
+          ),
+          SizedBox(height: 2.0),
+          TextFormField(
+            controller: passwordController,
+            obscureText: true,
+            decoration: InputDecoration(
+                labelText: passwordLabel, hintText: passwordHintText),
+          ),
+          SizedBox(height: 2.0),
+          DropdownButtonFormField<String>(
+            value: selectedActivityLevel,
+            onChanged: (newValue) {
+              // TODO: Update the selected activity level
+            },
+            items: activityLevels.map((level) {
+              return DropdownMenuItem<String>(
+                value: level,
+                child: Text(level),
+              );
+            }).toList(),
+            decoration: InputDecoration(
+              labelText: 'Activity Level',
+            ),
+          ),
+          SizedBox(height: 2.0),
+          TextFormField(
+            controller: ageController,
+            keyboardType: TextInputType.number,
+            decoration:
+                InputDecoration(labelText: ageLabel, hintText: ageHintText),
+          ),
+        ],
+      ),
     );
   }
 }
