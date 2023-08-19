@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/data/models/signup_model.dart';
 import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/features/login/ui/login_widget.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/textfield_widget.dart';
+import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
 import 'package:mygymbuddy/texts/texts.dart';
 
 class SignupForm extends StatelessWidget {
@@ -30,7 +32,7 @@ class SignupForm extends StatelessWidget {
       appBar: AppBar(
           title: Text(
             appName,
-            style: textTheme.displayMedium,
+            style: textTheme.headlineMedium,
           ),
           centerTitle: true,
           backgroundColor: MyColors.accentPurple),
@@ -39,52 +41,11 @@ class SignupForm extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    appName,
-                    style: textTheme.headlineSmall,
-                  ),
-                  SizedBox(height: 1), // Add some spacing between the texts
-                  Text(
-                    idealBuddy,
-                    style: textTheme.labelMedium,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Image(
-                    image: AssetImage(stretchingImage),
-                    height: 150,
-                    width: double.infinity,
-                  )
-                ],
-              ),
-            ),
-          ),
+          UpperWelcome(textTheme: textTheme),
           SizedBox(
             height: 15,
           ),
-          Container(
-              child: Column(
-            children: [
-              Text(
-                welcomeText,
-                style: textTheme.displaySmall,
-              ),
-              SizedBox(
-                height: 1,
-              ),
-              Text(
-                welcome,
-                style: textTheme.labelLarge,
-              )
-            ],
-          )),
+          LowerWelcome(textTheme: textTheme,subTitle: welcome,),
           Container(
             padding: EdgeInsets.all(20.0),
             child: UserModelFormFields(

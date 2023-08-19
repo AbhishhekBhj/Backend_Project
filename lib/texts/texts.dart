@@ -7,9 +7,11 @@ const login = "Login";
 const signupHere = "SignUp Here";
 const signup = "Signup";
 const alreadyHaveAccount = "Already have an account? Click Here";
+const dontHaveAccount = "Don't have an account? Click Here";
 
 const idealBuddy = "Your Ideal Fitness Buddy";
 const welcome = 'Let us Start Your Journey';
+const loginJourney = "Login To Start a Fitness Adventure";
 
 const fullNameHintText = " Full Name";
 const emailAddressHintText = " Email Address";
