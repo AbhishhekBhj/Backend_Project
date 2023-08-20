@@ -28,3 +28,9 @@ const passwordLabel = "Enter Password";
 const ageLabel = "Enter your age";
 
 const stretchingImage = 'assets/img/stretching.jpg';
+const aBmi = 'assets/img/activities_images/bmi.png';
+const aGlass = 'assets/img/activities_images/glass.png';
+const aTape = 'assets/img/activities_images/tape.png';
+const aCalories = 'assets/img/activities_images/calories.png';
+const aReminder = 'assets/img/activities_images/reminder.png';
+const aWorkout = 'assets/img/activities_images/dumbell.png';

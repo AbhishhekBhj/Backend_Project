@@ -7,7 +7,8 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
     on<LoginEvent>((event, emit) {
-      // TODO: implement event handler
+      if (event is LoginButtonPressedEvent) {
+      } else if (event is SignupNavigationPressedEvent) {}
     });
   }
 }

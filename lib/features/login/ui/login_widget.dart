@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
+import 'package:mygymbuddy/features/home/ui/home.dart';
 import 'package:mygymbuddy/features/login/ui/login_form_widget.dart';
 import 'package:mygymbuddy/features/signup/ui/signup.dart';
 import 'package:mygymbuddy/features/signup/ui/signup_widget.dart';
@@ -47,9 +48,13 @@ class _LoginWidgetState extends State<LoginWidget> {
             passwordHintText: passwordHintText,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => (Home())));
+            },
             style: ElevatedButton.styleFrom(
-              backgroundColor: MyColors.darkPurple, // Background color of button
+              backgroundColor:
+                  MyColors.darkPurple, // Background color of button
               elevation: 3, // Elevation of button
               shape: RoundedRectangleBorder(
                 borderRadius:
@@ -59,7 +64,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   horizontal: 26, vertical: 10), // Adjust padding
             ),
             child: Text(
-              signup,
+              login,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14, // Smaller font size
