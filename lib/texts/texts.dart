@@ -34,3 +34,5 @@ const aTape = 'assets/img/activities_images/tape.png';
 const aCalories = 'assets/img/activities_images/calories.png';
 const aReminder = 'assets/img/activities_images/reminder.png';
 const aWorkout = 'assets/img/activities_images/dumbell.png';
+
+const unExpectedError = "An Unexpected Error Occured";

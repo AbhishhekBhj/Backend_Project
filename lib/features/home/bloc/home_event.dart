@@ -1,7 +1,9 @@
 part of 'home_bloc.dart';
 
 @immutable
-sealed class HomeEvent {}
+abstract class HomeEvent {}
+
+class HomeInitalEvent extends HomeEvent{}
 
 //event where the option icon is tapped
 class OptionIconClickedEvent extends HomeEvent{}
