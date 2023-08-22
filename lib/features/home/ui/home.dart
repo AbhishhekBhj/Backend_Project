@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/data/models/app_features.dart';
+import 'package:mygymbuddy/data/models/home_features_model.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
-import 'package:mygymbuddy/features/home/ui/features_widget.dart';
+
 import 'package:mygymbuddy/features/signup/ui/signup.dart';
 import 'package:mygymbuddy/texts/texts.dart';
 
@@ -26,7 +28,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final featuresList = Features.featuresList;
+
     return BlocConsumer<HomeBloc, HomeState>(
       bloc: homebloc,
       listenWhen: (previous, current) => current is HomeActionState,
@@ -81,10 +83,10 @@ class _HomeState extends State<Home> {
             );
           case HomeLoadedSuccessState:
             final successState = state as HomeLoadedSuccessState;
-            return HomeFeaturesWidget(
-                featuresList: featuresList,
-                textTheme: textTheme,
-                homeBloc: homebloc);
+            return FeaturesWidget(
+                features: successState.featuresModelList,
+                successState: successState,
+                textTheme: textTheme);
 
           case HomeErrorState:
             return Scaffold(
@@ -99,6 +101,69 @@ class _HomeState extends State<Home> {
             return SizedBox();
         }
       },
+    );
+  }
+}
+
+class FeaturesWidget extends StatelessWidget {
+  const FeaturesWidget({
+    super.key,
+    required this.features,
+    required this.successState,
+    required this.textTheme,
+  });
+
+  final List<FeatureModel> features;
+  final HomeLoadedSuccessState successState;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10),
+        child: Column(
+          children: [
+            GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: features.length,
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                childAspectRatio: 1,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 10,
+              ),
+              itemBuilder: (context, index) => Container(
+                padding: EdgeInsets.all(9.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: MyColors.darkBlue, width: 3),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: InkWell(
+                  onTap: successState.featuresModelList[index].onTap,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(successState.featuresModelList[index].image),
+                      Text(
+                        successState.featuresModelList[index].title,
+                        style: textTheme.headlineSmall,
+                      ),
+                      Text(
+                        successState.featuresModelList[index].subtitle,
+                        style: textTheme.labelMedium,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

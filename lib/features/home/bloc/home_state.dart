@@ -16,10 +16,9 @@ class HomeLoadingState extends HomeState {
 
 class HomeLoadedSuccessState extends HomeState {
   // Represents the state when the home page content has been successfully loaded.
-  final List<Features> featuresList;
-  HomeLoadedSuccessState({
-    required this.featuresList,
-  });
+  final List<FeatureModel> featuresModelList;
+
+  HomeLoadedSuccessState({required this.featuresModelList});
 }
 
 class HomeErrorState extends HomeState {

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mygymbuddy/data/models/app_features.dart';
+import 'package:mygymbuddy/data/models/home_features_model.dart';
+import 'package:mygymbuddy/data/models/home_features_model.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -10,6 +12,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc._() : super(HomeInitial());
   HomeBloc() : super(HomeInitial()) {
+    on<HomeInitalEvent>(homeInitialEvent);
     on<OptionIconClickedEvent>(optionIconClickedEvent);
     on<StartWorkoutClickedEvent>(startWorkoutClickedEvent);
     on<DietTrackerClickedEvent>(dietTrackerClickedEvent);
@@ -55,5 +58,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> measurementsClickedEvent(
       MeasurementsClickedEvent event, Emitter<HomeState> emit) {
     emit(HomeNavigateToMeasurementsPageActionState());
+  }
+
+  FutureOr<void> homeInitialEvent(
+      HomeInitalEvent event, Emitter<HomeState> emit) async {
+    emit(HomeLoadingState());
+    await Future.delayed(Duration(seconds: 2));
+    emit(HomeLoadedSuccessState(
+      featuresModelList: Features.featuresList
+          .map((feature) => FeatureModel(
+                image: feature.image,
+                title: feature.title,
+                subtitle: feature.subTitle,
+                onTap: feature.onTap,
+              ))
+          .toList(),
+    ));
   }
 }
