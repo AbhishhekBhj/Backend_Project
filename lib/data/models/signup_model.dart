@@ -1,32 +1,46 @@
-//signup model for dart
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 
 class UserModel {
-  final String fullName;
-  final String email;
-  final String phoneNumber;
-  final String username;
-  final String password;
-  final String activityLevel;
-  final int age;
+  final String? name;
+  final String? username;
+  final String? password;
+  final String? email;
+  final String? age;
+  final String? phoneNumber;
+  UserModel({
+    this.name,
+    this.username,
+    this.password,
+    this.email,
+    this.age,
+    this.phoneNumber,
+  });
 
-  UserModel(
-      {required this.fullName,
-      required this.email,
-      required this.phoneNumber,
-      required this.username,
-      required this.password,
-      required this.activityLevel,
-      required this.age});
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'username': username,
+      'password': password,
+      'email': email,
+      'age': age,
+      'phoneNumber': phoneNumber,
+    };
+  }
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      fullName: json['fullName'],
-      email: json['email'],
-      phoneNumber: json['phoneNumber'],
-      username: json['username'],
-      password: json['password'],
-      activityLevel: json['activityLevel'],
-      age: json['age'],
+      name: map['name'] as String,
+      username: map['username'] as String,
+      password: map['password'] as String,
+      email: map['email'] as String,
+      age: map['age'] as String,
+      phoneNumber: map['phoneNumber'] as String,
     );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

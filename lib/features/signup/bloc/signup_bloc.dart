@@ -1,56 +1,41 @@
+import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:mygymbuddy/data/models/signup_model.dart';
-
+import 'package:mygymbuddy/features/repo/signup%20repo/signup_repository.dart';
 
 part 'signup_event.dart';
 part 'signup_state.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(SignupInitial()) {
-    on<SignupEvent>((event, emit) {
-      if (event is SignupFormSubmittedEvent) {
-        signupFormSubmittedEvent();
-      } else if (event is RedirectLoginPageClickedEvent) {
-        emit(SignupNavigationState());
-      } else if (event is SignupFormUpdatedEvent) {
-        signupFormUpdatedEvent();
-      }
-    });
+    on<SignupInitialEvent>(signupInitialEvent);
+    on<SignUpClickedButtonEvent>(signUpClickedButtonEvent);
   }
 
-  Future<void> signupFormSubmittedEvent() async {
-    // TODO: handle form submisson, then transition to signup loading state which connects to backend, process the request, transtion to SignupSuccessState or SignupErrorState
-    emit(SignupLoadingState());
+  FutureOr<void> signupInitialEvent(
+      SignupInitialEvent event, Emitter<SignupState> emit) async {
+    emit(SignupInitial());
+  }
 
-    try {
-      //api call to submit data
-      final isSuccess = await _callApiToSubmitSignupForm();
-      if (isSuccess) {
-        emit(SignupSuccessState());
-      } else {
-        emit(SignupErrorState());
-      }
-    } catch (e) {
-      // TODO: handle api call exceptions
+  FutureOr<void> signUpClickedButtonEvent(
+      SignUpClickedButtonEvent event, Emitter<SignupState> emit) async {
+    emit(
+        SignupLoadingState()); // bool signup = await SignupRepository.signupUser();
+    bool signup = await SignupRepository.signupUser(
+      username: event.userModel.username,
+      name: event.userModel.name,
+      age: event.userModel.age,
+      email: event.userModel.email,
+      password: event.userModel.password,
+      phonenumber: event.userModel.phoneNumber,
+    );
+    if (signup) {
+      emit(SignupSuccessState());
+    } else {
       emit(SignupErrorState());
     }
   }
-
-  void redirectLoginPageClickedEvent() {
-    // TODO: redirect the user to the login page
-    // Navigator.push(context,MaterialPageRoute(builder: (context)=> const Login()));
-  }
-
-  void signupFormUpdatedEvent() {
-    // TODO : handle form field updates and transition to signupformupdatedstate
-  }
-}
-
-Future<bool> _callApiToSubmitSignupForm() async {
-  // TODO: Implement APi call and return true for sucess and false for error
-
-  return false;
 }

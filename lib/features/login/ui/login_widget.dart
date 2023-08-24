@@ -3,7 +3,6 @@ import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/home/ui/home.dart';
 import 'package:mygymbuddy/features/login/ui/login_form_widget.dart';
 import 'package:mygymbuddy/features/signup/ui/signup.dart';
-import 'package:mygymbuddy/features/signup/ui/signup_widget.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
 import 'package:mygymbuddy/texts/texts.dart';
 
@@ -82,7 +81,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          SignupForm()), // Navigate to the Login page
+                          Signup()), // Navigate to the Login page
                 );
               },
             ),

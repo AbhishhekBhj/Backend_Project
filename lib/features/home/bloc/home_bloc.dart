@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mygymbuddy/data/models/app_features.dart';
 import 'package:mygymbuddy/data/models/home_features_model.dart';
-import 'package:mygymbuddy/data/models/home_features_model.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

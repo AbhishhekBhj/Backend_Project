@@ -4,15 +4,17 @@ part of 'signup_bloc.dart';
 @immutable
 sealed class SignupEvent {}
 
-class SignupFormSubmittedEvent extends SignupEvent {
-  final UserModel userModel;
-  SignupFormSubmittedEvent({
+class SignupInitialEvent extends SignupEvent {
+  
+}
+
+class SignUpClickedButtonEvent extends SignupEvent{
+final UserModel userModel;
+  SignUpClickedButtonEvent({
     required this.userModel,
   });
 }
 
 class RedirectLoginPageClickedEvent extends SignupEvent {}
 
-class SignupFormUpdatedEvent extends SignupEvent {}
 
-class NavigateToLoginEvent extends SignupEvent{}

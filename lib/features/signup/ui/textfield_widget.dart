@@ -7,7 +7,6 @@ class UserModelFormFields extends StatelessWidget {
   final TextEditingController phoneNumberController;
   final TextEditingController usernameController;
   final TextEditingController passwordController;
-  final String selectedActivityLevel; // Store the selected activity level
   final TextEditingController ageController;
 
   final String fullNameLabel;
@@ -30,7 +29,6 @@ class UserModelFormFields extends StatelessWidget {
     required this.phoneNumberController,
     required this.usernameController,
     required this.passwordController,
-    required this.selectedActivityLevel,
     required this.ageController,
     required this.fullNameLabel,
     required this.emailLabel,
@@ -47,11 +45,6 @@ class UserModelFormFields extends StatelessWidget {
   });
 
   // Define the available activity levels
-  static const List<String> activityLevels = [
-    'Low',
-    'Moderate',
-    'High',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +52,8 @@ class UserModelFormFields extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border.all(color: MyColors.darkPurple, width: 4.0),
           borderRadius: BorderRadius.circular(4.0)),
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(20.0),
+      margin:EdgeInsets.all(20.0) ,
       child: Column(
         children: [
           TextFormField(
@@ -91,22 +85,6 @@ class UserModelFormFields extends StatelessWidget {
             obscureText: true,
             decoration: InputDecoration(
                 labelText: passwordLabel, hintText: passwordHintText),
-          ),
-          SizedBox(height: 2.0),
-          DropdownButtonFormField<String>(
-            value: selectedActivityLevel,
-            onChanged: (newValue) {
-              // TODO: Update the selected activity level
-            },
-            items: activityLevels.map((level) {
-              return DropdownMenuItem<String>(
-                value: level,
-                child: Text(level),
-              );
-            }).toList(),
-            decoration: InputDecoration(
-              labelText: 'Activity Level',
-            ),
           ),
           SizedBox(height: 2.0),
           TextFormField(

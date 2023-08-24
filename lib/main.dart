@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbuddy/features/signup/ui/signup_widget.dart';
+import 'package:mygymbuddy/features/signup/ui/signup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SignupForm(),
+      home: Signup(),
       debugShowCheckedModeBanner: false,
     );
   }
