@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:mygymbuddy/texts/texts.dart';
 
 class Features {
@@ -18,31 +19,91 @@ class Features {
         image: aWorkout,
         title: "Start Workout",
         subTitle: "Start Your Workout",
-        onTap: () {}),
+        onTap: () {
+          HomeBloc.instance.add(StartWorkoutClickedEvent());
+        }),
     Features(
         image: aCalories,
         title: "Diet Tracker",
         subTitle: "Track Your Calories",
-        onTap: () {}),
+        onTap: () {
+          HomeBloc.instance.add(DietTrackerClickedEvent());
+        }),
     Features(
         image: aReminder,
         title: "Reminders",
         subTitle: "Set Reminders",
-        onTap: () {}),
+        onTap: () {
+          HomeBloc.instance.add(RemindersClickedEvent());
+        }),
     Features(
         image: aGlass,
         title: "Drink Water",
         subTitle: "Add Water Drank",
-        onTap: () {}),
+        onTap: () {
+          HomeBloc.instance.add(DrinkWaterClickedEvent());
+        }),
     Features(
         image: aBmi,
         title: "BMI",
         subTitle: "Calculate Your BMI",
-        onTap: () {}),
+        onTap: () {
+          HomeBloc.instance.add(BmiClickedEvent());
+        }),
     Features(
         image: aTape,
         title: "Measurement",
         subTitle: "Set measurements",
-        onTap: () {})
+        onTap: () {
+          HomeBloc.instance.add(MeasurementsClickedEvent());
+        })
   ];
+  //  static List<Features> featuresList(HomeBloc homeBloc) {
+  //   return[
+  //     Features(
+  //       image: aWorkout,
+  //       title: "Start Workout",
+  //       subTitle: "Start Your Workout",
+  //       onTap: () {
+  //         homeBloc.add(StartWorkoutClickedEvent());
+  //       }),
+  //   Features(
+  //       image: aCalories,
+  //       title: "Diet Tracker",
+  //       subTitle: "Track Your Calories",
+  //       onTap: () {
+  //         homeBloc.add(DietTrackerClickedEvent());
+  //       }),
+  //   Features(
+  //       image: aReminder,
+  //       title: "Reminders",
+  //       subTitle: "Set Reminders",
+  //       onTap: () {
+  //         homeBloc.add(RemindersClickedEvent());
+  //       }),
+  //   Features(
+  //       image: aGlass,
+  //       title: "Drink Water",
+  //       subTitle: "Add Water Drank",
+  //       onTap: () {
+  //                   homeBloc.add(DrinkWaterClickedEvent());
+
+  //       }),
+  //   Features(
+  //       image: aBmi,
+  //       title: "BMI",
+  //       subTitle: "Calculate Your BMI",
+  //       onTap: () {
+  //         homeBloc.add(BmiClickedEvent());
+
+  //       }),
+  //   Features(
+  //       image: aTape,
+  //       title: "Measurement",
+  //       subTitle: "Set measurements",
+  //       onTap: () {
+  //         homeBloc.add(MeasurementsClickedEvent());
+
+  //       })
+  //   ];
 }

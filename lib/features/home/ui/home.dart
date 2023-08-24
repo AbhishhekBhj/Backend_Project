@@ -71,6 +71,8 @@ class _HomeState extends State<Home> {
             context,
             MaterialPageRoute(builder: (context) => Signup()),
           );
+        } else if (state is HomeClickSideBarOptionActionState) {
+          _scaffoldKey.currentState?.openDrawer();
         }
       },
       builder: (context, state) {
@@ -85,7 +87,7 @@ class _HomeState extends State<Home> {
             final successState = state as HomeLoadedSuccessState;
             return FeaturesWidget(
                 features: successState.featuresModelList,
-                successState: successState,
+                homeBloc: homebloc,
                 textTheme: textTheme);
 
           case HomeErrorState:
@@ -106,62 +108,78 @@ class _HomeState extends State<Home> {
 }
 
 class FeaturesWidget extends StatelessWidget {
-  const FeaturesWidget({
-    super.key,
-    required this.features,
-    required this.successState,
-    required this.textTheme,
-  });
+  const FeaturesWidget(
+      {super.key,
+      required this.features,
+      required this.textTheme,
+      required this.homeBloc});
 
   final List<FeatureModel> features;
-  final HomeLoadedSuccessState successState;
+  final HomeBloc homeBloc;
   final TextTheme textTheme;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10),
-        child: Column(
-          children: [
-            GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: features.length,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
-                childAspectRatio: 1,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 10,
-              ),
-              itemBuilder: (context, index) => Container(
-                padding: EdgeInsets.all(9.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: MyColors.darkBlue, width: 3),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: InkWell(
-                  onTap: successState.featuresModelList[index].onTap,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(successState.featuresModelList[index].image),
-                      Text(
-                        successState.featuresModelList[index].title,
-                        style: textTheme.headlineSmall,
-                      ),
-                      Text(
-                        successState.featuresModelList[index].subtitle,
-                        style: textTheme.labelMedium,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      )
-                    ],
+    return Material(
+      child: Scaffold(
+        appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  homeBloc.add(OptionIconClickedEvent());
+                },
+                icon: Icon(Icons.menu)),
+            automaticallyImplyLeading: false,
+            title: Text(
+              appName,
+              style: textTheme.headlineMedium,
+            ),
+            centerTitle: true,
+            backgroundColor: MyColors.accentPurple),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10),
+            child: Column(
+              children: [
+                GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: features.length,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 1,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 10,
                   ),
-                ),
-              ),
-            )
-          ],
+                  itemBuilder: (context, index) => Container(
+                    padding: EdgeInsets.all(9.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: MyColors.darkBlue, width: 3),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: InkWell(
+                      onTap: features[index].onTap,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(features[index].image),
+                          Text(
+                            features[index].title,
+                            style: textTheme.headlineSmall,
+                          ),
+                          Text(
+                            features[index].subtitle,
+                            style: textTheme.labelMedium,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
