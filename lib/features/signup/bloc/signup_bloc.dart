@@ -13,6 +13,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(SignupInitial()) {
     on<SignupInitialEvent>(signupInitialEvent);
     on<SignUpClickedButtonEvent>(signUpClickedButtonEvent);
+    on<RedirectLoginPageClickedEvent>(redirectLoginPageClickedEvent);
   }
 
   FutureOr<void> signupInitialEvent(
@@ -37,5 +38,10 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     } else {
       emit(SignupErrorState());
     }
+  }
+
+  FutureOr<void> redirectLoginPageClickedEvent(
+      RedirectLoginPageClickedEvent event, Emitter<SignupState> emit) {
+    emit(SignupNavigationState());
   }
 }

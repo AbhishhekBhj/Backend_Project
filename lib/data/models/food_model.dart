@@ -3,17 +3,17 @@ import 'dart:convert';
 
 //model for food items received from the api
 class FoodModel {
-  final String name;
-  final String description;
-  final double caloriesPerServing;
-  final double servingSize;
-  final double proteinPerServing;
+  final String? name;
+  final String? description;
+  final double? caloriesPerServing;
+  final double? servingSize;
+  final double? proteinPerServing;
   FoodModel({
-    required this.name,
-    required this.description,
-    required this.caloriesPerServing,
-    required this.servingSize,
-    required this.proteinPerServing,
+    this.name,
+    this.description,
+    this.caloriesPerServing,
+    this.servingSize,
+    this.proteinPerServing,
   });
 
   Map<String, dynamic> toMap() {

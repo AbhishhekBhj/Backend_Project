@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/data/models/signup_model.dart';
+import 'package:mygymbuddy/features/login/ui/login.dart';
+import 'package:mygymbuddy/features/login/ui/login_widget.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/textfield_widget.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
 import 'package:mygymbuddy/texts/texts.dart';
+import 'package:mygymbuddy/widgets/widgets.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -39,12 +42,7 @@ class _SignupState extends State<Signup> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(appName),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColors.accentPurple,
-      ),
+      appBar: CommonAppBar(),
       body: BlocConsumer<SignupBloc, SignupState>(
         bloc: signupBloc,
         listenWhen: (previous, current) => current is SignupActionState,
@@ -93,13 +91,6 @@ class _SignupState extends State<Signup> {
                         ageHintText: ageHintText),
                     FloatingActionButton(
                       onPressed: () {
-                        print("Full Name: ${fullNameController.text}");
-                        print("Email: ${emailController.text}");
-                        print("Phone Number: ${phoneNumberController.text}");
-                        print("Username: ${usernameController.text}");
-                        print("Password: ${passwordController.text}");
-                        print("Age: ${ageController.text}");
-
                         signupBloc.add(SignUpClickedButtonEvent(
                             userModel: UserModel(
                                 age: ageController.text,
@@ -117,9 +108,11 @@ class _SignupState extends State<Signup> {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                      child: GestureDetector(
+                      child: InkWell(
                         child:
                             Text("Click here if you already have an Account?"),
+                        onTap: () =>
+                            signupBloc.add(RedirectLoginPageClickedEvent()),
                       ),
                     )
                   ],
@@ -133,11 +126,10 @@ class _SignupState extends State<Signup> {
               );
 
             case SignupSuccessState:
-              return Container(
-                child: Center(
-                  child: Text("Nice"),
-                ),
-              );
+              return Login();
+
+            case SignupNavigationState:
+              return Login();
 
             case SignupErrorState:
               return Container(

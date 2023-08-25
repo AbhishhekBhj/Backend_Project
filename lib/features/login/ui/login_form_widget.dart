@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mygymbuddy/widgets/widgets.dart';
 
 import '../../../colours/colours.dart';
 
@@ -27,22 +28,9 @@ class LoginForm extends StatelessWidget {
           borderRadius: BorderRadius.circular(4.0)),
       padding: EdgeInsets.all(20.0),
       margin: EdgeInsets.all(15.0),
-      child: Column(
-        children: [
-          TextFormField(
-            controller: usernameController,
-            decoration: InputDecoration(
-                labelText: usernameLabel, hintText: usernameHintText),
-          ),
-          SizedBox(height: 2.0),
-          TextFormField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-                labelText: passwordLabel, hintText: passwordHintText),
-          ),
-        ],
-      ),
+      child: LoginFormField(usernameController: usernameController, usernameLabel: usernameLabel, usernameHintText: usernameHintText, passwordController: passwordController, passwordLabel: passwordLabel, passwordHintText: passwordHintText),
     );
   }
 }
+
+
