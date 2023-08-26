@@ -36,3 +36,11 @@ const aReminder = 'assets/img/activities_images/reminder.png';
 const aWorkout = 'assets/img/activities_images/dumbell.png';
 
 const unExpectedError = "An Unexpected Error Occured";
+
+const calculateBmi = "Calculate BMI";
+
+const clearTextFields = "Clear TextFields";
+
+const enterHeight = "Enter height in metres";
+
+const enterWeight = "Enter Weight in Kilograms";

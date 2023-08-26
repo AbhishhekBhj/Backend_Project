@@ -13,9 +13,4 @@ class CaloriesSearchByNameEvent extends CaloriesEvent {
   });
 }
 
-class CaloriesSearchAllEvent extends CaloriesEvent {
-  final FoodModel foodModel;
-  CaloriesSearchAllEvent({
-    required this.foodModel,
-  });
-}
+

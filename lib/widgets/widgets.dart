@@ -11,7 +11,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(appName),
       centerTitle: true,
-      automaticallyImplyLeading: false,
+      
       backgroundColor: MyColors.accentPurple,
     );
   }
