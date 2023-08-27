@@ -1,187 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/data/models/app_features.dart';
-import 'package:mygymbuddy/data/models/home_features_model.dart';
+import 'package:mygymbuddy/features/bmi/ui/bmi.dart';
+import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 
-import 'package:mygymbuddy/features/signup/ui/signup.dart';
-import 'package:mygymbuddy/texts/texts.dart';
+import 'package:mygymbuddy/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  final HomeBloc homebloc = HomeBloc(); // Create an instance of the home bloc
+
   @override
   void initState() {
     homebloc.add(HomeInitalEvent());
     super.initState();
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  final HomeBloc homebloc = HomeBloc(); //create instance of the home bloc
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
     return BlocConsumer<HomeBloc, HomeState>(
       bloc: homebloc,
       listenWhen: (previous, current) => current is HomeActionState,
       buildWhen: (previous, current) => current is! HomeActionState,
       listener: (context, state) {
-        //listens for states
         if (state is HomeNavigateToBmiPageActionState) {
-          // Navigate to BMI page
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Signup()),
-          );
+              context,
+              MaterialPageRoute(
+                builder: (context) => BMICalculator(),
+              ));
         } else if (state is HomeNavigateToCaloriesPageActionState) {
-          // Navigate to Diet Tracker page
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Signup()),
-          );
-        } else if (state is HomeNavigateToRemindersPageActionState) {
-          // Navigate to Reminders page
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Signup()),
-          );
+              context,
+              MaterialPageRoute(
+                builder: (context) => CaloricInformation(),
+              ));
         } else if (state is HomeNavigateToDrinkWaterPageActionState) {
-          // Navigate to Drink Water page
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Signup()),
-          );
-        } else if (state is HomeNavigateToWorkoutPageActionState) {
-          // Navigate to Start Workout page
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Signup()),
-          );
+              context,
+              MaterialPageRoute(
+                builder: (context) => CaloricInformation(),
+              ));
         } else if (state is HomeNavigateToMeasurementsPageActionState) {
-          // Navigate to Measurements page
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Signup()),
-          );
-        } else if (state is HomeClickSideBarOptionActionState) {
-          _scaffoldKey.currentState?.openDrawer();
+              context,
+              MaterialPageRoute(
+                builder: (context) => CaloricInformation(),
+              ));
+        } else if (state is HomeNavigateToWorkoutPageActionState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CaloricInformation(),
+              ));
+        } else if (state is HomeNavigateToRemindersPageActionState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CaloricInformation(),
+              ));
         }
       },
       builder: (context, state) {
         switch (state.runtimeType) {
           case HomeLoadingState:
             return Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+                body: Center(
+              child: CircularProgressIndicator(color: Colors.amber),
+            ));
           case HomeLoadedSuccessState:
             final successState = state as HomeLoadedSuccessState;
-            return FeaturesWidget(
-                features: successState.featuresModelList,
-                homeBloc: homebloc,
-                textTheme: textTheme);
-
-          case HomeErrorState:
             return Scaffold(
-              body: Center(
-                child: Text(
-                  unExpectedError,
-                  style: TextStyle(color: Colors.red),
-                ),
+              body: FeaturesWidget(
+                features: Features.featuresList, // Pass the features list
+                textTheme: textTheme,
+                homeBloc: homebloc,
               ),
             );
+          case HomeErrorState:
+            return Scaffold(
+                body: Center(
+                    child: Text(
+              'Error',
+              style: TextStyle(color: Colors.red),
+            )));
+
           default:
             return SizedBox();
         }
       },
-    );
-  }
-}
-
-class FeaturesWidget extends StatelessWidget {
-  const FeaturesWidget(
-      {super.key,
-      required this.features,
-      required this.textTheme,
-      required this.homeBloc});
-
-  final List<FeatureModel> features;
-  final HomeBloc homeBloc;
-  final TextTheme textTheme;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: Scaffold(
-        appBar: AppBar(
-            leading: IconButton(
-                onPressed: () {
-                  homeBloc.add(OptionIconClickedEvent());
-                },
-                icon: Icon(Icons.menu)),
-            automaticallyImplyLeading: false,
-            title: Text(
-              appName,
-              style: textTheme.headlineMedium,
-            ),
-            centerTitle: true,
-            backgroundColor: MyColors.accentPurple),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10),
-            child: Column(
-              children: [
-                GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: features.length,
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 10,
-                  ),
-                  itemBuilder: (context, index) => Container(
-                    padding: EdgeInsets.all(9.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: MyColors.darkBlue, width: 3),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: InkWell(
-                      onTap: features[index].onTap,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(features[index].image),
-                          Text(
-                            features[index].title,
-                            style: textTheme.headlineSmall,
-                          ),
-                          Text(
-                            features[index].subtitle,
-                            style: textTheme.labelMedium,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

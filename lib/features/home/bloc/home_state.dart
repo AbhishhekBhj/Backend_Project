@@ -10,9 +10,8 @@ class HomeInitial extends HomeState {
   // Represents the initial state of the home page.
 }
 
-class HomeLoadingState extends HomeState {
-  // Represents the state when the home page is in a loading state.
-}
+class HomeLoadingState extends HomeState{}
+
 
 class HomeLoadedSuccessState extends HomeState {
   // Represents the state when the home page content has been successfully loaded.

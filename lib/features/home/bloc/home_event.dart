@@ -5,6 +5,7 @@ abstract class HomeEvent {}
 
 class HomeInitalEvent extends HomeEvent{}
 
+
 //event where the option icon is tapped
 class OptionIconClickedEvent extends HomeEvent{}
 

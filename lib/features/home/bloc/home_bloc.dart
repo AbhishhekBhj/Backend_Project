@@ -61,8 +61,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   FutureOr<void> homeInitialEvent(
       HomeInitalEvent event, Emitter<HomeState> emit) async {
-    emit(HomeLoadingState());
-
     emit(HomeLoadedSuccessState(
       featuresModelList: Features.featuresList
           .map((feature) => FeatureModel(
@@ -73,5 +71,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               ))
           .toList(),
     ));
+    print(Features.featuresList);
   }
 }

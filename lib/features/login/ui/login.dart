@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/data/models/login_model.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
+import 'package:mygymbuddy/features/home/ui/home.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/login/ui/login_form_widget.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
@@ -87,7 +88,7 @@ class _LoginState extends State<Login> {
               ));
 
             case LoginSuccessState:
-              return CaloricInformation();
+              return Home();
 
             case LoginFailureState:
               return Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi.dart';
+import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/features/signup/ui/signup.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BMICalculator(),
+      home: Signup(),
       debugShowCheckedModeBanner: false,
     );
   }
