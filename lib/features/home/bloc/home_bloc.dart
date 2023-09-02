@@ -71,6 +71,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               ))
           .toList(),
     ));
-    print(Features.featuresList);
+    
   }
 }

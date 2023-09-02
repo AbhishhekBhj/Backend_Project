@@ -77,7 +77,6 @@ class _HomeState extends State<Home> {
               child: CircularProgressIndicator(color: Colors.amber),
             ));
           case HomeLoadedSuccessState:
-            final successState = state as HomeLoadedSuccessState;
             return Scaffold(
               body: FeaturesWidget(
                 features: Features.featuresList, // Pass the features list

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi.dart';
+import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/features/signup/ui/signup.dart';
 
 void main() {
   runApp(const MyApp());
+  final homeBloc = HomeBloc();
 }
 
 class MyApp extends StatelessWidget {

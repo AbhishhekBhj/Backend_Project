@@ -8,10 +8,12 @@ class Features {
   final String title;
   final String subTitle;
   final VoidCallback? onTap;
+  final HomeBloc homeBloc;
   Features({
     required this.image,
     required this.title,
     required this.subTitle,
+    required this.homeBloc,
     this.onTap,
   });
   static List<Features> featuresList = [
@@ -19,20 +21,25 @@ class Features {
         image: aWorkout,
         title: "Start Workout",
         subTitle: "Start Your Workout",
+        homeBloc: HomeBloc(),
         onTap: () {
-          HomeBloc.instance.add(StartWorkoutClickedEvent());
+          // homeBloc.add(StartWorkoutClickedEvent());
         }),
     Features(
         image: aCalories,
         title: "Diet Tracker",
         subTitle: "Track Your Calories",
+        homeBloc: HomeBloc(),
+
         onTap: () {
-          HomeBloc.instance.add(DietTrackerClickedEvent());
+          // HomeBloc.instance.add(DietTrackerClickedEvent());
         }),
     Features(
         image: aReminder,
         title: "Reminders",
         subTitle: "Set Reminders",
+        homeBloc: HomeBloc(),
+        
         onTap: () {
           HomeBloc.instance.add(RemindersClickedEvent());
         }),
@@ -40,6 +47,8 @@ class Features {
         image: aGlass,
         title: "Drink Water",
         subTitle: "Add Water Drank",
+        homeBloc: HomeBloc(),
+
         onTap: () {
           HomeBloc.instance.add(DrinkWaterClickedEvent());
         }),
@@ -47,6 +56,8 @@ class Features {
         image: aBmi,
         title: "BMI",
         subTitle: "Calculate Your BMI",
+        homeBloc: HomeBloc(),
+
         onTap: () {
           HomeBloc.instance.add(BmiClickedEvent());
         }),
@@ -54,8 +65,10 @@ class Features {
         image: aTape,
         title: "Measurement",
         subTitle: "Set measurements",
+        homeBloc: HomeBloc(),
+
         onTap: () {
-          HomeBloc.instance.add(MeasurementsClickedEvent());
+          HomeBloc.instance.add(BmiClickedEvent());
         })
   ];
 }
