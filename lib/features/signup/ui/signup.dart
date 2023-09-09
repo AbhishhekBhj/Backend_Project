@@ -73,19 +73,16 @@ class _SignupState extends State<Signup> {
                     UserModelFormFields(
                         fullNameController: fullNameController,
                         emailController: emailController,
-                        phoneNumberController: phoneNumberController,
                         usernameController: usernameController,
                         passwordController: passwordController,
                         ageController: ageController,
                         fullNameLabel: fullNameLabel,
                         emailLabel: emailAddressLabel,
-                        phoneNumberLabel: phoneNumberLabel,
                         usernameLabel: usernameLabel,
                         passwordLabel: passwordLabel,
                         ageLabel: ageLabel,
                         fullNameHintText: fullNameHintText,
                         emailHintText: emailAddressHintText,
-                        phoneNumberHintText: phoneNumberHintText,
                         usernameHintText: usernameHintText,
                         passwordHintText: passwordHintText,
                         ageHintText: ageHintText),
@@ -93,11 +90,10 @@ class _SignupState extends State<Signup> {
                       onPressed: () {
                         signupBloc.add(SignUpClickedButtonEvent(
                             userModel: UserModel(
-                                age: ageController.text,
                                 email: emailController.text,
                                 name: fullNameController.text,
+                                age: ageController.text,
                                 password: passwordController.text,
-                                phoneNumber: phoneNumberController.text,
                                 username: usernameController.text)));
                       },
                       child: Text(signup),

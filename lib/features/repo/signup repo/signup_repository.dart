@@ -14,13 +14,12 @@ class SignupRepository {
 
     try {
       var response =
-          await client.post(Uri.parse("http://10.0.2.2:8000/signup/"), body: {
+          await client.post(Uri.parse("http://10.0.2.2:8000/signups/"), body: {
         'username': username,
         'password': password,
         'name': name,
         'age': age,
         'email': email,
-        'phoneNumber': phonenumber,
       });
 
       if (response.statusCode >= 200 && response.statusCode < 300) {

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/data/models/login_model.dart';
+import 'package:mygymbuddy/features/bmi/ui/bmi.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/home/ui/home.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/login/ui/login_form_widget.dart';
+import 'package:mygymbuddy/features/measurements/ui/measurements.dart';
+import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
+import 'package:mygymbuddy/features/reminders/ui/reminders.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
 import 'package:mygymbuddy/texts/texts.dart';
@@ -31,7 +35,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: BlocConsumer<LoginBloc, LoginState>(
@@ -88,7 +91,7 @@ class _LoginState extends State<Login> {
               ));
 
             case LoginSuccessState:
-              return Home();
+              return UpdateMeasurements();
 
             case LoginFailureState:
               return Container(

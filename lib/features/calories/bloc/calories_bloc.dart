@@ -24,7 +24,7 @@ class CaloriesBloc extends Bloc<CaloriesEvent, CaloriesState> {
   void caloriesSearchByNameEvent(
       CaloriesSearchByNameEvent event, Emitter<CaloriesState> emit) async {
     final List<FoodModel> foodData =
-        await CaloriesRepository.getCaloricInformation(
+        await MultiCaloriesRepository.getCaloricInformation(
             foodName: event.foodModel.name);
     emit(CaloriesFetchingState());
 

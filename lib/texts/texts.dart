@@ -1,5 +1,7 @@
 //this file contains all the texts that are going to be repeated instead of writing the same texts again and again just store it in a variable and use time and again
 
+import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
+
 const appName = "My Gym Buddy";
 const welcomeText = "Welcome";
 const loginHereText = "Login Here";
@@ -44,3 +46,29 @@ const clearTextFields = "Clear TextFields";
 const enterHeight = "Enter height in metres";
 
 const enterWeight = "Enter Weight in Kilograms";
+
+const updateMeasurements = "Update Your Measurements";
+const clearMeasurements = "Clear Your Measurements";
+const bodyWeightLabel = "Body Weight";
+const leftArmLabel = "Left Arm";
+const rightArmLabel = "Right Arm";
+const leftForeArmLabel = "Left Forearm";
+const rightForeLabel = "Right Forearm";
+const chestLabel = "Chest";
+const waistLabel = "Waist";
+const leftQuadricepLabel = "Left Quadricep";
+const rightQuadricepLabel = "Right Quadricep";
+const leftCalveLabel = "Left Calve";
+const rightCalveLabel = "Right  Calve";
+
+const bodyWeightHintText = "Enter Body Weight Measurements";
+const leftArmHintText = "Enter Left Arm Measurements";
+const rightArmHintText = "Enter Right Arm Measurements";
+const leftForeArmHintText = "Enter Left Forearm Measurements";
+const rightForeHintText = "Enter Right Forearm Measurements";
+const chestHintText = "Enter Chest Measurements";
+const waistHintText = "Enter Waist Measurements";
+const leftQuadricepHintText = "Enter Left Quadricep Measurements";
+const rightQuadricepHintText = "Enter Right Quadricep Measurements";
+const leftCalveHintText = "Enter Left Calve Measurements";
+const rightCalveHintText = "Enter Right  Calve Measurements";

@@ -28,9 +28,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final bool loginUserSuccess = await LoginRepository.loginUser(
         username: event.loginModel.username,
         password: event.loginModel.password);
-
+    final String currentUser = await CurrentUserRepository.currentUser();
     if (loginUserSuccess) {
-      emit(LoginSuccessState());
+      emit(LoginSuccessState(currentUser: currentUser));
     } else {
       emit(LoginFailureState());
     }

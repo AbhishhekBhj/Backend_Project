@@ -4,21 +4,18 @@ import 'package:mygymbuddy/colours/colours.dart';
 class UserModelFormFields extends StatelessWidget {
   final TextEditingController fullNameController;
   final TextEditingController emailController;
-  final TextEditingController phoneNumberController;
   final TextEditingController usernameController;
   final TextEditingController passwordController;
   final TextEditingController ageController;
 
   final String fullNameLabel;
   final String emailLabel;
-  final String phoneNumberLabel;
   final String usernameLabel;
   final String passwordLabel;
   final String ageLabel;
 
   final String fullNameHintText;
   final String emailHintText;
-  final String phoneNumberHintText;
   final String usernameHintText;
   final String passwordHintText;
   final String ageHintText;
@@ -26,19 +23,16 @@ class UserModelFormFields extends StatelessWidget {
   UserModelFormFields({
     required this.fullNameController,
     required this.emailController,
-    required this.phoneNumberController,
     required this.usernameController,
     required this.passwordController,
     required this.ageController,
     required this.fullNameLabel,
     required this.emailLabel,
-    required this.phoneNumberLabel,
     required this.usernameLabel,
     required this.passwordLabel,
     required this.ageLabel,
     required this.fullNameHintText,
     required this.emailHintText,
-    required this.phoneNumberHintText,
     required this.usernameHintText,
     required this.passwordHintText,
     required this.ageHintText,
@@ -68,11 +62,7 @@ class UserModelFormFields extends StatelessWidget {
                 InputDecoration(labelText: emailLabel, hintText: emailHintText),
           ),
           SizedBox(height: 2.0),
-          TextFormField(
-            controller: phoneNumberController,
-            decoration: InputDecoration(
-                labelText: phoneNumberLabel, hintText: phoneNumberHintText),
-          ),
+          
           SizedBox(height: 2.0),
           TextFormField(
             controller: usernameController,

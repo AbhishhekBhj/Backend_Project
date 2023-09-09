@@ -2,8 +2,7 @@
 import 'dart:convert';
 
 class Measurement {
-  // final int id;
-  final int userId; // Assuming the user ID from MyUser model
+  // final String userName; // Assuming the usernamefrom MyCustomUser model
   final double leftArm;
   final double rightArm;
   final double chest;
@@ -15,9 +14,8 @@ class Measurement {
   final double rightForearm;
   final double waist;
   final double bodyweight;
-  final DateTime timestamp;
   Measurement({
-    required this.userId,
+    // required this.userName,
     required this.leftArm,
     required this.rightArm,
     required this.chest,
@@ -29,12 +27,11 @@ class Measurement {
     required this.rightForearm,
     required this.waist,
     required this.bodyweight,
-    required this.timestamp,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'userId': userId,
+      // 'userName': userName,
       'leftArm': leftArm,
       'rightArm': rightArm,
       'chest': chest,
@@ -46,13 +43,12 @@ class Measurement {
       'rightForearm': rightForearm,
       'waist': waist,
       'bodyweight': bodyweight,
-      'timestamp': timestamp.millisecondsSinceEpoch,
     };
   }
 
   factory Measurement.fromMap(Map<String, dynamic> map) {
     return Measurement(
-      userId: map['userId'] as int,
+      // userName: map['userName'] as String,
       leftArm: map['leftArm'] as double,
       rightArm: map['rightArm'] as double,
       chest: map['chest'] as double,
@@ -64,7 +60,6 @@ class Measurement {
       rightForearm: map['rightForearm'] as double,
       waist: map['waist'] as double,
       bodyweight: map['bodyweight'] as double,
-      timestamp: DateTime.fromMillisecondsSinceEpoch(map['timestamp'] as int),
     );
   }
 
