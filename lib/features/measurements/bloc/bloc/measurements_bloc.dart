@@ -25,6 +25,7 @@ class MeasurementsBloc extends Bloc<MeasurementsEvent, MeasurementsState> {
       Emitter<MeasurementsState> emit) async {
     emit(MeasurementUpdateLoadingState());
     bool updateMeasurement = await MeasurementsRepository.updateMeasurements(
+      
       bodyWeight: event.measurementModel.bodyweight,
       leftArm: event.measurementModel.leftArm,
       rightArm: event.measurementModel.rightArm,

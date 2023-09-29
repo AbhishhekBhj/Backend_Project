@@ -5,6 +5,7 @@ import 'package:mygymbuddy/data/models/measurement_model.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
 import 'package:mygymbuddy/texts/texts.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateMeasurements extends StatefulWidget {
   const UpdateMeasurements({super.key});
@@ -199,7 +200,7 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
                                 },
                                 child: Text(updateMeasurements)),
                             ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   clearAllTextFields();
                                 },
                                 child: Text(clearMeasurements))
@@ -237,6 +238,10 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
             );
+
+          case MeasurementUpdateSuccessState:
+            //ToDo: show alert box
+            return Text("Cool");
         }
         return Scaffold();
       },
