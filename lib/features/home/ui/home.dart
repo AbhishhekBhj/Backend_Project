@@ -79,7 +79,6 @@ class _HomeState extends State<Home> {
           case HomeLoadedSuccessState:
             return Scaffold(
               body: FeaturesWidget(
-                features: Features.featuresList, // Pass the features list
                 textTheme: textTheme,
                 homeBloc: homebloc,
               ),

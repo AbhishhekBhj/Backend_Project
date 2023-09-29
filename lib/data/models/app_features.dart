@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:mygymbuddy/texts/texts.dart';
 
@@ -23,14 +24,13 @@ class Features {
         subTitle: "Start Your Workout",
         homeBloc: HomeBloc(),
         onTap: () {
-          // homeBloc.add(StartWorkoutClickedEvent());
+          // BlocProvider.of<HomeBloc>(context).add(StartWorkoutClickedEvent());
         }),
     Features(
         image: aCalories,
         title: "Diet Tracker",
         subTitle: "Track Your Calories",
         homeBloc: HomeBloc(),
-
         onTap: () {
           // HomeBloc.instance.add(DietTrackerClickedEvent());
         }),
@@ -39,7 +39,6 @@ class Features {
         title: "Reminders",
         subTitle: "Set Reminders",
         homeBloc: HomeBloc(),
-        
         onTap: () {
           HomeBloc.instance.add(RemindersClickedEvent());
         }),
@@ -48,7 +47,6 @@ class Features {
         title: "Drink Water",
         subTitle: "Add Water Drank",
         homeBloc: HomeBloc(),
-
         onTap: () {
           HomeBloc.instance.add(DrinkWaterClickedEvent());
         }),
@@ -57,7 +55,6 @@ class Features {
         title: "BMI",
         subTitle: "Calculate Your BMI",
         homeBloc: HomeBloc(),
-
         onTap: () {
           HomeBloc.instance.add(BmiClickedEvent());
         }),
@@ -66,7 +63,6 @@ class Features {
         title: "Measurement",
         subTitle: "Set measurements",
         homeBloc: HomeBloc(),
-
         onTap: () {
           HomeBloc.instance.add(BmiClickedEvent());
         })

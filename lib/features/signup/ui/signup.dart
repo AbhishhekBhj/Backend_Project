@@ -122,10 +122,18 @@ class _SignupState extends State<Signup> {
               );
 
             case SignupSuccessState:
-              return Login();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ));
 
             case SignupNavigationState:
-              return Login();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ));
 
             case SignupErrorState:
               return Container(

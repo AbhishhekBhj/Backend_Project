@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/data/models/login_model.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi.dart';
-import 'package:mygymbuddy/features/calories/ui/calories.dart';
-import 'package:mygymbuddy/features/home/ui/home.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/login/ui/login_form_widget.dart';
-import 'package:mygymbuddy/features/measurements/ui/measurements.dart';
-import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
-import 'package:mygymbuddy/features/reminders/ui/reminders.dart';
-import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
 import 'package:mygymbuddy/texts/texts.dart';
-import 'package:mygymbuddy/widgets/widgets.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -91,7 +84,11 @@ class _LoginState extends State<Login> {
               ));
 
             case LoginSuccessState:
-              return UpdateMeasurements();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BMICalculator(),
+                  ));
 
             case LoginFailureState:
               return Container(

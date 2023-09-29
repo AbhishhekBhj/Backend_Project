@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
+import 'package:mygymbuddy/widgets/widgets.dart';
 
 class CaloricInformation extends StatefulWidget {
-  const CaloricInformation({super.key});
+  const CaloricInformation({Key? key}) : super(key: key);
 
   @override
   State<CaloricInformation> createState() => _CaloricInformationState();
@@ -30,38 +31,38 @@ class _CaloricInformationState extends State<CaloricInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<CaloriesBloc, CaloriesState>(
-        bloc: caloriesBloc,
-        listenWhen: (previous, current) => current is CaloriesActionState,
-        buildWhen: (previous, current) => current is! CaloriesActionState,
-        listener: (context, state) {},
-        builder: (context, state) {
-          print(state.runtimeType);
-          switch (state.runtimeType) {
-            case CaloriesLoadingState:
-              return Scaffold(
-                body: Column(
-                  children: [
-                    buildSearchTextField(),
-                    SizedBox(height: 16),
-                  ],
-                ),
-              );
-            case CaloriesFetchingState:
-              return Center(child: CircularProgressIndicator());
-            case CaloriesFoundSuccessState:
-              return buildFoodList(
-                  (state as CaloriesFoundSuccessState).foodModel);
-            case CaloriesFoundErrorState:
-              return Container(
-                child: Center(
-                  child: Text("Food Item Not found"),
-                ),
-              );
-            default:
-              return SizedBox();
-          }
-        },
+      appBar: CommonAppBar(),
+      body: ListView(
+        children: [
+          buildSearchTextField(),
+          BlocConsumer<CaloriesBloc, CaloriesState>(
+            bloc: caloriesBloc,
+            listenWhen: (previous, current) => current is CaloriesActionState,
+            buildWhen: (previous, current) => current is! CaloriesActionState,
+            listener: (context, state) {},
+            builder: (context, state) {
+              print(state.runtimeType);
+              switch (state.runtimeType) {
+                case CaloriesLoadingState:
+                  return SizedBox(); // Don't display anything during loading
+                case CaloriesFetchingState:
+                  return Center(child: CircularProgressIndicator());
+                case CaloriesFoundSuccessState:
+                  return buildFoodList(
+                      (state as CaloriesFoundSuccessState).foodModel);
+
+                case CaloriesFoundErrorState:
+                  return Container(
+                    child: Center(
+                      child: Text("Food Item Not found in our Database"),
+                    ),
+                  );
+                default:
+                  return SizedBox();
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -73,7 +74,7 @@ class _CaloricInformationState extends State<CaloricInformation> {
         child: TextFormField(
           controller: foodNameController,
           decoration: InputDecoration(
-            labelText: 'Enter Food Name to find its calorie',
+            labelText: 'Enter Food Name to find its Nutritional Content',
             border: OutlineInputBorder(),
             suffixIcon: IconButton(
               onPressed: () {
@@ -93,27 +94,34 @@ class _CaloricInformationState extends State<CaloricInformation> {
   }
 
   Widget buildFoodList(List<FoodModel> foodModel) {
-    return ListView.builder(
-      itemCount: foodModel.length,
-      itemBuilder: (context, index) {
-        final foodItem = foodModel[index];
-        return Container(
-          padding: EdgeInsets.all(16.0),
-          margin: EdgeInsets.all(16.0),
-          color: MyColors.primaryBlue,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Name: ${foodItem.name}'),
-              Text(
-                  'Calories per Serving: ${foodItem.caloriesPerServing.toString()}'),
-              Text('Serving Size: ${foodItem.servingSize.toString()} gm'),
-              Text(
-                  'Protein per Serving: ${foodItem.proteinPerServing.toString()} gm'),
-            ],
-          ),
-        );
-      },
-    );
+    if (foodModel.isNotEmpty) {
+      return Container(
+        height: 500,
+        child: ListView.builder(
+          itemCount: foodModel.length,
+          itemBuilder: (context, index) {
+            final foodItem = foodModel[index];
+            return Container(
+              padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.all(16.0),
+              color: MyColors.lightBlue,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Name: ${foodItem.name}'),
+                  Text(
+                      'Calories per Serving: ${foodItem.caloriesPerServing.toString()}'),
+                  Text('Serving Size: ${foodItem.servingSize.toString()} gm'),
+                  Text(
+                      'Protein per Serving: ${foodItem.proteinPerServing.toString()} gm'),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }
