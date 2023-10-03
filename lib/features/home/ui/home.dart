@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mygymbuddy/data/models/app_features.dart';
+import 'package:mygymbuddy/data/models/bmi_model.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi.dart';
+import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
-
+import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
+import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -28,14 +30,14 @@ class _HomeState extends State<Home> {
     final textTheme = Theme.of(context).textTheme;
     return BlocConsumer<HomeBloc, HomeState>(
       bloc: homebloc,
-      listenWhen: (previous, current) => current is HomeActionState,
+      listenWhen: (previous, current) => previous is HomeInitial,
       buildWhen: (previous, current) => current is! HomeActionState,
       listener: (context, state) {
         if (state is HomeNavigateToBmiPageActionState) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BMICalculator(),
+                builder: (context) => BMI(),
               ));
         } else if (state is HomeNavigateToCaloriesPageActionState) {
           Navigator.push(
@@ -53,7 +55,7 @@ class _HomeState extends State<Home> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => CaloricInformation(),
+                builder: (context) => UpdateMeasurements(),
               ));
         } else if (state is HomeNavigateToWorkoutPageActionState) {
           Navigator.push(
@@ -65,7 +67,7 @@ class _HomeState extends State<Home> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => CaloricInformation(),
+                builder: (context) => Reminders(),
               ));
         }
       },

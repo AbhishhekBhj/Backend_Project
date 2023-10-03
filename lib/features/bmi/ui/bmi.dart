@@ -6,10 +6,11 @@ class BMICalculator extends StatefulWidget {
   const BMICalculator({Key? key}) : super(key: key);
 
   @override
-  _BMICalculatorState createState() => _BMICalculatorState();
+  BMICalculatorState createState() => BMICalculatorState();
 }
 
-class _BMICalculatorState extends State<BMICalculator> {
+class BMICalculatorState extends State<BMICalculator> {
+
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   double bmi = 0.0;

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
-import 'package:mygymbuddy/data/models/app_features.dart';
-import 'package:mygymbuddy/data/models/home_features_model.dart';
 import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/texts/texts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,7 +68,7 @@ class FeaturesWidget extends StatelessWidget {
 
   final HomeBloc homeBloc;
   final TextTheme textTheme;
-  Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
     return Material(

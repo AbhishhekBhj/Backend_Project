@@ -4,6 +4,7 @@ class FoodModel {
   final double? caloriesPerServing;
   final double? servingSize;
   final double? proteinPerServing;
+  bool fromCache = false;
 
   FoodModel({
     this.name,
@@ -31,5 +32,23 @@ class FoodModel {
       servingSize: map['grams_per_serving'],
       proteinPerServing: map['protein_per_serving'],
     );
+  }
+  factory FoodModel.fromJson(Map<String, dynamic> json) {
+    return FoodModel(
+      name: json['name'],
+      description: json['description'],
+      caloriesPerServing: json['caloriesPerServing'],
+      servingSize: json['servingSize'],
+      proteinPerServing: json['proteinPerServing'],
+    );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'description': description,
+      'caloriesPerServing': caloriesPerServing,
+      'servingSize': servingSize,
+      'proteinPerServing': proteinPerServing,
+    };
   }
 }

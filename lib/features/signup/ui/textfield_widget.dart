@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 
 class UserModelFormFields extends StatelessWidget {
+
   final TextEditingController fullNameController;
   final TextEditingController emailController;
   final TextEditingController usernameController;
@@ -83,6 +84,7 @@ class UserModelFormFields extends StatelessWidget {
             decoration:
                 InputDecoration(labelText: ageLabel, hintText: ageHintText),
           ),
+          
         ],
       ),
     );

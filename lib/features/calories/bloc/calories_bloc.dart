@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
 import 'package:mygymbuddy/features/repo/calories%20repo/calories_repository.dart';
-
 part 'calories_event.dart';
 part 'calories_state.dart';
 
