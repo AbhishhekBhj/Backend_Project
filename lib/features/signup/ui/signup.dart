@@ -120,12 +120,10 @@ class _SignupState extends State<Signup> {
       appBar: CommonAppBar(),
       body: BlocConsumer<SignupBloc, SignupState>(
         bloc: signupBloc,
-        listenWhen: (previous, current) => current is SignupSuccessState,
+        listenWhen: (previous, current) => current is SignupActionState,
         buildWhen: (previous, current) => current is! SignupActionState,
         listener: (context, state) {
-          print(state);
           if (state is SignupSuccessState || state is SignupNavigationState) {
-            print('abc');
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -134,6 +132,7 @@ class _SignupState extends State<Signup> {
           }
         },
         builder: (context, state) {
+          print(state);
           switch (state.runtimeType) {
             case SignupLoadingState:
               return Center(
@@ -209,26 +208,20 @@ class _SignupState extends State<Signup> {
                   ],
                 ),
               );
-            case SignupLoadingState:
-              return Container(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
 
-            // case SignupSuccessState:
-            //   Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => Login(),
-            //       ));
+            case SignupSuccessState:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ));
 
-            // case SignupNavigationState:
-            //   Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => Login(),
-            //       ));
+            case SignupNavigationState:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
+                  ));
 
             case SignupErrorState:
               return Container(
@@ -241,7 +234,11 @@ class _SignupState extends State<Signup> {
               );
           }
 
-          return const SizedBox();
+          return Scaffold(
+            body: Container(
+              child: Text("ABc"),
+            ),
+          );
         },
       ),
     );

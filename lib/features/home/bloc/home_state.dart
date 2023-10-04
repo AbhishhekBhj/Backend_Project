@@ -2,7 +2,10 @@
 part of 'home_bloc.dart';
 
 @immutable
-abstract class HomeState {}
+abstract class HomeState {
+  // final int tabIndex;
+  // HomeState(this.tabIndex);
+}
 
 abstract class HomeActionState extends HomeState {}
 
@@ -10,8 +13,7 @@ class HomeInitial extends HomeState {
   // Represents the initial state of the home page.
 }
 
-class HomeLoadingState extends HomeState{}
-
+class HomeLoadingState extends HomeState {}
 
 class HomeLoadedSuccessState extends HomeState {
   // Represents the state when the home page content has been successfully loaded.
@@ -24,27 +26,27 @@ class HomeErrorState extends HomeState {
   // Represents the state when an error occurs on the home page.
 }
 
-class HomeNavigateToWorkoutPageActionState extends HomeState {
+class HomeNavigateToWorkoutPageActionState extends HomeActionState {
   // Represents the state when the home page needs to navigate to the workout page.
 }
 
-class HomeNavigateToCaloriesPageActionState extends HomeState {
+class HomeNavigateToCaloriesPageActionState extends HomeActionState {
   // Represents the state when the home page needs to navigate to the calories page.
 }
 
-class HomeNavigateToBmiPageActionState extends HomeState {
+class HomeNavigateToBmiPageActionState extends HomeActionState {
   // Represents the state when the home page needs to navigate to the BMI page.
 }
 
-class HomeNavigateToRemindersPageActionState extends HomeState {
+class HomeNavigateToRemindersPageActionState extends HomeActionState {
   // Represents the state when the home page needs to navigate to the reminders page.
 }
 
-class HomeNavigateToMeasurementsPageActionState extends HomeState {
+class HomeNavigateToMeasurementsPageActionState extends HomeActionState {
   // Represents the state when the home page needs to navigate to the measurements page.
 }
 
-class HomeNavigateToDrinkWaterPageActionState extends HomeState {
+class HomeNavigateToDrinkWaterPageActionState extends HomeActionState {
   // Represents the state when the home page needs to navigate to the drink water page.
 }
 

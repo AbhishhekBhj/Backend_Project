@@ -6,11 +6,11 @@ sealed class LoginState {}
 
 final class LoginInitial extends LoginState {}
 
-final class LoginActionState extends LoginState {}
+ class LoginActionState extends LoginState {}
 
 class LoginLoadingState extends LoginState {}
 
-class LoginSuccessState extends LoginState {
+class LoginSuccessState extends LoginActionState {
   final String currentUser;
   LoginSuccessState({
     required this.currentUser,

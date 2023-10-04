@@ -11,7 +11,7 @@ Future<void> main() async {
 
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: username == null ? Signup() : Home()));
+      home: username == null ? Home() : Home()));
 }
 
 class MyApp extends StatelessWidget {

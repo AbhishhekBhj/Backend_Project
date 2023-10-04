@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
+import 'package:mygymbuddy/features/home/ui/drawer.dart';
 import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/texts/texts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,16 +9,16 @@ import '../features/home/bloc/home_bloc.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
-
-  @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(appName),
+      title: const Text(appName),
       centerTitle: true,
       backgroundColor: MyColors.accentPurple,
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class LoginFormField extends StatelessWidget {
@@ -47,7 +48,7 @@ class LoginFormField extends StatelessWidget {
           decoration: InputDecoration(
               labelText: usernameLabel, hintText: usernameHintText),
         ),
-        SizedBox(height: 2.0),
+        const SizedBox(height: 2.0),
         TextFormField(
           controller: passwordController,
           obscureText: true,
@@ -69,103 +70,78 @@ class FeaturesWidget extends StatelessWidget {
   final HomeBloc homeBloc;
   final TextTheme textTheme;
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+
   @override
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () async {
-              SharedPreferences pref = await SharedPreferences.getInstance();
-              pref.remove('username');
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) {
-                return Login();
-              }));
-            },
-            icon: Icon(Icons.menu),
-          ),
-          automaticallyImplyLeading: false,
-          title: Text(
-            appName,
-            style: textTheme.headlineMedium,
-          ),
-          centerTitle: true,
-          backgroundColor: MyColors.accentPurple,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10),
-            child: Row(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        FeatureCard(
-                          image: aWorkout,
-                          title: "Start Workout",
-                          subTitle: "Start Your Workout",
-                          onTap: () {
-                            homeBloc.add(StartWorkoutClickedEvent());
-                          },
-                        ),
-                        FeatureCard(
-                          image: aCalories,
-                          title: "Diet Tracker",
-                          subTitle: "Track Your Calories",
-                          onTap: () {
-                            homeBloc.add(DietTrackerClickedEvent());
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        FeatureCard(
-                          image: aReminder,
-                          title: "Reminders",
-                          subTitle: "Set Reminders",
-                          onTap: () {
-                            homeBloc.add(RemindersClickedEvent());
-                          },
-                        ),
-                        FeatureCard(
-                          image: aGlass,
-                          title: "Drink Water",
-                          subTitle: "Add Water Drank",
-                          onTap: () {
-                            homeBloc.add(DrinkWaterClickedEvent());
-                          },
-                        ),
-                        FeatureCard(
-                          image: aBmi,
-                          title: "BMI",
-                          subTitle: "Calculate Your BMI",
-                          onTap: () {
-                            homeBloc.add(BmiClickedEvent());
-                          },
-                        ),
-                        FeatureCard(
-                          image: aTape,
-                          title: "Measurement",
-                          subTitle: "Set measurements",
-                          onTap: () {
-                            homeBloc.add(BmiClickedEvent());
-                          },
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+        appBar: CommonAppBar(),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10),
+          child: GridView.count(
+            // scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            crossAxisCount: 2, // Number of columns in the grid
+            crossAxisSpacing: 20.0, // Spacing between columns
+            mainAxisSpacing: 20.0, // Spacing between rows
+            children: [
+              FeatureCard(
+                image: aWorkout,
+                title: aStartWorkoutTitle,
+                subTitle: aStartWorkoutSubTitle,
+                onTap: () {
+                  homeBloc.add(StartWorkoutClickedEvent());
+                },
+              ),
+              FeatureCard(
+                image: aCalories,
+                title: aCaloriesTitle,
+                subTitle: aCaloriesSubTitle,
+                onTap: () {
+                  homeBloc.add(DietTrackerClickedEvent());
+                },
+              ),
+              FeatureCard(
+                image: aReminder,
+                title: aRemindersTitle,
+                subTitle: aRemindersSubTitle,
+                onTap: () {
+                  homeBloc.add(RemindersClickedEvent());
+                },
+              ),
+              FeatureCard(
+                image: aGlass,
+                title: aDrinkWaterTitle,
+                subTitle: aDrinkWaterSubTitle,
+                onTap: () {
+                  homeBloc.add(DrinkWaterClickedEvent());
+                },
+              ),
+              FeatureCard(
+                image: aBmi,
+                title: aBmiTitle,
+                subTitle: aBmiSubTitle,
+                onTap: () {
+                  homeBloc.add(BmiClickedEvent());
+                },
+              ),
+              FeatureCard(
+                image: aTape,
+                title: aMeasurementTitle,
+                subTitle: aMeasurementSubTitle,
+                onTap: () {
+                  homeBloc.add(MeasurementsClickedEvent());
+                },
+              ),
+              FeatureCard(
+                  image: aExerciseGallery,
+                  title: aExerciseGalleryTitle,
+                  subTitle: aExerciseGallerySubTitle),
+              FeatureCard(
+                  image: aMeditate,
+                  title: aMeditateTitle,
+                  subTitle: aMeditateSubTitle)
+            ],
           ),
         ),
       ),
@@ -191,7 +167,7 @@ class FeatureCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      padding: EdgeInsets.all(9.0),
+      padding: const EdgeInsets.all(9.0),
       decoration: BoxDecoration(
         border: Border.all(color: MyColors.darkBlue, width: 3),
         borderRadius: BorderRadius.circular(10.0),
@@ -199,12 +175,13 @@ class FeatureCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(image),
             Text(
               title,
-              style: textTheme.headlineSmall,
+              style: textTheme.bodyLarge,
             ),
             Text(
               subTitle,

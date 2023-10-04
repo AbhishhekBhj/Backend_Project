@@ -13,11 +13,11 @@ class SignupLoadingState extends SignupState{}
 
 
 //successful signup
-class SignupSuccessState extends SignupState{}
+class SignupSuccessState extends SignupActionState{}
 
 //some error occured during signup
 class SignupErrorState extends SignupState{}
 
 
 
-class SignupNavigationState extends SignupState{}
+class SignupNavigationState extends SignupActionState{}

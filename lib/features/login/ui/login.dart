@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/data/models/login_model.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi.dart';
+import 'package:mygymbuddy/features/home/ui/home.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/login/ui/login_form_widget.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
@@ -34,7 +35,15 @@ class _LoginState extends State<Login> {
         bloc: loginBloc,
         listenWhen: (previous, current) => current is LoginActionState,
         buildWhen: (previous, current) => current is! LoginActionState,
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is LoginSuccessState) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(),
+                ));
+          }
+        },
         builder: (context, state) {
           switch (state.runtimeType) {
             case LoginLoadingState:
@@ -82,13 +91,6 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ));
-
-            case LoginSuccessState:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BMICalculator(),
-                  ));
 
             case LoginFailureState:
               return Container(

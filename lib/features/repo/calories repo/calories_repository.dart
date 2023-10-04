@@ -51,6 +51,8 @@ class MultiCaloriesRepository {
             .map((foodData) => FoodModel.fromMap(foodData))
             .toList();
 
+            
+
         return foodInfoList;
       } else {
         return [];

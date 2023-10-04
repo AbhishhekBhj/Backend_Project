@@ -38,7 +38,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   FutureOr<void> dietTrackerClickedEvent(
       DietTrackerClickedEvent event, Emitter<HomeState> emit) {
-        emit(HomeInitial());
+        // emit(HomeInitial());
     // print('avc
     emit(HomeInitial());
     emit(HomeNavigateToCaloriesPageActionState());

@@ -3,26 +3,30 @@ part of 'home_bloc.dart';
 @immutable
 abstract class HomeEvent {}
 
-class HomeInitalEvent extends HomeEvent{}
-
+class HomeInitalEvent extends HomeEvent {}
 
 //event where the option icon is tapped
-class OptionIconClickedEvent extends HomeEvent{}
+class OptionIconClickedEvent extends HomeEvent {}
 
 //event where start workout option tapped
-class StartWorkoutClickedEvent extends HomeEvent{}
+class StartWorkoutClickedEvent extends HomeEvent {}
 
 // diet takcker option tapped
-class DietTrackerClickedEvent extends HomeEvent{}
+class DietTrackerClickedEvent extends HomeEvent {}
 
 //reminders option tapped
-class RemindersClickedEvent extends HomeEvent{}
+class RemindersClickedEvent extends HomeEvent {}
 
 //drink water option tapped
-class DrinkWaterClickedEvent extends HomeEvent{}
+class DrinkWaterClickedEvent extends HomeEvent {}
 
 //bmi option tapped
-class BmiClickedEvent extends HomeEvent{}
+class BmiClickedEvent extends HomeEvent {}
 
 //measurements option tapped
-class MeasurementsClickedEvent extends HomeEvent{}
+class MeasurementsClickedEvent extends HomeEvent {}
+
+class TabChange extends HomeEvent {
+  final int tabIndex;
+  TabChange({required this.tabIndex});
+}
