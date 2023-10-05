@@ -49,6 +49,10 @@ dependencies:
   sqflite: ^2.3.0
   path: ^1.8.3
   google_nav_bar: ^5.0.6
+  audioplayers: ^5.2.0
+  # connectivity_plus: ^4.0.2
+
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

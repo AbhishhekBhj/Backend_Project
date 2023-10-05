@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbuddy/features/signup/ui/signup.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
+import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'features/home/ui/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   var username = sharedPreferences.getString('username');
 
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: username == null ? Home() : Home()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -19,13 +18,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (context) => HomeBloc())],
+      child: MaterialApp(
+        title: 'My Gym Buddy',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: BaseClass(),
+        debugShowCheckedModeBanner: false,
       ),
-      home: Signup(),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

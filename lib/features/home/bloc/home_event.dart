@@ -26,6 +26,10 @@ class BmiClickedEvent extends HomeEvent {}
 //measurements option tapped
 class MeasurementsClickedEvent extends HomeEvent {}
 
+class MeditateClickedEvent extends HomeEvent{}
+
+class ExerciseGalleryClickedEvent extends HomeEvent{}
+
 class TabChange extends HomeEvent {
   final int tabIndex;
   TabChange({required this.tabIndex});

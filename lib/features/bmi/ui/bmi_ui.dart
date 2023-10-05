@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:mygymbuddy/data/models/bmi_model.dart';
 import 'package:mygymbuddy/features/bmi/bloc/bmi_bloc.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
@@ -39,7 +38,8 @@ class _BMIState extends State<BMI> {
         builder: (context, state) {
           print(state.runtimeType);
           if (state is BMILoadingState) {
-            return const Scaffold(
+            return Scaffold(
+              backgroundColor: Colors.grey[100],
               body: Center(
                 child: CircularProgressIndicator(color: Colors.amber),
               ),
@@ -94,26 +94,26 @@ class _BMIState extends State<BMI> {
                             },
                             child: Text("Calculate BMI"),
                           ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text("Clear TextFields"),
-                          ),
                         ],
                       ),
                     ),
                   ),
                   dialog
                       ? Positioned(
-                          child: AlertDialog(
-                          title: Text('BMI Calculated'),
-                          content: Column(
-                            children: [
-                              Text("Your BMI is ${bmiData[0]}"),
-                              Text("You are ${bmiData[1]}")
-                            ],
-                          ),
-                        ))
-                      :  const SizedBox.shrink()
+                          top: 70,
+                          child: Container(
+                            height: 200,
+                            child: AlertDialog(
+                              title: Text('BMI Calculated'),
+                              content: Column(
+                                children: [
+                                  Text("Your BMI is ${bmiData[0]}"),
+                                  Text("You are ${bmiData[1]}")
+                                ],
+                              ),
+                            ),
+                          ))
+                      : const SizedBox.shrink()
                 ],
               ),
             ),

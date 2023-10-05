@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
-import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/meditate/ui/meditate.dart';
-import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
@@ -18,11 +15,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final HomeBloc homebloc = HomeBloc(); // Create an instance of the home bloc
+  final HomeBloc homeBloc = HomeBloc();
 
+  // Create an instance of the home bloc
+  List<Widget> homeWidgets = <Widget>[CaloricInformation()];
   @override
   void initState() {
-    homebloc.add(HomeInitalEvent());
+    BlocProvider.of<HomeBloc>(context).add(HomeInitalEvent());
+
     super.initState();
   }
 
@@ -30,63 +30,59 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return BlocConsumer<HomeBloc, HomeState>(
-      bloc: homebloc,
+      bloc: homeBloc,
       listenWhen: (previous, current) => current is HomeActionState,
       buildWhen: (previous, current) => current is! HomeActionState,
       listener: (context, state) {
-        if (state is HomeNavigateToBmiPageActionState) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BMI(),
-              ));
-        } else if (state is HomeNavigateToCaloriesPageActionState) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CaloricInformation(),
-              ));
-        } else if (state is HomeNavigateToDrinkWaterPageActionState) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CaloricInformation(),
-              ));
-        } else if (state is HomeNavigateToMeasurementsPageActionState) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UpdateMeasurements(),
-              ));
-        } else if (state is HomeNavigateToWorkoutPageActionState) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => StartMeditation(),
-              ));
-        } else if (state is HomeNavigateToRemindersPageActionState) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Reminders(),
-              ));
-        } else if (state is HomeNavigateToMeasurementsPageActionState) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UpdateMeasurements(),
-              ));
-        }
+        // if (state is HomeNavigateToBmiPageActionState) {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => BMI(),
+        //       ));
+        // } else if (state is HomeNavigateToDrinkWaterPageActionState) {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => CaloricInformation(),
+        //       ));
+        // } else if (state is HomeNavigateToMeasurementsPageActionState) {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => UpdateMeasurements(),
+        //       ));
+        // } else if (state is HomeNavigateToWorkoutPageActionState) {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => StartMeditation(),
+        //       ));
+        // } else if (state is HomeNavigateToRemindersPageActionState) {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => Reminders(),
+        //       ));
+        // } else if (state is HomeNavigateToMeasurementsPageActionState) {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => UpdateMeasurements(),
+        //       ));
+        // }
       },
       builder: (context, state) {
         switch (state.runtimeType) {
+          case HomeNavigateToCaloriesPageActionState:
+            return homeWidgets[0];
           case HomeLoadingState:
             return Scaffold(
                 body: Center(
               child: CircularProgressIndicator(color: Colors.amber),
             ));
           case HomeLoadedSuccessState:
-            return HomeWidget(homebloc: homebloc, textTheme: textTheme);
+            return HomeWidget(homebloc: homeBloc, textTheme: textTheme);
           case HomeErrorState:
             return Scaffold(
                 body: Center(
@@ -96,7 +92,7 @@ class _HomeState extends State<Home> {
             )));
 
           default:
-            return HomeWidget(homebloc: homebloc, textTheme: textTheme);
+            return HomeWidget(homebloc: homeBloc, textTheme: textTheme);
         }
       },
     );
@@ -124,9 +120,6 @@ class HomeWidget extends StatelessWidget {
             onTabChange: (value) {
               if (value == 1) {
                 homebloc.add(DietTrackerClickedEvent());
-              }
-              if (value == 2) {
-                // homebloc.add()
               }
             },
             activeColor: Colors.white,

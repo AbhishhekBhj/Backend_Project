@@ -29,8 +29,11 @@ class HomeErrorState extends HomeState {
 class HomeNavigateToWorkoutPageActionState extends HomeActionState {
   // Represents the state when the home page needs to navigate to the workout page.
 }
+class HomeNavigateToMeditatePageActionState extends HomeActionState{}
 
-class HomeNavigateToCaloriesPageActionState extends HomeActionState {
+class HomeNavigateToExerciseGalleryPageActionState extends HomeActionState{}
+
+class HomeNavigateToCaloriesPageActionState extends HomeState {
   // Represents the state when the home page needs to navigate to the calories page.
 }
 

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:mygymbuddy/data/models/bmi_model.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_calculate_function.dart';
@@ -27,7 +26,7 @@ class BmiBloc extends Bloc<BmiEvent, BmiState> {
     emit(BMILoadingState());
 
     List<dynamic> bmi = BMICalculations.calculateBMI(
-        event.bmiModel.heightInMetre, event.bmiModel.weightInKg);
+        event.bmiModel.weightInKg, event.bmiModel.heightInMetre);
 
     emit(BMISuccessState(bmiData: bmi, isDialog: true));
 

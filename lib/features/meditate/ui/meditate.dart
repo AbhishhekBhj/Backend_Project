@@ -94,6 +94,8 @@ class _HomePageState extends State<StartMeditation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.grey[100],
+
         appBar: CommonAppBar(),
         body: SizedBox(
           height: double.infinity,

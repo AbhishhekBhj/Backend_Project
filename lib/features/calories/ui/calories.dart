@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
+import 'package:mygymbuddy/features/calories/ui/calories_loggind.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 
 class CaloricInformation extends StatefulWidget {
@@ -30,39 +31,47 @@ class _CaloricInformationState extends State<CaloricInformation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CommonAppBar(),
-      body: ListView(
-        children: [
-          buildSearchTextField(),
-          BlocConsumer<CaloriesBloc, CaloriesState>(
-            bloc: caloriesBloc,
-            listenWhen: (previous, current) => current is CaloriesActionState,
-            buildWhen: (previous, current) => current is! CaloriesActionState,
-            listener: (context, state) {},
-            builder: (context, state) {
-              print(state.runtimeType);
-              switch (state.runtimeType) {
-                case CaloriesLoadingState:
-                  return SizedBox(); // Don't display anything during loading
-                case CaloriesFetchingState:
-                  return Center(child: CircularProgressIndicator());
-                case CaloriesFoundSuccessState:
-                  return buildFoodList(
-                      (state as CaloriesFoundSuccessState).foodModel);
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.grey[100],
+        appBar: CommonAppBar(),
+        body: Column(
+          children: [
+            buildSearchTextField(),
+            BlocConsumer<CaloriesBloc, CaloriesState>(
+              bloc: caloriesBloc,
+              listenWhen: (previous, current) => current is CaloriesActionState,
+              buildWhen: (previous, current) => current is! CaloriesActionState,
+              listener: (context, state) {},
+              builder: (context, state) {
+                print(state.runtimeType);
+                switch (state.runtimeType) {
+                  case CaloriesLoadingState:
+                    return SizedBox(); // Don't display anything during loading
+                  case CaloriesFetchingState:
+                    return Center(child: CircularProgressIndicator());
+                  case CaloriesFoundSuccessState:
+                    return Expanded(
+                      child: buildFoodList(
+                          (state as CaloriesFoundSuccessState).foodModel),
+                    );
 
-                case CaloriesFoundErrorState:
-                  return Container(
-                    child: Center(
-                      child: Text("Food Item Not found in our Database"),
-                    ),
-                  );
-                default:
-                  return SizedBox();
-              }
-            },
-          ),
-        ],
+                  case CaloriesFoundErrorState:
+                    return Container(
+                      child: Center(
+                        child: Text("Food Item Not found in our Database"),
+                      ),
+                    );
+                  default:
+                    return SizedBox();
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -101,20 +110,28 @@ class _CaloricInformationState extends State<CaloricInformation> {
           itemCount: foodModel.length,
           itemBuilder: (context, index) {
             final foodItem = foodModel[index];
-            return Container(
-              padding: EdgeInsets.all(16.0),
-              margin: EdgeInsets.all(16.0),
-              color: MyColors.lightBlue,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Name: ${foodItem.name}'),
-                  Text(
-                      'Calories per Serving: ${foodItem.caloriesPerServing.toString()}'),
-                  Text('Serving Size: ${foodItem.servingSize.toString()} gm'),
-                  Text(
-                      'Protein per Serving: ${foodItem.proteinPerServing.toString()} gm'),
-                ],
+            return GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CaloriesLoggingPage(
+                            data: foodItem,
+                          ))),
+              child: Container(
+                padding: EdgeInsets.all(16.0),
+                margin: EdgeInsets.all(16.0),
+                color: MyColors.lightPurple,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Name: ${foodItem.name}'),
+                    Text(
+                        'Calories per Serving: ${foodItem.caloriesPerServing.toString()}'),
+                    Text('Serving Size: ${foodItem.servingSize.toString()} gm'),
+                    Text(
+                        'Protein per Serving: ${foodItem.proteinPerServing.toString()} gm'),
+                  ],
+                ),
               ),
             );
           },
