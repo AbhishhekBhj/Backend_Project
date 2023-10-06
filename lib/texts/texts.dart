@@ -36,7 +36,9 @@ const aReminder = 'assets/img/activities_images/reminder.png';
 const aWorkout = 'assets/img/activities_images/dumbell.png';
 const aMeditate = 'assets/img/activities_images/meditate.png';
 const aExerciseGallery = "assets/img/activities_images/book.png";
-
+const splashIcon = 'assets/img/splash_images/splash.png';
+const splashImage = 'assets/img/splash_images/image.jpg';
+const welcomeImage = 'assets/img/onboard_images/welcome.jpg';
 const unExpectedError = "An Unexpected Error Occured";
 
 const calculateBmi = "Calculate BMI";
@@ -90,3 +92,8 @@ const aMeditateSubTitle = " Start Meditation";
 
 const aExerciseGalleryTitle = "Exercise Gallery";
 const aExerciseGallerySubTitle = "Get Knowledge about Exercises";
+const aDefaultSize = 33.0;
+const aSplashContainerSize = 30.0;
+
+const onBoardWelcomeText = "Welcome to My Gym Buddy";
+const onBoardStartText = "Let us Start Our Journey Towards Fitness";

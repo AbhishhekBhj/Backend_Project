@@ -50,6 +50,8 @@ dependencies:
   path: ^1.8.3
   google_nav_bar: ^5.0.6
   audioplayers: ^5.2.0
+  transparent_image: ^2.0.1
+  smooth_page_indicator: ^1.1.0
   # connectivity_plus: ^4.0.2
 
   
@@ -79,6 +81,8 @@ flutter:
   assets:
     - assets/img/
     - assets/img/activities_images/
+    - assets/img/splash_images/
+    - assets/img/onboard_images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

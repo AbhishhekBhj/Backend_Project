@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:mygymbuddy/features/home/ui/common_ui.dart';
+import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,13 +21,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [BlocProvider(create: (context) => HomeBloc())],
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'My Gym Buddy',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: BaseClass(),
+        home: SplashScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
