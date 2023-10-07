@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
+import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 
 class OtherFeaturePage extends StatelessWidget {
@@ -8,17 +11,15 @@ class OtherFeaturePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Function to create decorated ListTiles with onTap
-    Widget _buildDecoratedListTile(IconData icon, VoidCallback? onTap) {
+    Widget _buildDecoratedListTile(
+        IconData icon, VoidCallback? onTap, String title) {
       return GestureDetector(
-        onTap: onTap, // Assign the onTap callback to the GestureDetector
+        onTap: onTap,
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 4), // Adjust margin as needed
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: Colors.grey), // Add a border around the ListTile
-            borderRadius: BorderRadius.circular(10), // Add rounded corners
-          ),
+          margin: EdgeInsets.symmetric(vertical: 2), // Adjust margin as needed
+
           child: ListTile(
+            title: Text(title),
             leading: Icon(icon),
           ),
         ),
@@ -28,46 +29,68 @@ class OtherFeaturePage extends StatelessWidget {
     return Scaffold(
       appBar: CommonAppBar(),
       backgroundColor: Colors.grey[100],
-      body: Column(
+      body: ListView(
         children: [
-          _buildDecoratedListTile(
-            FontAwesomeIcons.noteSticky,
-            () {
-              // Add your logic for onTap here
-              print("object");
-
-              // This function will be called when the ListTile is tapped
-            },
+          Container(
+            child: Column(
+              children: [
+                Text(
+                  "Other Features",
+                  style: titleColor(),
+                ),
+                _buildDecoratedListTile(FontAwesomeIcons.noteSticky, () {
+                  Get.to(Reminders());
+                }, "Set Reminders"),
+                _buildDecoratedListTile(FontAwesomeIcons.book, () {
+                  print("object");
+                }, "Exercise Gallery"),
+                _buildDecoratedListTile(FontAwesomeIcons.glassWater, () {
+                  print("object");
+                }, "Add Water Drank"),
+                _buildDecoratedListTile(Icons.history_outlined, () {
+                  print("object");
+                }, "View Measurement History"),
+                _buildDecoratedListTile(FontAwesomeIcons.calculator, () {
+                  Get.to(BMI());
+                }, "Calculate BMI"),
+              ],
+            ),
           ),
-          _buildDecoratedListTile(
-            FontAwesomeIcons.book,
-            () {
-              // Add your logic for onTap here
-              print("object");
-            },
-          ),
-          _buildDecoratedListTile(
-            FontAwesomeIcons.glassWater,
-            () {
-              // Add your logic for onTap here
-              print("object");
-            },
-          ),
-          _buildDecoratedListTile(
-            Icons.history_outlined,
-            () {
-              // Add your logic for onTap here
-              print("object");
-            },
-          ),
-          _buildDecoratedListTile(
-            Icons.person,
-            () {
-              print("object");
-            },
+          Container(
+            child: Column(
+              children: [
+                Text(
+                  "Account",
+                  style: titleColor(),
+                ),
+                _buildDecoratedListTile(Icons.person, () {
+                  print("object");
+                }, "Profile"),
+                _buildDecoratedListTile(Icons.logout_rounded, () {}, "Log out"),
+                _buildDecoratedListTile(
+                    FontAwesomeIcons.bookOpen, () {}, "Change Password"),
+                Container(
+                  child: Column(
+                    children: [
+                      Text(
+                        "More",
+                        style: titleColor(),
+                      ),
+                      _buildDecoratedListTile(
+                          FontAwesomeIcons.moon, () {}, "Change Theme"),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  TextStyle titleColor() {
+    return TextStyle(
+        color: Colors.red, fontWeight: FontWeight.bold, fontSize: 20);
   }
 }

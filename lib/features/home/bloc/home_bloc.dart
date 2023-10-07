@@ -26,45 +26,40 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   FutureOr<void> optionIconClickedEvent(
       OptionIconClickedEvent event, Emitter<HomeState> emit) {
-        emit(HomeInitial());
+    emit(HomeInitial());
     emit(HomeClickSideBarOptionActionState());
   }
 
   FutureOr<void> startWorkoutClickedEvent(
       StartWorkoutClickedEvent event, Emitter<HomeState> emit) {
-        emit(HomeInitial());
+    emit(HomeInitial());
     emit(HomeNavigateToWorkoutPageActionState());
   }
 
   FutureOr<void> dietTrackerClickedEvent(
       DietTrackerClickedEvent event, Emitter<HomeState> emit) {
-        // emit(HomeInitial());
+    // emit(HomeInitial());
     // print('avc
-    emit(HomeInitial());
     emit(HomeNavigateToCaloriesPageActionState());
   }
 
   FutureOr<void> remindersClickedEvent(
       RemindersClickedEvent event, Emitter<HomeState> emit) {
-        emit(HomeInitial());
     emit(HomeNavigateToRemindersPageActionState());
   }
 
   FutureOr<void> drinkWaterClickedEvent(
       DrinkWaterClickedEvent event, Emitter<HomeState> emit) {
-        emit(HomeInitial());
     emit(HomeNavigateToDrinkWaterPageActionState());
   }
 
   FutureOr<void> bmiClickedEvent(
       BmiClickedEvent event, Emitter<HomeState> emit) {
-        emit(HomeInitial());
     emit(HomeNavigateToBmiPageActionState());
   }
 
   FutureOr<void> measurementsClickedEvent(
       MeasurementsClickedEvent event, Emitter<HomeState> emit) {
-        emit(HomeInitial());
     emit(HomeNavigateToMeasurementsPageActionState());
   }
 

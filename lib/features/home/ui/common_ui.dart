@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
+import 'package:mygymbuddy/features/home/ui/homee.dart';
 import 'package:mygymbuddy/features/home/ui/other_features.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/meditate/ui/meditate.dart';
-import 'package:mygymbuddy/widgets/widgets.dart';
 
 class BaseClass extends StatefulWidget {
   BaseClass({super.key, this.indexNum});
@@ -31,13 +30,10 @@ class _BaseClassState extends State<BaseClass> {
           return Scaffold(
               backgroundColor: Colors.grey[50],
               bottomNavigationBar: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black
-                ),
+                decoration: BoxDecoration(color: Colors.black),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
-                    
                     child: BottomNavigationBar(
                       backgroundColor: Colors.black,
                       type: BottomNavigationBarType.fixed,
@@ -58,7 +54,8 @@ class _BaseClassState extends State<BaseClass> {
                             ),
                             label: "Workout"),
                         BottomNavigationBarItem(
-                            icon: Icon(FontAwesomeIcons.clock), label: "Meditate"),
+                            icon: Icon(FontAwesomeIcons.clock),
+                            label: "Meditate"),
                         BottomNavigationBarItem(
                             icon: Icon(Icons.menu), label: "More Options")
                       ],
@@ -69,7 +66,7 @@ class _BaseClassState extends State<BaseClass> {
               body: IndexedStack(
                 index: _selectedIndex,
                 children: [
-                  BMI(),
+                  HomePage(),
                   CaloricInformation(),
                   UpdateMeasurements(),
                   StartMeditation(),

@@ -15,6 +15,9 @@ class OnBoardScreen extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        mini: true,
+        child: Icon(Icons.arrow_forward),
+        shape: CircleBorder(),
         backgroundColor: MyColors.lightPurple,
         onPressed: () {
           pageController.nextPage(
@@ -61,15 +64,24 @@ class OnBoardScreen extends StatelessWidget {
             ],
           ),
         ),
-        ElevatedButton(
-          onPressed: () {
-            pageController.previousPage(
-                duration: Duration(milliseconds: 100),
-                curve: Curves.bounceInOut);
-          },
-          style:
-              ElevatedButton.styleFrom(backgroundColor: MyColors.lightPurple),
-          child: Icon(Icons.arrow_back),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 13),
+          child: Align(
+            alignment: Alignment.centerLeft, // align left most part of screen
+            child: ElevatedButton(
+              onPressed: () {
+                pageController.previousPage(
+                    duration: Duration(milliseconds: 100),
+                    curve: Curves.bounceInOut);
+              },
+              style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(eccentricity: 0.12),
+                  elevation: 6,
+                  backgroundColor: MyColors.lightPurple,
+                  foregroundColor: Colors.black),
+              child: Icon(Icons.arrow_back),
+            ),
+          ),
         )
       ]),
     );

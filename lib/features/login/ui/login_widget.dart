@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
-import 'package:mygymbuddy/features/home/ui/home.dart';
+import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/features/login/ui/login_form_widget.dart';
 import 'package:mygymbuddy/features/signup/ui/signup.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
@@ -48,8 +49,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => (Home())));
+              Get.to(BaseClass());
             },
             style: ElevatedButton.styleFrom(
               backgroundColor:

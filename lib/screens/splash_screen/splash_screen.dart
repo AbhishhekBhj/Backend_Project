@@ -36,16 +36,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkUserNameAndNavigate() async {
-    print('ac');
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var username = sharedPreferences.getString('username');
-    // Get.offAll(() => BaseClass());
 
     // Check whether to navigate to Signup Page or Home Page
     if (username != null) {
       Get.offAll(() => BaseClass());
     } else {
-      Get.offAll(() => OnBoardScreen());
+      Get.offAll(() => BaseClass());
     }
   }
 

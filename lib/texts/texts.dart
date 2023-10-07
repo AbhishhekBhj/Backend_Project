@@ -97,3 +97,8 @@ const aSplashContainerSize = 30.0;
 
 const onBoardWelcomeText = "Welcome to My Gym Buddy";
 const onBoardStartText = "Let us Start Our Journey Towards Fitness";
+
+const aSelectGoal = "Select Your Current Goal";
+const aMaintainace = "Maintainance";
+const aBulking = "Bulking";
+const aCutting = "Cutting";
