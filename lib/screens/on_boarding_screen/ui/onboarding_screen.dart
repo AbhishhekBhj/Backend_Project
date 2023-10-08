@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/screens/on_boarding_screen/ui/goal_screen.dart';
 import 'package:mygymbuddy/screens/on_boarding_screen/ui/maintainance_calories_screen.dart';
-import 'package:mygymbuddy/texts/texts.dart';
+import 'package:mygymbuddy/utils/texts/texts.dart';
 
 class OnBoardScreen extends StatelessWidget {
   OnBoardScreen({super.key});

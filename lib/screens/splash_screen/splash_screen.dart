@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/home/ui/common_ui.dart';
-import 'package:mygymbuddy/texts/texts.dart';
+import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transparent_image/transparent_image.dart';
 

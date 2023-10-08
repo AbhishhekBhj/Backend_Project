@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
-import 'package:mygymbuddy/texts/texts.dart';
+import 'package:mygymbuddy/utils/texts/texts.dart';
 
 class MyDrawer extends StatelessWidget implements PreferredSizeWidget {
   MyDrawer({Key? key}) : super(key: key);

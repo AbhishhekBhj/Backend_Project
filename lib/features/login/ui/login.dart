@@ -6,7 +6,7 @@ import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/login/ui/login_form_widget.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
-import 'package:mygymbuddy/texts/texts.dart';
+import 'package:mygymbuddy/utils/texts/texts.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

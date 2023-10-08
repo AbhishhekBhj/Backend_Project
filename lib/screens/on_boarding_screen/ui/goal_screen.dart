@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbuddy/texts/texts.dart';
+import 'package:mygymbuddy/utils/texts/texts.dart';
 
 class GoalSettingScreen extends StatefulWidget {
   const GoalSettingScreen({Key? key}) : super(key: key);

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mygymbuddy/colours/colours.dart';
-import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:mygymbuddy/features/home/ui/homee.dart';
@@ -10,6 +9,7 @@ import 'package:mygymbuddy/features/home/ui/other_features.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/meditate/ui/meditate.dart';
 
+// ignore: must_be_immutable
 class BaseClass extends StatefulWidget {
   BaseClass({super.key, this.indexNum});
 
@@ -42,7 +42,7 @@ class _BaseClassState extends State<BaseClass> {
                       selectedFontSize: 15,
                       unselectedItemColor: Colors.grey,
                       onTap: _onItemTapped,
-                      items: [
+                      items: const [
                         BottomNavigationBarItem(
                             icon: Icon(Icons.home), label: "Home"),
                         BottomNavigationBarItem(
@@ -65,7 +65,7 @@ class _BaseClassState extends State<BaseClass> {
               ),
               body: IndexedStack(
                 index: _selectedIndex,
-                children: [
+                children: const [
                   HomePage(),
                   CaloricInformation(),
                   UpdateMeasurements(),
@@ -76,7 +76,7 @@ class _BaseClassState extends State<BaseClass> {
         }
 
         return Scaffold(
-          body: Center(child: Text("Error Laoding")),
+          body: Center(child: Text("Error Loading Page")),
         );
       },
     );
