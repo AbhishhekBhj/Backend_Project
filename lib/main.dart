@@ -1,14 +1,19 @@
+// import ;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+// Import Firebase Core
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  var username = sharedPreferences.getString('username');
+
+  
+  
+
+
 
   runApp(const MyApp());
 }

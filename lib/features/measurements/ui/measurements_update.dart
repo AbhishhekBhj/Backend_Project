@@ -5,7 +5,6 @@ import 'package:mygymbuddy/data/models/measurement_model.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateMeasurements extends StatefulWidget {
   const UpdateMeasurements({super.key});

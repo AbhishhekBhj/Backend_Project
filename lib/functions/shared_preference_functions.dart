@@ -47,4 +47,22 @@ class SharedPreferenceFunctions {
     */
     _sharedPreferences.remove(key);
   }
+
+  Future<void> setBool(String key, bool value) async {
+    /*
+    This function will be used to set  value  in the shared preference
+    
+    */
+    await _sharedPreferences.setBool(key, value);
+  }
+
+  // Getter function to retrieve a boolean
+  bool? getBool(String key) {
+/*
+    This function will be used to get  value  from shared preference
+    
+    */
+
+    return _sharedPreferences.getBool(key);
+  }
 }

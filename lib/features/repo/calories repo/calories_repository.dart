@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:localstorage/localstorage.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
 
 class CaloriesRepository {

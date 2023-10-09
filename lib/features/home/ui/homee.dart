@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
+import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,9 +22,10 @@ class _HomePageState extends State<HomePage> {
     currentRemainingCalories =
         currentDailyCalorieGoal - currentConsumedCalories;
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: Text('Today'),
+        title: Text(
+          'Today',
+        ),
       ),
       body: Center(
         child: Column(
@@ -86,6 +89,23 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 14.0,
                     ),
                   ),
+                  SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(CaloricInformation());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TextFormField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                          hintText: "Search for Food",
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(Icons.search),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             )

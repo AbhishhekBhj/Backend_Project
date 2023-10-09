@@ -2,11 +2,11 @@ import "package:flutter/material.dart";
 import "package:mygymbuddy/data/models/food_model.dart";
 
 class CaloriesLoggingPage extends StatefulWidget {
-  FoodModel? data;
   CaloriesLoggingPage({this.data});
 
   @override
   State<CaloriesLoggingPage> createState() => _CaloriesLoggingPageState();
+  FoodModel? data;
 }
 
 class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
