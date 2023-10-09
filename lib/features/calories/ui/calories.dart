@@ -4,7 +4,6 @@ import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
 import 'package:mygymbuddy/features/calories/ui/calories_loggind.dart';
-import 'package:mygymbuddy/widgets/widgets.dart';
 
 class CaloricInformation extends StatefulWidget {
   const CaloricInformation({Key? key}) : super(key: key);
@@ -37,40 +36,43 @@ class _CaloricInformationState extends State<CaloricInformation> {
       },
       child: Scaffold(
         backgroundColor: Colors.grey[100],
-        appBar: CommonAppBar(),
-        body: Column(
-          children: [
-            buildSearchTextField(),
-            BlocConsumer<CaloriesBloc, CaloriesState>(
-              bloc: caloriesBloc,
-              listenWhen: (previous, current) => current is CaloriesActionState,
-              buildWhen: (previous, current) => current is! CaloriesActionState,
-              listener: (context, state) {},
-              builder: (context, state) {
-                print(state.runtimeType);
-                switch (state.runtimeType) {
-                  case CaloriesLoadingState:
-                    return SizedBox(); // Don't display anything during loading
-                  case CaloriesFetchingState:
-                    return Center(child: CircularProgressIndicator());
-                  case CaloriesFoundSuccessState:
-                    return Expanded(
-                      child: buildFoodList(
-                          (state as CaloriesFoundSuccessState).foodModel),
-                    );
+        body: SafeArea(
+          child: Column(
+            children: [
+              buildSearchTextField(),
+              BlocConsumer<CaloriesBloc, CaloriesState>(
+                bloc: caloriesBloc,
+                listenWhen: (previous, current) =>
+                    current is CaloriesActionState,
+                buildWhen: (previous, current) =>
+                    current is! CaloriesActionState,
+                listener: (context, state) {},
+                builder: (context, state) {
+                  print(state.runtimeType);
+                  switch (state.runtimeType) {
+                    case CaloriesLoadingState:
+                      return SizedBox(); // Don't display anything during loading
+                    case CaloriesFetchingState:
+                      return Center(child: CircularProgressIndicator());
+                    case CaloriesFoundSuccessState:
+                      return Expanded(
+                        child: buildFoodList(
+                            (state as CaloriesFoundSuccessState).foodModel),
+                      );
 
-                  case CaloriesFoundErrorState:
-                    return Container(
-                      child: Center(
-                        child: Text("Food Item Not found in our Database"),
-                      ),
-                    );
-                  default:
-                    return SizedBox();
-                }
-              },
-            ),
-          ],
+                    case CaloriesFoundErrorState:
+                      return Container(
+                        child: Center(
+                          child: Text("Food Item Not found in our Database"),
+                        ),
+                      );
+                    default:
+                      return SizedBox();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

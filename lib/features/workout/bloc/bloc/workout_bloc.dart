@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mygymbuddy/data/models/exercise_entry.dart';
 
 part 'workout_event.dart';
 part 'workout_state.dart';

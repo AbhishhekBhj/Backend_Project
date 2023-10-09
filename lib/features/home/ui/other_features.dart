@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
+import 'package:mygymbuddy/features/profile/ui/view_profile.dart';
 import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
 
 class OtherFeaturePage extends StatelessWidget {
@@ -63,7 +64,7 @@ class OtherFeaturePage extends StatelessWidget {
                     style: titleColor(),
                   ),
                   _buildDecoratedListTile(Icons.person, () {
-                    print("object");
+                    Get.to(() => ViewProfile());
                   }, "Profile"),
                   _buildDecoratedListTile(
                       Icons.logout_rounded, () {}, "Log out"),

@@ -19,7 +19,7 @@ class MeasurementsRepository {
   }) async {
     var client = http.Client();
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var username = await preferences.getString('username');
+    var username = preferences.getString('username');
     try {
       var url = Uri.parse(
           "http://10.0.2.2:8000/measurement/setmeasurement/$username/");

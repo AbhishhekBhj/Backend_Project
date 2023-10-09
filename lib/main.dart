@@ -1,19 +1,11 @@
-// import ;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 
-// Import Firebase Core
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  
-  
-
-
 
   runApp(const MyApp());
 }

@@ -33,7 +33,7 @@ class _SignupState extends State<Signup> {
 
   final ImagePicker imagePicker = ImagePicker();
 
-  Future pickImageFromCamera() async {
+  Future  pickImageFromCamera() async {
     var img;
     try {
       img = await ImagePicker().pickImage(source: ImageSource.camera);

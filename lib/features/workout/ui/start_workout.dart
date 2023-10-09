@@ -25,7 +25,7 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               'Add Exercise',
@@ -64,7 +64,11 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green[200],
+                  foregroundColor: Colors.black),
               onPressed: () {
+                print('exercise add');
                 //ToDO: store all the exercise value in json post it to the backend
                 addExercise();
               },
@@ -79,6 +83,7 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
               ),
             ),
             Expanded(
+              //use the list and build the workout summary
               child: ListView.builder(
                 itemCount: workoutEntries.length,
                 itemBuilder: (context, index) {
@@ -86,7 +91,7 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
                   return ListTile(
                     title: Text(entry.exercise),
                     subtitle: Text(
-                        '${entry.sets} sets x ${entry.reps} reps, ${entry.weight} lbs'),
+                        '${entry.sets} sets x ${entry.reps} reps of ${entry.weight} kgs volume = ${(entry.reps * entry.weight).toStringAsFixed(2)} kgs'),
                   );
                 },
               ),
@@ -98,14 +103,28 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
   }
 
   void addExercise() {
+    print('abc');
+
     final exercise = exerciseController.text;
     final sets = int.tryParse(setsController.text) ?? 0;
     final reps = int.tryParse(repsController.text) ?? 0;
     final weight = double.tryParse(weightController.text) ?? 0.0;
 
     if (exercise.isNotEmpty && sets > 0 && reps > 0 && weight > 0.0) {
+      //create instance to add workout
+      final workoutEntry = ExerciseEntry(exercise, sets, reps, weight);
+      final dateTime = DateTime.now();
       setState(() {
-        workoutEntries.add(ExerciseEntry(exercise, sets, reps, weight));
+        //add the instance in the list
+        workoutEntries.add(workoutEntry);
+
+        final workoutData =
+            WorkoutEntry(dateTime: dateTime, exercises: workoutEntries);
+//convert the data to json
+        final jsonData = workoutData.toJson();
+
+        print(jsonData.toString());
+
         // Clear input fields
         exerciseController.clear();
         setsController.clear();
@@ -114,13 +133,4 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
       });
     }
   }
-}
-
-class ExerciseEntry {
-  final String exercise;
-  final int sets;
-  final int reps;
-  final double weight;
-
-  ExerciseEntry(this.exercise, this.sets, this.reps, this.weight);
 }
