@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
+import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/features/profile/ui/view_profile.dart';
 import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
 
@@ -12,15 +14,21 @@ class OtherFeaturePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Function to create decorated ListTiles with onTap
     Widget _buildDecoratedListTile(
-        IconData icon, VoidCallback? onTap, String title) {
+      IconData icon,
+      VoidCallback? onTap,
+      String title,
+    ) {
       return GestureDetector(
         onTap: onTap,
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 2), // Adjust margin as needed
-
-          child: ListTile(
-            title: Text(title),
-            leading: Icon(icon),
+        child: Ink(
+          child: InkWell(
+            onLongPress: () {},
+            splashColor: MyColors.lightPurple,
+            onTap: onTap,
+            child: ListTile(
+              title: Text(title),
+              leading: Icon(icon),
+            ),
           ),
         ),
       );
@@ -66,8 +74,9 @@ class OtherFeaturePage extends StatelessWidget {
                   _buildDecoratedListTile(Icons.person, () {
                     Get.to(() => ViewProfile());
                   }, "Profile"),
-                  _buildDecoratedListTile(
-                      Icons.logout_rounded, () {}, "Log out"),
+                  _buildDecoratedListTile(Icons.logout_rounded, () {
+                    Get.offAll(() => Login());
+                  }, "Log out"),
                   _buildDecoratedListTile(
                       FontAwesomeIcons.bookOpen, () {}, "Change Password"),
                   Container(

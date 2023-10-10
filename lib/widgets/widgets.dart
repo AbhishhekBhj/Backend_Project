@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
-import 'package:mygymbuddy/features/home/ui/drawer.dart';
-import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

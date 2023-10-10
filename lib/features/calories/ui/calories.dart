@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
@@ -39,6 +40,19 @@ class _CaloricInformationState extends State<CaloricInformation> {
         body: SafeArea(
           child: Column(
             children: [
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(Icons.arrow_back)),
+                  Text(
+                    "Search Calories",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
               buildSearchTextField(),
               BlocConsumer<CaloriesBloc, CaloriesState>(
                 bloc: caloriesBloc,
