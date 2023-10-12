@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mygymbuddy/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -54,13 +55,7 @@ class _DrinkWaterState extends State<DrinkWater> {
               Container(
                 child: Column(
                   children: [
-                    Text(
-                      'Water Intake Summary',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    HeaderWidget(text: "Daily WaterIntake Report"),
                     Container(
                       height: screenSize.height * 0.45,
                       child: SfCircularChart(

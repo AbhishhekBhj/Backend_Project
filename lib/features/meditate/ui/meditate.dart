@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mygymbuddy/widgets/widgets.dart';
 
 class StartMeditation extends StatefulWidget {
   const StartMeditation({Key? key}) : super(key: key);
@@ -93,268 +94,258 @@ class _HomePageState extends State<StartMeditation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+        body: SafeArea(
+      child: Column(
+        children: [
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [HeaderWidget(text: "Meditate Properly")],
+            ),
+          ),
+          // It will display the Flutter timer
+          Text(
+            displayTime,
+            style: TextStyle(
+              color: timer == null ? Colors.grey : Colors.blue,
+              fontSize: 60,
+            ),
+          ),
+
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
                 children: [
                   Text(
-                    "Breath Properly & Meditate",
+                    'Hours',
                     style: TextStyle(
-                        color: Colors.deepPurple,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  )
+                        color: Colors.grey.shade600,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Container(
+                    width: 70,
+                    height: 35,
+                    margin: EdgeInsets.only(top: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.grey, width: .5)),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            size: 18,
+                            color: Colors.grey,
+                          ),
+                          isExpanded: true,
+                          hint: Text(
+                            'Select',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                          ),
+                          value: hoursVal,
+                          items: [
+                            for (int i = 0; i < hoursList.length; i++)
+                              DropdownMenuItem(
+                                  value: hoursList[i],
+                                  child: Text(hoursList[i].toString(),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey.shade600))),
+                          ],
+                          onChanged: (val) {
+                            setState(() {
+                              hoursVal = val.toString();
+                              hours = int.parse(hoursVal!);
+                            });
+                          }),
+                    ),
+                  ),
                 ],
               ),
-            ),
-            // It will display the Flutter timer
-            Text(
-              displayTime,
-              style: TextStyle(
-                color: timer == null ? Colors.grey : Colors.blue,
-                fontSize: 60,
+              Column(
+                children: [
+                  Text(
+                    'Minutes',
+                    style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Container(
+                    width: 70,
+                    height: 35,
+                    margin: EdgeInsets.only(top: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.grey, width: .5)),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            size: 18,
+                            color: Colors.grey,
+                          ),
+                          isExpanded: true,
+                          hint: Text(
+                            'Select',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                          ),
+                          value: minutesVal,
+                          items: [
+                            for (int i = 0; i < minutesList.length; i++)
+                              DropdownMenuItem(
+                                  value: minutesList[i],
+                                  child: Text(minutesList[i].toString(),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey.shade600))),
+                          ],
+                          onChanged: (val) {
+                            setState(() {
+                              minutesVal = val.toString();
+                              minutes = int.parse(minutesVal!);
+                            });
+                          }),
+                    ),
+                  ),
+                ],
               ),
-            ),
+              Column(
+                children: [
+                  Text(
+                    'Seconds',
+                    style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Container(
+                    width: 70,
+                    height: 35,
+                    margin: EdgeInsets.only(top: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.grey, width: .5)),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            size: 18,
+                            color: Colors.grey,
+                          ),
+                          isExpanded: true,
+                          hint: Text(
+                            'Select',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                            ),
+                          ),
+                          value: secondsVal,
+                          items: [
+                            for (int i = 0; i < secondsList.length; i++)
+                              DropdownMenuItem(
+                                  value: secondsList[i],
+                                  child: Text(secondsList[i].toString(),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey.shade600))),
+                          ],
+                          onChanged: (val) {
+                            setState(() {
+                              secondsVal = val.toString();
+                              seconds = int.parse(secondsVal!);
+                            });
+                          }),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
 
-            SizedBox(
-              height: 20,
-            ),
-            Row(
+          Padding(
+            padding: EdgeInsets.only(top: 20, bottom: 10),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Column(
-                  children: [
-                    Text(
-                      'Hours',
-                      style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Container(
-                      width: 70,
-                      height: 35,
-                      margin: EdgeInsets.only(top: 5),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.grey, width: .5)),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            icon: Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              size: 18,
-                              color: Colors.grey,
-                            ),
-                            isExpanded: true,
-                            hint: Text(
-                              'Select',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 13,
-                              ),
-                            ),
-                            value: hoursVal,
-                            items: [
-                              for (int i = 0; i < hoursList.length; i++)
-                                DropdownMenuItem(
-                                    value: hoursList[i],
-                                    child: Text(hoursList[i].toString(),
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey.shade600))),
-                            ],
-                            onChanged: (val) {
-                              setState(() {
-                                hoursVal = val.toString();
-                                hours = int.parse(hoursVal!);
-                              });
-                            }),
-                      ),
-                    ),
-                  ],
+                MaterialButton(
+                  onPressed: (hours == 0 && minutes == 0 && seconds == 0)
+                      ? null
+                      : stopTimerr,
+                  disabledColor: Colors.grey,
+                  disabledTextColor: Colors.white60,
+                  textColor: Colors.white,
+                  color: Colors.red.shade600,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    'Stop',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
                 ),
-                Column(
-                  children: [
-                    Text(
-                      'Minutes',
-                      style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Container(
-                      width: 70,
-                      height: 35,
-                      margin: EdgeInsets.only(top: 5),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.grey, width: .5)),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            icon: Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              size: 18,
-                              color: Colors.grey,
-                            ),
-                            isExpanded: true,
-                            hint: Text(
-                              'Select',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 13,
-                              ),
-                            ),
-                            value: minutesVal,
-                            items: [
-                              for (int i = 0; i < minutesList.length; i++)
-                                DropdownMenuItem(
-                                    value: minutesList[i],
-                                    child: Text(minutesList[i].toString(),
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey.shade600))),
-                            ],
-                            onChanged: (val) {
-                              setState(() {
-                                minutesVal = val.toString();
-                                minutes = int.parse(minutesVal!);
-                              });
-                            }),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      'Seconds',
-                      style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Container(
-                      width: 70,
-                      height: 35,
-                      margin: EdgeInsets.only(top: 5),
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.grey, width: .5)),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            icon: Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              size: 18,
-                              color: Colors.grey,
-                            ),
-                            isExpanded: true,
-                            hint: Text(
-                              'Select',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 13,
-                              ),
-                            ),
-                            value: secondsVal,
-                            items: [
-                              for (int i = 0; i < secondsList.length; i++)
-                                DropdownMenuItem(
-                                    value: secondsList[i],
-                                    child: Text(secondsList[i].toString(),
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey.shade600))),
-                            ],
-                            onChanged: (val) {
-                              setState(() {
-                                secondsVal = val.toString();
-                                seconds = int.parse(secondsVal!);
-                              });
-                            }),
-                      ),
-                    ),
-                  ],
-                ),
+                MaterialButton(
+                  onPressed: (hours == 0 && minutes == 0 && seconds == 0)
+                      ? null
+                      : resetTimerr,
+                  disabledColor: Colors.grey,
+                  disabledTextColor: Colors.white60,
+                  color: Colors.green.shade600,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    'Reset',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
+                )
               ],
             ),
+          ),
 
-            Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  MaterialButton(
-                    onPressed: (hours == 0 && minutes == 0 && seconds == 0)
-                        ? null
-                        : stopTimerr,
-                    disabledColor: Colors.grey,
-                    disabledTextColor: Colors.white60,
-                    textColor: Colors.white,
-                    color: Colors.red.shade600,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text(
-                      'Stop',
-                      style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  MaterialButton(
-                    onPressed: (hours == 0 && minutes == 0 && seconds == 0)
-                        ? null
-                        : resetTimerr,
-                    disabledColor: Colors.grey,
-                    disabledTextColor: Colors.white60,
-                    color: Colors.green.shade600,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text(
-                      'Reset',
-                      style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w500),
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: MaterialButton(
-                onPressed: (hours == 0 && minutes == 0 && seconds == 0)
-                    ? null
-                    : () {
-                        if (timer != null) {
-                          stopTimerr();
-                        }
-                        runTimer();
-                      },
-                color: Colors.blue.shade600,
-                height: 50,
-                disabledColor: Colors.grey,
-                disabledTextColor: Colors.white60,
-                textColor: Colors.white,
-                minWidth: double.infinity,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Text(
-                  'Start',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                  ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: MaterialButton(
+              onPressed: (hours == 0 && minutes == 0 && seconds == 0)
+                  ? null
+                  : () {
+                      if (timer != null) {
+                        stopTimerr();
+                      }
+                      runTimer();
+                    },
+              color: Colors.blue.shade600,
+              height: 50,
+              disabledColor: Colors.grey,
+              disabledTextColor: Colors.white60,
+              textColor: Colors.white,
+              minWidth: double.infinity,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Text(
+                'Start',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    ));
   }
 }

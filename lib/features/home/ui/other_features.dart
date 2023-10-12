@@ -3,7 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
+import 'package:mygymbuddy/features/exercise_library/ui/exercise_library.dart';
 import 'package:mygymbuddy/features/login/ui/login.dart';
+import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
+import 'package:mygymbuddy/features/measurements/ui/measurements_view_history.dart';
 import 'package:mygymbuddy/features/profile/ui/view_profile.dart';
 import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
 
@@ -50,13 +53,13 @@ class OtherFeaturePage extends StatelessWidget {
                     Get.to(Reminders());
                   }, "Set Reminders"),
                   _buildDecoratedListTile(FontAwesomeIcons.book, () {
-                    print("object");
+                    Get.to(ExerciseLibrary());
                   }, "Exercise Gallery"),
                   _buildDecoratedListTile(Icons.history_outlined, () {
-                    print("object");
+                    Get.to(ViewMeasurementsHistory());
                   }, "View Measurement History"),
                   _buildDecoratedListTile(Icons.update, () {
-                    print("object");
+                    Get.to(UpdateMeasurements());
                   }, "Update Your Measurements"),
                   _buildDecoratedListTile(FontAwesomeIcons.calculator, () {
                     Get.to(BMI());

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -190,6 +191,40 @@ class FeatureCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+class HeaderWidget extends StatelessWidget {
+  const HeaderWidget({
+    super.key,
+    required this.text,
+  });
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        //HeaderWidget(text: "Enter your number"),
+
+        Align(
+          alignment: Alignment.centerLeft,
+          child: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.grey,
+          ),
+        ),
+        SizedBox(
+          height: Get.height * 0.05,
+        ),
+        Text(
+          text,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+        ),
+      ],
     );
   }
 }

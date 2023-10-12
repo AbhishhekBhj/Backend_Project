@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/features/reminder/bloc/reminder_bloc.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 
 class Reminders extends StatefulWidget {
-  Reminders({Key? key});
+  Reminders({Key? key}) : super(key: key);
 
   @override
   State<Reminders> createState() => _RemindersState();
@@ -12,6 +13,10 @@ class Reminders extends StatefulWidget {
 class _RemindersState extends State<Reminders> {
   TimeOfDay? selectedTime;
   ReminderBloc reminderBloc = ReminderBloc();
+
+  List<Map<String, Object>> reminders = [];
+  TextEditingController titleController = TextEditingController();
+  TextEditingController subTitleController = TextEditingController();
 
   Future<void> _selectTime(BuildContext context) async {
     final pickedTime = await showTimePicker(
@@ -27,53 +32,123 @@ class _RemindersState extends State<Reminders> {
   }
 
   void _handleTimeSelection() {
-    // Handle the selected time here. You can use `selectedTime` for this.
     if (selectedTime != null) {
       print("Selected Time: ${selectedTime!.format(context)}");
-      // Perform any other actions you need with the selected time.
+    }
+  }
+
+  void _setReminder() {
+    if (selectedTime != null) {
+      setState(() {
+        var remindersMap = {
+          "Title": titleController.text,
+          "SubTitle": subTitleController.text,
+          "ReminderTime": selectedTime.toString()
+        };
+        reminders.add(remindersMap);
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final hasReminders = reminders.isNotEmpty;
+
     return Scaffold(
-      appBar: CommonAppBar(),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 130),
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: "Enter Reminder Title",
-                border: OutlineInputBorder(),
-                labelText: "Reminder Title",
+      body: ListView(
+        shrinkWrap: true,
+        children: [
+          HeaderWidget(text: "Set Reminder"),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.125),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: titleController,
+                  decoration: InputDecoration(
+                    hintText: "Enter Reminder Title",
+                    border: UnderlineInputBorder(),
+                    labelText: "Reminder Title",
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextFormField(
+                  controller: subTitleController,
+                  decoration: InputDecoration(
+                    hintText: "Enter Reminder SubTitle",
+                    border: UnderlineInputBorder(),
+                    labelText: "Reminder SubTitle",
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    _selectTime(context);
+                  },
+                  child: Text("Select time to set the reminder"),
+                ),
+                SizedBox(height: 20),
+                if (selectedTime != null)
+                  Text(
+                    "Selected Time: ${selectedTime!.format(context)}",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ElevatedButton(
+                  onPressed: _setReminder,
+                  child: Text(
+                    "Set Reminder",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (hasReminders)
+            Container(
+              child: Column(
+                children: <Widget>[
+                  for (var reminder in reminders)
+                    ReminderItem(reminder: reminder),
+                ],
+              ),
+            )
+          else
+            Container(
+              child: Center(
+                child: Text("No reminders"),
               ),
             ),
-            SizedBox(height: 20),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: "Enter Reminder SubTitle",
-                border: OutlineInputBorder(),
-                labelText: "Reminder SubTitle",
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _selectTime(context);
-              },
-              child: Text("Select Time"),
-            ),
-            SizedBox(height: 20),
-            if (selectedTime != null)
-              Text(
-                "Selected Time: ${selectedTime!.format(context)}",
-                style: TextStyle(fontSize: 16),
-              ),
-            //ToDO:  send reminder notification to the user
-          ],
+        ],
+      ),
+    );
+  }
+}
+
+class ReminderItem extends StatelessWidget {
+  final Map<String, Object> reminder;
+
+  ReminderItem({required this.reminder});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.lightGreenAccent,
+      child: ListTile(
+        title: Text(
+          reminder["Title"].toString(),
+          style: reminderTextStyle(),
+        ),
+        subtitle: Text(
+          reminder["SubTitle"].toString(),
+          style: reminderTextStyle(),
+        ),
+        trailing: Text(
+          reminder["ReminderTime"].toString(),
+          style: reminderTextStyle(),
         ),
       ),
     );
   }
+
+  TextStyle reminderTextStyle() => TextStyle(color: Colors.grey);
 }
