@@ -48,67 +48,69 @@ class _DrinkWaterState extends State<DrinkWater> {
         },
         child: Icon(Icons.add),
       ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              Container(
-                child: Column(
-                  children: [
-                    HeaderWidget(text: "Daily WaterIntake Report"),
-                    Container(
-                      height: screenSize.height * 0.45,
-                      child: SfCircularChart(
-                        legend: Legend(
-                          isVisible: true,
-                          position: LegendPosition.bottom,
-                        ),
-                        series: <CircularSeries>[
-                          PieSeries<ChartData, String>(
-                            dataSource: <ChartData>[
-                              ChartData('Water Drank Today', waterDrankToday),
-                              ChartData(
-                                  'Water Left To Drink', waterLeftToDrink),
-                            ],
-                            xValueMapper: (ChartData data, _) => data.category,
-                            yValueMapper: (ChartData data, _) => data.value,
-                            dataLabelSettings: DataLabelSettings(
-                              isVisible: true,
-                              labelPosition: ChartDataLabelPosition.inside,
-                            ),
-                            // color for chart
-                            pointColorMapper: (ChartData data, _) =>
-                                data.category == 'Water Left To Drink'
-                                    ? Colors.red
-                                    : Colors.lightBlue,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "Today's Water Goal: $waterAmountToDrink ml",
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Water Drank: $waterDrankToday ml',
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Water Left: $waterLeftToDrink ml',
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
-            ],
+      body: ListView(
+        shrinkWrap: true,
+        children: [
+          SizedBox(
+            height: 20,
           ),
-        ),
+          Container(
+            child: Column(
+              children: [
+                Text(
+                  "WATER INTAKE REPORT",
+                  style: homeTextStyle(),
+                ),
+                Container(
+                  height: screenSize.height * 0.40,
+                  child: SfCircularChart(
+                    legend: Legend(
+                      isVisible: true,
+                      position: LegendPosition.bottom,
+                    ),
+                    series: <CircularSeries>[
+                      PieSeries<ChartData, String>(
+                        dataSource: <ChartData>[
+                          ChartData('Water Drank Today', waterDrankToday),
+                          ChartData('Water Left To Drink', waterLeftToDrink),
+                        ],
+                        xValueMapper: (ChartData data, _) => data.category,
+                        yValueMapper: (ChartData data, _) => data.value,
+                        dataLabelSettings: DataLabelSettings(
+                          isVisible: true,
+                          labelPosition: ChartDataLabelPosition.inside,
+                        ),
+                        // color for chart
+                        pointColorMapper: (ChartData data, _) =>
+                            data.category == 'Water Left To Drink'
+                                ? Colors.red
+                                : Colors.lightBlue,
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  "Today's Water Goal: $waterAmountToDrink ml",
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Water Drank: $waterDrankToday ml',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Water Left: $waterLeftToDrink ml',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
+
+  TextStyle homeTextStyle() =>
+      TextStyle(fontSize: 27, fontWeight: FontWeight.bold);
 
   Future<void> _showInputDialog() async {
     double? userInput = await showDialog<double?>(

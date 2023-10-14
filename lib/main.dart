@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
-import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
+
+import 'screens/on_boarding_screen/ui/onboarding_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +21,10 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         title: 'My Gym Buddy',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          
         ),
-        home: SplashScreen(),
+        home: OnBoardScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );

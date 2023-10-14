@@ -95,8 +95,9 @@ const aExerciseGallerySubTitle = "Get Knowledge about Exercises";
 const aDefaultSize = 33.0;
 const aSplashContainerSize = 30.0;
 
-const onBoardWelcomeText = "Welcome to My Gym Buddy";
-const onBoardStartText = "Let us Start Our Journey Towards Fitness";
+const onBoardWelcomeText = "GET FIT!";
+const onBoardStartText =
+    "Get ready to sculpt your dream physique, boost your energy, and conquer your fitness goals ";
 
 const aSelectGoal = "Select Your Current Goal";
 const aMaintainace = "Maintainance";
@@ -105,3 +106,8 @@ const aCutting = "Cutting";
 
 const String temporaryDP =
     "https://scontent.fktm10-1.fna.fbcdn.net/v/t39.30808-6/338348323_939191520559027_4748220867447026799_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=1b51e3&_nc_ohc=jAlMNaYxvZgAX-eM9or&_nc_ht=scontent.fktm10-1.fna&oh=00_AfAnIimscPlBS_EpeBBKdPnu7k2c79rh1kWty9HzUwC5Ng&oe=65282979";
+
+const appScreenName = "MY GYM BUDDY!";
+
+const appScreenText =
+    "Track workouts, watch your progress on interactive graphs, set workout reminders, monitor nutrition, and crush your fitness goals. Let's kickstart your journey to a healthier, happier you with My Gym Buddy!";

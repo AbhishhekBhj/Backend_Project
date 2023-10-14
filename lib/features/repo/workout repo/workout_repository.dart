@@ -15,11 +15,11 @@ class WorkoutRepository {
       var url = "http://10.0.2.2:8000/workout/postworkout/";
 
       FormData formData = FormData.fromMap({
-        'username': username!,
-        'exerciseName': exerciseName!,
-        'sets': sets!,
-        'reps': reps!,
-        'volume': volume!
+        'username': username,
+        'exerciseName': exerciseName,
+        'sets': sets,
+        'reps': reps,
+        'volume': volume
       });
 
 //make a post request

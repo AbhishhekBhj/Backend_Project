@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class StartMeditation extends StatefulWidget {
   const StartMeditation({Key? key}) : super(key: key);
@@ -9,6 +13,8 @@ class StartMeditation extends StatefulWidget {
 }
 
 class _HomePageState extends State<StartMeditation> {
+  AudioPlayer audioPlayer = AudioPlayer();
+
   Timer? timer;
 
   List hoursList = [];
@@ -40,6 +46,9 @@ class _HomePageState extends State<StartMeditation> {
         if (hours > 0) {
           hours = hours - 1;
           minutes = 60;
+        }
+        if (hours == 0 && minutes == 0 && seconds == 0) {
+          playAudio();
         }
       }
 
@@ -97,11 +106,12 @@ class _HomePageState extends State<StartMeditation> {
         body: SafeArea(
       child: Column(
         children: [
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [HeaderWidget(text: "Meditate Properly")],
-            ),
+          SizedBox(
+            height: Get.height * 0.03,
+          ),
+          Text(
+            "START MEDITATION",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
           // It will display the Flutter timer
           Text(
@@ -347,5 +357,13 @@ class _HomePageState extends State<StartMeditation> {
         ],
       ),
     ));
+  }
+  
+  void playAudio() async{
+     String audioAsset = "assets/audio/chime.wav";
+          
+          ByteData byteData = await rootBundle.load(audioAsset);
+          Uint8List sound = byteData.buffer.asUint8List(byteData.offsetInBytes,byteData.lengthInBytes);
+          int result = await audioPlayer.playBytes(sound);
   }
 }

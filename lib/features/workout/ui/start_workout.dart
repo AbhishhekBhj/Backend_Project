@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/data/models/exercise_entry.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 
@@ -26,15 +27,11 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              HeaderWidget(text: "Start Workout"),
               Text(
-                'Add Exercises Here',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                "START WORKOUT",
+                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: exerciseController,
@@ -70,11 +67,18 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
                     backgroundColor: Colors.green[200],
                     foregroundColor: Colors.black),
                 onPressed: () {
-                  log('exercise add');
-                  //ToDO: store all the exercise value in json post it to the backend
                   addExercise();
                 },
-                child: Text('Add Exercise'),
+                child: Text('Finish Set'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.purple[200],
+                    foregroundColor: Colors.black),
+                onPressed: () {
+                  log('finished exercise');
+                },
+                child: Text('Finish Workout'),
               ),
               SizedBox(height: 16),
               Text(
@@ -85,15 +89,35 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
                 ),
               ),
               Expanded(
-                //use the list and build the workout summary
                 child: ListView.builder(
                   itemCount: workoutEntries.length,
                   itemBuilder: (context, index) {
                     final entry = workoutEntries[index];
                     return ListTile(
-                      title: Text(entry.exercise),
-                      subtitle: Text(
-                          '${entry.sets} sets x ${entry.reps} reps of ${entry.weight} kgs volume = ${(entry.reps * entry.weight).toStringAsFixed(2)} kgs'),
+                      title: Text(
+                        'Exericse: ${entry.exercise.toUpperCase()}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17),
+                      ),
+                      subtitle: Container(
+                        alignment: Alignment.centerLeft,
+                        width: Get.width * 0.5,
+                        child: RichText(
+                          text: TextSpan(
+                            style:
+                                commonTextStyle, // Common style for the entire text
+                            children: [
+                              TextSpan(text: 'Sets: ${entry.sets}\n'),
+                              TextSpan(text: 'Reps: ${entry.reps}\n'),
+                              TextSpan(text: 'Weight: ${entry.weight} kgs\n'),
+                              TextSpan(
+                                text:
+                                    'Volume ${(entry.reps * entry.weight).toStringAsFixed(2)} kgs\n',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -106,8 +130,6 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
   }
 
   void addExercise() {
-    log('abc');
-
     final exercise = exerciseController.text;
     final sets = int.tryParse(setsController.text) ?? 0;
     final reps = int.tryParse(repsController.text) ?? 0;
@@ -139,4 +161,10 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
       });
     }
   }
+
+  TextStyle commonTextStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+  );
 }
