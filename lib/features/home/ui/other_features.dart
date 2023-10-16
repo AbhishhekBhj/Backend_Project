@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
 import 'package:mygymbuddy/features/exercise_library/ui/exercise_library.dart';
 import 'package:mygymbuddy/features/login/ui/login.dart';
@@ -9,7 +8,9 @@ import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_view_history.dart';
 import 'package:mygymbuddy/features/profile/ui/view_profile.dart';
 import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
+import 'package:provider/provider.dart';
 
 class OtherFeaturePage extends StatelessWidget {
   const OtherFeaturePage({Key? key});
@@ -78,8 +79,16 @@ class OtherFeaturePage extends StatelessWidget {
                   ),
                   _buildDecoratedListTile(
                       FontAwesomeIcons.bookOpen, () {}, "Change Password"),
-                  _buildDecoratedListTile(
-                      FontAwesomeIcons.moon, () {}, "Change Theme"),
+
+                  DarkModeSwitchTile(),
+
+                  // _buildDecoratedListTile(FontAwesomeIcons.moon, () {
+                  //   //use provider to detect change and change theme
+                  //   ThemeProvider
+                  //       themeProvider = //listen is set to false to avoid this part rebuilding itself
+                  //       Provider.of<ThemeProvider>(context, listen: false);
+                  //   themeProvider.swapTheme();
+                  // }, "Change Theme"),
                   _buildDecoratedListTile(Icons.logout_rounded, () {
                     Get.offAll(() => Login());
                   }, "Log out"),
@@ -133,6 +142,32 @@ class Header extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class DarkModeSwitchTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(FontAwesomeIcons.moon),
+      title: Text('Dark Mode'),
+      trailing: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
+
+          return Switch(
+            activeColor: Colors.black,
+            activeTrackColor: Colors.white,
+            inactiveTrackColor: Colors.white,
+            inactiveThumbColor: Colors.black,
+            value: isDarkMode,
+            onChanged: (newValue) {
+              themeProvider.swapTheme();
+            },
+          );
+        },
+      ),
     );
   }
 }

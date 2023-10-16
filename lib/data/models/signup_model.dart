@@ -10,16 +10,14 @@ class UserModel {
   final String? email;
   final String? age;
   final XFile? image;
-  
 
-  UserModel({
-    this.name,
-    this.username,
-    this.password,
-    this.email,
-    this.age,
-    this.image
-  });
+  UserModel(
+      {this.name,
+      this.username,
+      this.password,
+      this.email,
+      this.age,
+      this.image});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

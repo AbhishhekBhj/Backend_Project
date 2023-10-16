@@ -12,23 +12,25 @@ class AppScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            Image(image: AssetImage(splashIcon)),
+            Image(
+              image: AssetImage(splashIcon),
+              height: Get.width * .67,
+            ),
             Text(
               appScreenName,
               style: TextStyle(
-                  fontSize: 30,
-                  fontFamily: "Roboto",
-                  fontWeight: FontWeight.bold),
+                fontSize: 27,
+                fontFamily: "Roboto",
+              ),
             ),
             SizedBox(
-                width: Get.width * .85,
+                width: Get.width * .8,
                 child: Text(
                   appScreenText,
                   textAlign: TextAlign.justify,
                   style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 21,
                       fontFamily: "Roboto",
-                      fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.italic),
                 ))
           ],

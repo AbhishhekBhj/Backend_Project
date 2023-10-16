@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
-
-import 'screens/on_boarding_screen/ui/onboarding_screen.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
+import 'package:mygymbuddy/screens/on_boarding_screen/ui/onboarding_screen.dart';
+import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (BuildContext context) {
+        return ThemeProvider(
+            isDarkMode: preferences.getBool('isDarkTheme') ??
+                false); // dark or light theme based on the value of the shared preference
+      },
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,17 +27,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => HomeBloc())],
-      child: GetMaterialApp(
-        title: 'My Gym Buddy',
-        theme: ThemeData(
-          useMaterial3: true,
-          
-        ),
-        home: OnBoardScreen(),
-        debugShowCheckedModeBanner: false,
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return GetMaterialApp(
+          title: 'My Gym Buddy',
+          theme: themeProvider.getTheme,
+          home: SplashScreen(),
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

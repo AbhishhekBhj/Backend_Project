@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:mygymbuddy/data/models/food_model.dart";
 
+
 class CaloriesLoggingPage extends StatefulWidget {
   CaloriesLoggingPage({this.data});
 
@@ -14,7 +15,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
   Widget build(BuildContext context) {
     var dateTime = DateTime.now();
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(

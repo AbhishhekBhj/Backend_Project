@@ -1,12 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/screens/on_boarding_screen/ui/app_introduction.dart';
-import 'package:mygymbuddy/screens/on_boarding_screen/ui/goal_screen.dart';
-import 'package:mygymbuddy/screens/on_boarding_screen/ui/maintainance_calories_screen.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -50,15 +45,11 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                 firstPage = false;
               });
             },
-            // physics: NeverScrollableScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             controller: pageController,
             children: [
-              Container(
-                child: IntroScreen(screenSize: screenSize),
-              ),
+              IntroScreen(screenSize: screenSize),
               AppScreen(),
-              // MaintainanceCaloriesPage(),
-              // GoalSettingScreen(),
             ],
           ),
         ),
@@ -85,7 +76,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                       ? pageController.nextPage(
                           duration: Duration(milliseconds: 100),
                           curve: Curves.bounceInOut)
-                      : Get.to(BaseClass());
+                      : Get.off(BaseClass());
                 },
                 style: ElevatedButton.styleFrom(
                     elevation: 6,
@@ -110,29 +101,33 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(children: [
+      child: ListView(padding: EdgeInsets.symmetric(horizontal: 20), children: [
         Image.asset(
           welcomeImage,
           height: screenSize.width * 0.67,
         ),
-        Text(
-          onBoardWelcomeText,
-          style: TextStyle(
-              // color: Colors.black38,
-              fontSize: 35,
-              fontWeight: FontWeight.bold),
-        ),
-        SizedBox(
-          width: Get.width * 0.85,
-          child: Text(
-            onBoardStartText,
-            textAlign: TextAlign.justify,
-            style: TextStyle(
+        Container(
+          child: Column(
+            children: [
+              Text(
+                onBoardWelcomeText,
+                style: TextStyle(
+                  fontSize: 35,
+                ),
+              ),
+              SizedBox(
+                width: Get.width * 0.85,
+                child: Text(
+                  onBoardStartText,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
 
-                // color: Colors.black38,
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic),
+                      // color: Colors.black38,
+                      fontSize: 25,
+                      fontStyle: FontStyle.italic),
+                ),
+              )
+            ],
           ),
         )
       ]),

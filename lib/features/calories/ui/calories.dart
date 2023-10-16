@@ -36,7 +36,6 @@ class _CaloricInformationState extends State<CaloricInformation> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: Colors.grey[100],
         body: SafeArea(
           child: Column(
             children: [

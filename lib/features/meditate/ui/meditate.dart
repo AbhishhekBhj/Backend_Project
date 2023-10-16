@@ -47,9 +47,6 @@ class _HomePageState extends State<StartMeditation> {
           hours = hours - 1;
           minutes = 60;
         }
-        if (hours == 0 && minutes == 0 && seconds == 0) {
-          playAudio();
-        }
       }
 
       String result =
@@ -357,13 +354,5 @@ class _HomePageState extends State<StartMeditation> {
         ],
       ),
     ));
-  }
-  
-  void playAudio() async{
-     String audioAsset = "assets/audio/chime.wav";
-          
-          ByteData byteData = await rootBundle.load(audioAsset);
-          Uint8List sound = byteData.buffer.asUint8List(byteData.offsetInBytes,byteData.lengthInBytes);
-          int result = await audioPlayer.playBytes(sound);
   }
 }

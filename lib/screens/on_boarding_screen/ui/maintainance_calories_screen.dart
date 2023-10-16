@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 
@@ -10,6 +12,9 @@ class MaintainanceCaloriesPage extends StatefulWidget {
 }
 
 class _MaintainanceCaloriesPageState extends State<MaintainanceCaloriesPage> {
+  Map<int, bool> selectedGenders = {1: false, 2: false};
+  Map<int, String> genders = {1: "MAN", 2: "WOMAN"};
+
   String defaultDropdownValue = 'Level0: Basal Metabolic Rate(BMR)';
   var levels = [
     'Level0: Basal Metabolic Rate(BMR)',
@@ -24,7 +29,6 @@ class _MaintainanceCaloriesPageState extends State<MaintainanceCaloriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: ListView(
@@ -35,32 +39,22 @@ class _MaintainanceCaloriesPageState extends State<MaintainanceCaloriesPage> {
             ),
             Divider(),
             TextFormField(
-              // keyboardType: TextInputType.number,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 hintText: "Enter your height in cms",
                 border: OutlineInputBorder(),
               ),
-              // Add validation logic here
             ),
             SizedBox(height: 6),
             TextFormField(
-              // keyboardType: TextInputType.number,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 hintText: "Enter your weight in kgs",
                 border: OutlineInputBorder(),
               ),
-              // Add validation logic here
             ),
             SizedBox(height: 6),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: "Enter your gender",
-                border: OutlineInputBorder(),
-              ),
-              // Add validation logic here
-            ),
+            selectGenderButton(),
             SizedBox(height: 6),
             DropdownButton(
               hint: Text("Select Activity Level"),
@@ -89,6 +83,72 @@ class _MaintainanceCaloriesPageState extends State<MaintainanceCaloriesPage> {
                 },
                 child: Text("Submit Data"))
           ],
+        ),
+      ),
+    );
+  }
+
+  Column selectGenderButton() {
+    return Column(
+            children: genders.entries.map((entry) {
+              final genderKey = entry.key;
+              final genderValue = entry.value;
+
+              return GenderButton(
+                text: genderValue,
+                onPressed: () {
+                  log(genderValue);
+
+                  // Update the selected genders map.
+                  setState(() {
+                    selectedGenders.updateAll((key, value) => value = false);
+                    selectedGenders[genderKey] = true;
+                  });
+
+                  log(genderValue);
+                },
+                isSelected: selectedGenders[genderKey]!,
+              );
+            }).toList(),
+          );
+  }
+}
+
+class GenderButton extends StatefulWidget {
+  const GenderButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    required this.isSelected,
+  }) : super(key: key);
+
+  final String text;
+  final VoidCallback onPressed;
+  final bool isSelected;
+
+  @override
+  _GenderButtonState createState() => _GenderButtonState();
+}
+
+class _GenderButtonState extends State<GenderButton> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          widget.onPressed();
+        },
+        child: Text(widget.text),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(9),
+            side: BorderSide(
+              color: widget.isSelected ? Colors.blue : Colors.black,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          foregroundColor: widget.isSelected ? Colors.blue : Colors.black,
         ),
       ),
     );

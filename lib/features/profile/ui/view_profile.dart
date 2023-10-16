@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/profile/bloc/bloc/profile_bloc.dart';
 import 'package:mygymbuddy/features/profile/ui/edit_profile.dart';
@@ -13,7 +14,6 @@ class ViewProfile extends StatefulWidget {
 }
 
 class _ViewProfileState extends State<ViewProfile> {
- 
   @override
   Widget build(BuildContext context) {
     ProfileBloc profileBloc = ProfileBloc();
@@ -59,9 +59,23 @@ class _ViewProfileState extends State<ViewProfile> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    CircleAvatar(
-                      radius: 100,
-                      backgroundImage: NetworkImage(temporaryDP),
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 100,
+                          backgroundImage: AssetImage(splashImage),
+                        ),
+                        Positioned(
+                            right: Get.width * 0.06,
+                            top: Get.height * 0.2,
+                            child: IconButton(
+                              onPressed: () {
+                                Get.to(() => EditProfile());
+                              },
+                              icon: Icon(FontAwesomeIcons.cameraRetro),
+                              color: Colors.blueAccent,
+                            ))
+                      ],
                     ),
                     const SizedBox(height: 20),
                     _buildText("UserName", "Abhishek123"),
@@ -71,11 +85,6 @@ class _ViewProfileState extends State<ViewProfile> {
                     _buildText("Email", "abc@example.com"),
                     _buildText("Member Since", "2023-09-01"),
                     _buildText("Pro Member Since", "2023-09-05"),
-                    ElevatedButton(
-                        onPressed: () {
-                          Get.to(() => EditProfile());
-                        },
-                        child: const Text("Edit Profile"))
                   ],
                 ),
               ),

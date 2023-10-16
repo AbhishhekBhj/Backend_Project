@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/reminder/bloc/reminder_bloc.dart';
+import 'package:mygymbuddy/services/notification_services.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 
 class Reminders extends StatefulWidget {
@@ -11,12 +14,19 @@ class Reminders extends StatefulWidget {
 }
 
 class _RemindersState extends State<Reminders> {
+  NotificationServices notificationServices = NotificationServices();
   TimeOfDay? selectedTime;
   ReminderBloc reminderBloc = ReminderBloc();
 
   List<Map<String, Object>> reminders = [];
   TextEditingController titleController = TextEditingController();
   TextEditingController subTitleController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    notificationServices.initializeNotifications();
+  }
 
   Future<void> _selectTime(BuildContext context) async {
     final pickedTime = await showTimePicker(
@@ -94,7 +104,19 @@ class _RemindersState extends State<Reminders> {
                     style: TextStyle(fontSize: 16),
                   ),
                 ElevatedButton(
-                  onPressed: _setReminder,
+                  onPressed: () {
+                    if (titleController.text != "" &&
+                        subTitleController.text != "") {
+                      log('00');
+                      //TODO: this is demo notfication use firebase later to send notification in the time selected by the user
+                      notificationServices.sendNotifications(
+                          titleController.text, subTitleController.text);
+                      setState(() {
+                        titleController.text = "";
+                        subTitleController.text = "";
+                      });
+                    }
+                  },
                   child: Text(
                     "Set Reminder",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

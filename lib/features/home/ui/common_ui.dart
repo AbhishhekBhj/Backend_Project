@@ -9,6 +9,9 @@ import 'package:mygymbuddy/features/home/ui/other_features.dart';
 import 'package:mygymbuddy/features/meditate/ui/meditate.dart';
 import 'package:mygymbuddy/features/workout/ui/start_workout.dart';
 
+// Create an instance of HomeBloc
+final HomeBloc homeBloc = HomeBloc();
+
 // ignore: must_be_immutable
 class BaseClass extends StatefulWidget {
   BaseClass({super.key, this.indexNum});
@@ -20,59 +23,70 @@ class BaseClass extends StatefulWidget {
 
 class _BaseClassState extends State<BaseClass> {
   @override
+  void dispose() {
+    // Dispose of the HomeBloc instance when the widget is disposed
+    homeBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     int? _selectedIndex = (widget.indexNum == null) ? 0 : widget.indexNum;
 
-    setState(() {});
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocConsumer<HomeBloc, HomeState>(
+      bloc: homeBloc, // Use the pre-created HomeBloc instance
+      listener: (context, state) {
+        // You can add listeners here if needed
+      },
       builder: (context, state) {
         if (state is HomeInitial) {
           return Scaffold(
-              // backgroundColor: Colors.grey[50],
-              bottomNavigationBar: Container(
-                decoration: BoxDecoration(color: Colors.black),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    child: BottomNavigationBar(
-                      backgroundColor: Colors.black,
-                      type: BottomNavigationBarType.fixed,
-                      currentIndex: _selectedIndex!,
-                      selectedItemColor: MyColors.darkBlue,
-                      selectedFontSize: 15,
-                      unselectedItemColor: Colors.grey,
-                      onTap: _onItemTapped,
-                      items: const [
-                        BottomNavigationBarItem(
-                            icon: Icon(Icons.home), label: "Home"),
-                        BottomNavigationBarItem(
-                            icon: Icon(FontAwesomeIcons.glassWaterDroplet),
-                            label: "Drink Water"),
-                        BottomNavigationBarItem(
-                            icon: Icon(
-                              FontAwesomeIcons.dumbbell,
-                            ),
-                            label: "Workout"),
-                        BottomNavigationBarItem(
-                            icon: Icon(FontAwesomeIcons.clock),
-                            label: "Meditate"),
-                        BottomNavigationBarItem(
-                            icon: Icon(Icons.menu), label: "More Options")
-                      ],
-                    ),
+            // backgroundColor: Colors.grey[50],
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(color: Colors.black),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  child: BottomNavigationBar(
+                    backgroundColor: Colors.black,
+                    type: BottomNavigationBarType.fixed,
+                    currentIndex: _selectedIndex!,
+                    selectedItemColor: MyColors.darkBlue,
+                    selectedFontSize: 15,
+                    unselectedItemColor: Colors.grey,
+                    onTap: _onItemTapped,
+                    items: const [
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.home), label: "Home"),
+                      BottomNavigationBarItem(
+                          icon: Icon(FontAwesomeIcons.glassWaterDroplet),
+                          label: "Drink Water"),
+                      BottomNavigationBarItem(
+                          icon: Icon(
+                            FontAwesomeIcons.dumbbell,
+                          ),
+                          label: "Workout"),
+                      BottomNavigationBarItem(
+                          icon: Icon(FontAwesomeIcons.clock),
+                          label: "Meditate"),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.menu), label: "More Options")
+                    ],
                   ),
                 ),
               ),
-              body: IndexedStack(
-                index: _selectedIndex,
-                children: const [
-                  HomePage(),
-                  DrinkWater(),
-                  WorkoutLoggingPage(),
-                  StartMeditation(),
-                  OtherFeaturePage()
-                ],
-              ));
+            ),
+            body: IndexedStack(
+              index: _selectedIndex,
+              children: const [
+                HomePage(),
+                DrinkWater(),
+                WorkoutLoggingPage(),
+                StartMeditation(),
+                OtherFeaturePage()
+              ],
+            ),
+          );
         }
 
         return Scaffold(

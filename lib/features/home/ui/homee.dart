@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
+import 'package:mygymbuddy/features/setgoals/ui/goal_set.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -27,6 +28,9 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           child: Column(
             children: [
+              SizedBox(
+                height: Get.height * 0.05,
+              ),
               GestureDetector(
                 onTap: () {
                   Get.to(CaloricInformation());
@@ -36,17 +40,27 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     enabled: false,
                     decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: Colors.black),
+                      ),
                       hintText: "Search for Food",
-                      border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.search),
                     ),
                   ),
                 ),
               ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                    onPressed: () {
+                      Get.to(GoalSetScreen());
+                    },
+                    child: Text("Set Fitness Goals")),
+              ),
               Text(
                 'Calories Summary',
                 style: TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 22.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -81,27 +95,21 @@ class _HomePageState extends State<HomePage> {
               ),
               Text(
                 "Today's Calories Goal: $currentDailyCalorieGoal",
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
+                style: contentTextStyle(),
               ),
-              Text(
-                'Calories Consumed: $currentConsumedCalories',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
-              Text(
-                'Calories Remaining: $currentRemainingCalories',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
+              Text('Calories Consumed: $currentConsumedCalories',
+                  style: contentTextStyle()),
+              Text('Calories Remaining: $currentRemainingCalories',
+                  style: contentTextStyle()),
             ],
           ),
         ),
       ),
     );
+  }
+
+  TextStyle contentTextStyle() {
+    return TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
   }
 }
 
