@@ -18,10 +18,10 @@ class SharedPreferenceManager {
     prefs.setString('fullname', fullName);
   }
 
-  Future<String?> getFullName(String fullName) async {
+  Future<String?> getFullName() async {
     var prefs = await SharedPreferences.getInstance();
     String? fullname = prefs.getString('fullname');
-    print(fullName);
+    print(fullname);
     return fullname;
   }
 
@@ -30,10 +30,17 @@ class SharedPreferenceManager {
     prefs.setString('age', age);
   }
 
-  Future<String?> getAge(String age) async {
+  Future<String?> getAge() async {
     var prefs = await SharedPreferences.getInstance();
     String? age = prefs.getString('age');
     print(age);
     return age;
+  }
+
+  static Future<bool?> getDarkTheme() async {
+    var prefs = await SharedPreferences.getInstance();
+    bool? isDarkTheme = prefs.getBool('isDarkTheme');
+    print(isDarkTheme);
+    return isDarkTheme;
   }
 }

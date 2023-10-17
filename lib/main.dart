@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/features/signup/ui/signup.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
-import 'package:mygymbuddy/screens/on_boarding_screen/ui/onboarding_screen.dart';
 import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'My Gym Buddy',
           theme: themeProvider.getTheme,
-          home: SplashScreen(),
+          home: Signup(),
           debugShowCheckedModeBanner: false,
         );
       },

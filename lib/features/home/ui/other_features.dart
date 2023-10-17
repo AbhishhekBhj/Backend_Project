@@ -18,7 +18,7 @@ class OtherFeaturePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Function to create decorated ListTiles with onTap
-    Widget _buildDecoratedListTile(
+    Widget buildListTile(
       IconData icon,
       VoidCallback? onTap,
       String title,
@@ -52,19 +52,19 @@ class OtherFeaturePage extends StatelessWidget {
                     "Other Features",
                     style: textstyle(),
                   ),
-                  _buildDecoratedListTile(FontAwesomeIcons.noteSticky, () {
+                  buildListTile(FontAwesomeIcons.noteSticky, () {
                     Get.to(Reminders());
                   }, "Set Reminders"),
-                  _buildDecoratedListTile(FontAwesomeIcons.book, () {
+                  buildListTile(FontAwesomeIcons.book, () {
                     Get.to(ExerciseLibrary());
                   }, "Exercise Gallery"),
-                  _buildDecoratedListTile(FontAwesomeIcons.chartColumn, () {
+                  buildListTile(FontAwesomeIcons.chartColumn, () {
                     Get.to(ViewMeasurementsHistory());
                   }, "Progress"),
-                  _buildDecoratedListTile(Icons.update, () {
+                  buildListTile(Icons.update, () {
                     Get.to(UpdateMeasurements());
                   }, "Update Your Measurements"),
-                  _buildDecoratedListTile(FontAwesomeIcons.calculator, () {
+                  buildListTile(FontAwesomeIcons.calculator, () {
                     Get.to(BMI());
                   }, "Calculate BMI"),
                 ],
@@ -77,19 +77,19 @@ class OtherFeaturePage extends StatelessWidget {
                     "Account",
                     style: textstyle(),
                   ),
-                  _buildDecoratedListTile(
+                  buildListTile(
                       FontAwesomeIcons.bookOpen, () {}, "Change Password"),
 
                   DarkModeSwitchTile(),
 
-                  // _buildDecoratedListTile(FontAwesomeIcons.moon, () {
+                  // buildListTile(FontAwesomeIcons.moon, () {
                   //   //use provider to detect change and change theme
                   //   ThemeProvider
                   //       themeProvider = //listen is set to false to avoid this part rebuilding itself
                   //       Provider.of<ThemeProvider>(context, listen: false);
                   //   themeProvider.swapTheme();
                   // }, "Change Theme"),
-                  _buildDecoratedListTile(Icons.logout_rounded, () {
+                  buildListTile(Icons.logout_rounded, () {
                     Get.offAll(() => Login());
                   }, "Log out"),
                 ],

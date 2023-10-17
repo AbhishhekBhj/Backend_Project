@@ -30,13 +30,12 @@ class SignupRepository {
       if (image != null) {
         // Convert XFile to File
         var imageFile = File(image.path);
-
         // Add the image file as a part of the request
         request.files.add(http.MultipartFile(
-          'image',
+          'profile_picture',
           imageFile.readAsBytes().asStream(),
           imageFile.lengthSync(),
-          filename: 'user_image.jpg',
+          filename: '${username}_profilepicture.jpg',
         ));
       }
 

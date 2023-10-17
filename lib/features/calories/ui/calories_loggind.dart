@@ -1,6 +1,9 @@
+import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:mygymbuddy/data/models/food_model.dart";
-
+import "package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 class CaloriesLoggingPage extends StatefulWidget {
   CaloriesLoggingPage({this.data});
@@ -11,6 +14,19 @@ class CaloriesLoggingPage extends StatefulWidget {
 }
 
 class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
+  bool isDarkMode = false;
+  DarkMode() async {
+    var prefs = await SharedPreferences.getInstance();
+    isDarkMode = prefs.getBool('isDarkTheme')!;
+  }
+
+  @override
+  void initState() {
+    DarkMode();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var dateTime = DateTime.now();
@@ -40,7 +56,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
             Text(
               "Food Name ${widget.data!.name}",
               style: TextStyle(
-                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -49,7 +64,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
             Text(
               "Servings",
               style: TextStyle(
-                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -75,7 +89,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 Text(
                   "Serving Size ${widget.data!.servingSize}",
                   style: TextStyle(
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
@@ -93,7 +106,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
             Text(
               "Nutrition Facts",
               style: TextStyle(
-                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -115,7 +127,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 Text(
                   "Time",
                   style: TextStyle(
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
@@ -123,7 +134,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 Text(
                   "${dateTime.hour}:${dateTime.minute}",
                   style: TextStyle(
-                    color: Colors.grey,
                     fontSize: 16,
                   ),
                 ),
@@ -131,18 +141,26 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green,
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+              onPressed: () async {},
+              style: isDarkMode
+                  ? ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    )
+                  : ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      foregroundColor: Colors.black,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )),
               child: Text(
                 "Log Food",
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 20,
                 ),
               ),
@@ -171,4 +189,15 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
       ],
     );
   }
+
+  // Future<bool> isDarkMode() async {
+  //   SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
+  //   bool? darkMode = await sharedPreferenceManager.getDarkTheme();
+
+  //   if (darkMode != null) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }

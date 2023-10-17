@@ -13,4 +13,8 @@ class CaloriesSearchByNameEvent extends CaloriesEvent {
   });
 }
 
+class CaloriesConsumedLogEvent extends CaloriesEvent{}
+
+
+
 

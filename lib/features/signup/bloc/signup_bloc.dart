@@ -26,12 +26,13 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     emit(
         SignupLoadingState()); // bool signup = await SignupRepository.signupUser();
     bool signup = await SignupRepository.signupUser(
-        username: event.userModel.username,
-        name: event.userModel.name,
-        email: event.userModel.email,
-        image: event.userModel.image,
-        password: event.userModel.password,
-        age: event.userModel.age);
+      username: event.userModel.username,
+      name: event.userModel.name,
+      email: event.userModel.email,
+      image: event.userModel.image,
+      password: event.userModel.password,
+      age: event.userModel.age,
+    );
     print(signup);
 
     if (signup == true) {
