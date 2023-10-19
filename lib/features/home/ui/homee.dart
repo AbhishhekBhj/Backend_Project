@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/setgoals/ui/goal_set.dart';
+import 'package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -15,9 +16,23 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double currentDailyCalorieGoal = 2500;
-  double currentConsumedCalories =
-      1000; // These 3 values are dynamically changed later
+  double currentConsumedCalories = 0;
   double currentRemainingCalories = 0;
+
+  @override
+  void initState() {
+    SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
+    currentConsumedCalories =
+        sharedPreferenceManager.getCaloriesConsumedValue();
+
+    super.initState();
+  }
+
+  double returnCaloriesConsumed(
+      SharedPreferenceManager sharedPreferenceManager) async {
+    double value = await sharedPreferenceManager.getCaloriesConsumedValue();
+    return value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Column(
+          child: ListView(
             children: [
               SizedBox(
                 height: Get.height * 0.05,
@@ -59,6 +74,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Text(
                 'Calories Summary',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 22.0,
                   fontWeight: FontWeight.bold,
@@ -95,12 +111,13 @@ class _HomePageState extends State<HomePage> {
               ),
               Text(
                 "Today's Calories Goal: $currentDailyCalorieGoal",
+                textAlign: TextAlign.center,
                 style: contentTextStyle(),
               ),
               Text('Calories Consumed: $currentConsumedCalories',
-                  style: contentTextStyle()),
+                  textAlign: TextAlign.center, style: contentTextStyle()),
               Text('Calories Remaining: $currentRemainingCalories',
-                  style: contentTextStyle()),
+                  textAlign: TextAlign.center, style: contentTextStyle()),
             ],
           ),
         ),

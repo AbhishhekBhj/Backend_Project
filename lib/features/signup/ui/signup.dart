@@ -33,7 +33,7 @@ class _SignupState extends State<Signup> {
 
   final ImagePicker imagePicker = ImagePicker();
 
-  Future  pickImageFromCamera() async {
+  Future pickImageFromCamera() async {
     var img;
     try {
       img = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -117,7 +117,6 @@ class _SignupState extends State<Signup> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: CommonAppBar(),
       body: BlocConsumer<SignupBloc, SignupState>(
         bloc: signupBloc,
         listenWhen: (previous, current) => current is SignupActionState,
@@ -177,8 +176,7 @@ class _SignupState extends State<Signup> {
                         icon: Icon(Icons.camera)),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          shape: StadiumBorder(
-                              side: BorderSide(color: Colors.yellowAccent)),
+                          shape: StadiumBorder(),
                           backgroundColor: MyColors.accentPurple),
                       onPressed: () {
                         signupBloc.add(SignUpClickedButtonEvent(

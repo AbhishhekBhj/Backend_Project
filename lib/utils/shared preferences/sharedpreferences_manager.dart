@@ -43,4 +43,17 @@ class SharedPreferenceManager {
     print(isDarkTheme);
     return isDarkTheme;
   }
+  Future<void> setCaloriesConsumedValue(double value) async {
+  var prefs = await SharedPreferences.getInstance();
+
+  prefs.setDouble("caloriesConsumed", value);
 }
+
+ Future<double> getCaloriesConsumedValue() async {
+  var prefs = await SharedPreferences.getInstance();
+  double? calories = prefs.getDouble("caloriesConsumed");
+  return calories!;
+}
+}
+
+ 

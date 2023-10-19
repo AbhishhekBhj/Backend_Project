@@ -1,6 +1,7 @@
-import "dart:developer";
+import 'dart:developer';
 
 import "package:flutter/material.dart";
+import "package:get/get.dart";
 import "package:mygymbuddy/data/models/food_model.dart";
 import "package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart";
 import "package:shared_preferences/shared_preferences.dart";
@@ -14,11 +15,15 @@ class CaloriesLoggingPage extends StatefulWidget {
 }
 
 class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
+  SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
+
   bool isDarkMode = false;
   DarkMode() async {
     var prefs = await SharedPreferences.getInstance();
     isDarkMode = prefs.getBool('isDarkTheme')!;
   }
+
+  TextEditingController servingSizeController = TextEditingController();
 
   @override
   void initState() {
@@ -54,13 +59,26 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Food Name ${widget.data!.name}",
+              "Food Name: ${widget.data!.name}",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: Get.height * 0.02),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Serving Size ${widget.data!.servingSize} gm",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
             Text(
               "Servings",
               style: TextStyle(
@@ -68,12 +86,14 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: Get.height * 0.01),
             TextFormField(
+              controller: servingSizeController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                suffixText: "eg 1",
-                hintText: "Number of Servings",
+                hintStyle: TextStyle(
+                    color: isDarkMode ? Colors.black : Colors.blueGrey),
+                hintText: "Number of servings you consume",
                 fillColor: Colors.grey[200],
                 filled: true,
                 border: OutlineInputBorder(
@@ -82,27 +102,11 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Serving Size ${widget.data!.servingSize}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                Text(
-                  "100g",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
+            // SizedBox(height: 20),
+            SizedBox(height: Get.height * 0.01),
+
+            SizedBox(height: Get.height * 0.01),
+
             Text(
               "Nutrition Facts",
               style: TextStyle(
@@ -110,7 +114,8 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: Get.height * 0.01),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -120,7 +125,8 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                     "Protein", "${widget.data!.proteinPerServing}"),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: Get.height * 0.01),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -139,29 +145,37 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {},
-              style: isDarkMode
-                  ? ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    )
-                  : ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      foregroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      )),
-              child: Text(
-                "Log Food",
-                style: TextStyle(
-                  fontSize: 20,
+            SizedBox(height: Get.height * 0.01),
+
+            Center(
+              child: Container(
+                width: Get.width * 0.45,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    addFood();
+                  },
+                  style: isDarkMode
+                      ? ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        )
+                      : ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          )),
+                  child: Text(
+                    "LOG FOOD",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -188,6 +202,16 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
         ),
       ],
     );
+  }
+
+  void addFood() {
+    double serving = double.parse(servingSizeController.text);
+    double? servingSizeConsumed = widget.data!.servingSize! * serving;
+
+    double? proteinConsumed = widget.data!.proteinPerServing! * serving;
+    double? caloriesConsumed = widget.data!.caloriesPerServing! * serving;
+
+    sharedPreferenceManager.setCaloriesConsumedValue(caloriesConsumed);
   }
 
   // Future<bool> isDarkMode() async {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 
 class UserModelFormFields extends StatelessWidget {
-
   final TextEditingController fullNameController;
   final TextEditingController emailController;
   final TextEditingController usernameController;
@@ -44,11 +43,9 @@ class UserModelFormFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: MyColors.darkPurple, width: 4.0),
-          borderRadius: BorderRadius.circular(4.0)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4.0)),
       padding: EdgeInsets.all(20.0),
-      margin:EdgeInsets.all(20.0) ,
+      margin: EdgeInsets.all(20.0),
       child: Column(
         children: [
           TextFormField(
@@ -63,7 +60,6 @@ class UserModelFormFields extends StatelessWidget {
                 InputDecoration(labelText: emailLabel, hintText: emailHintText),
           ),
           SizedBox(height: 2.0),
-          
           SizedBox(height: 2.0),
           TextFormField(
             controller: usernameController,
@@ -84,7 +80,6 @@ class UserModelFormFields extends StatelessWidget {
             decoration:
                 InputDecoration(labelText: ageLabel, hintText: ageHintText),
           ),
-          
         ],
       ),
     );

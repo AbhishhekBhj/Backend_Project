@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -39,6 +41,8 @@ class _DrinkWaterState extends State<DrinkWater> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     final screenSize = MediaQuery.of(context).size;
     waterLeftToDrink = waterAmountToDrink - waterDrankToday;
     return Scaffold(
@@ -47,6 +51,13 @@ class _DrinkWaterState extends State<DrinkWater> {
           _showInputDialog();
         },
         child: Icon(Icons.add),
+        foregroundColor: themeProvider.getTheme == themeProvider.darkTheme
+            ? Colors.blue
+            : Colors.white,
+        backgroundColor: themeProvider.getTheme == themeProvider.darkTheme
+            ? Colors.white
+            : Colors.lightBlue,
+        shape: CircleBorder(),
       ),
       body: ListView(
         shrinkWrap: true,

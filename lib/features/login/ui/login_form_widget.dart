@@ -23,14 +23,16 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: MyColors.accentBlue, width: 4.0),
-          borderRadius: BorderRadius.circular(4.0)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4.0)),
       padding: EdgeInsets.all(20.0),
       margin: EdgeInsets.all(15.0),
-      child: LoginFormField(usernameController: usernameController, usernameLabel: usernameLabel, usernameHintText: usernameHintText, passwordController: passwordController, passwordLabel: passwordLabel, passwordHintText: passwordHintText),
+      child: LoginFormField(
+          usernameController: usernameController,
+          usernameLabel: usernameLabel,
+          usernameHintText: usernameHintText,
+          passwordController: passwordController,
+          passwordLabel: passwordLabel,
+          passwordHintText: passwordHintText),
     );
   }
 }
-
-

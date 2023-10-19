@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/data/models/exercise_entry.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class WorkoutLoggingPage extends StatefulWidget {
   const WorkoutLoggingPage({super.key});
@@ -22,6 +25,9 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    bool isdarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -64,8 +70,11 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
               SizedBox(height: 16),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[200],
-                    foregroundColor: Colors.black),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    backgroundColor:
+                        isdarkMode ? Colors.grey[300] : MyColors.accentPurple,
+                    foregroundColor: isdarkMode ? Colors.black : Colors.white),
                 onPressed: () {
                   addExercise();
                 },
@@ -73,8 +82,11 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple[200],
-                    foregroundColor: Colors.black),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    backgroundColor:
+                        isdarkMode ? Colors.grey[300] : MyColors.accentBlue,
+                    foregroundColor: isdarkMode ? Colors.black : Colors.white),
                 onPressed: () {
                   log('finished exercise');
                 },
@@ -88,33 +100,49 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(
+                height: Get.height * 0.01,
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: workoutEntries.length,
                   itemBuilder: (context, index) {
                     final entry = workoutEntries[index];
-                    return ListTile(
-                      title: Text(
-                        'Exericse: ${entry.exercise.toUpperCase()}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 17),
-                      ),
-                      subtitle: Container(
-                        alignment: Alignment.centerLeft,
-                        width: Get.width * 0.5,
-                        child: RichText(
-                          text: TextSpan(
-                            style:
-                                commonTextStyle, // Common style for the entire text
-                            children: [
-                              TextSpan(text: 'Sets: ${entry.sets}\n'),
-                              TextSpan(text: 'Reps: ${entry.reps}\n'),
-                              TextSpan(text: 'Weight: ${entry.weight} kgs\n'),
-                              TextSpan(
-                                text:
-                                    'Volume ${(entry.reps * entry.weight).toStringAsFixed(2)} kgs\n',
-                              ),
-                            ],
+                    return Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 2,
+                              color: themeProvider.getTheme ==
+                                      themeProvider.darkTheme
+                                  ? Colors.white
+                                  : Colors.black),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: ListTile(
+                        title: Text(
+                          'Exericse: ${entry.exercise.toUpperCase()}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
+                        ),
+                        subtitle: Container(
+                          alignment: Alignment.centerLeft,
+                          width: Get.width * 0.5,
+                          child: RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                  color: isdarkMode
+                                      ? Colors.white
+                                      : Colors
+                                          .black), // Common style for the entire text
+                              children: [
+                                TextSpan(text: 'Sets: ${entry.sets}\n'),
+                                TextSpan(text: 'Reps: ${entry.reps} reps\n'),
+                                TextSpan(text: 'Weight: ${entry.weight} kgs\n'),
+                                TextSpan(
+                                  text:
+                                      'Volume: ${(entry.reps * entry.weight).toStringAsFixed(2)} kgs\n',
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -161,10 +189,4 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
       });
     }
   }
-
-  TextStyle commonTextStyle = TextStyle(
-    color: Colors.black,
-    fontSize: 16,
-    fontWeight: FontWeight.normal,
-  );
 }
