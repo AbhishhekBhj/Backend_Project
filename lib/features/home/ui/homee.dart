@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
@@ -21,17 +23,27 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
-    currentConsumedCalories =
-        sharedPreferenceManager.getCaloriesConsumedValue();
-
     super.initState();
   }
 
-  double returnCaloriesConsumed(
+  Future<double> returnCaloriesConsumed(
       SharedPreferenceManager sharedPreferenceManager) async {
     double value = await sharedPreferenceManager.getCaloriesConsumedValue();
+    log(value.toString());
     return value;
+  }
+
+  Future<void> initializeData() async {
+    SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
+    final consumedCalories =
+        await returnCaloriesConsumed(sharedPreferenceManager);
+
+    setState(() {
+      currentConsumedCalories = consumedCalories;
+      print(currentConsumedCalories);
+      currentRemainingCalories =
+          currentDailyCalorieGoal - currentConsumedCalories;
+    });
   }
 
   @override
@@ -48,7 +60,7 @@ class _HomePageState extends State<HomePage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(CaloricInformation());
+                  Get.to(CaloricInformation(callback: initializeData));
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),

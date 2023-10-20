@@ -7,7 +7,8 @@ import 'package:mygymbuddy/data/models/food_model.dart';
 import 'package:mygymbuddy/features/calories/ui/calories_loggind.dart';
 
 class CaloricInformation extends StatefulWidget {
-  const CaloricInformation({Key? key}) : super(key: key);
+  CaloricInformation({Key? key, required this.callback}) : super(key: key);
+  Function callback;
 
   @override
   State<CaloricInformation> createState() => _CaloricInformationState();
@@ -130,7 +131,7 @@ class _CaloricInformationState extends State<CaloricInformation> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CaloriesLoggingPage(
-                            data: foodItem,
+                            data: foodItem,callback:widget.callback
                           ))),
               child: Container(
                 padding: EdgeInsets.all(16.0),

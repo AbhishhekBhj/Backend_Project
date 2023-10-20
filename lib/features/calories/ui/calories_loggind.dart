@@ -7,7 +7,8 @@ import "package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.
 import "package:shared_preferences/shared_preferences.dart";
 
 class CaloriesLoggingPage extends StatefulWidget {
-  CaloriesLoggingPage({this.data});
+  CaloriesLoggingPage({this.data, required this.callback});
+  Function callback;
 
   @override
   State<CaloriesLoggingPage> createState() => _CaloriesLoggingPageState();
@@ -44,6 +45,7 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
             color: Colors.white,
           ),
           onPressed: () {
+            widget.callback();
             Navigator.pop(context);
           },
         ),
@@ -204,14 +206,19 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
     );
   }
 
-  void addFood() {
+  void addFood() async {
     double serving = double.parse(servingSizeController.text);
     double? servingSizeConsumed = widget.data!.servingSize! * serving;
 
     double? proteinConsumed = widget.data!.proteinPerServing! * serving;
     double? caloriesConsumed = widget.data!.caloriesPerServing! * serving;
 
-    sharedPreferenceManager.setCaloriesConsumedValue(caloriesConsumed);
+    await sharedPreferenceManager.setCaloriesConsumedValue(caloriesConsumed);
+
+    double? calories = await sharedPreferenceManager.getCaloriesConsumedValue();
+    log(calories.toString());
+    widget.callback();
+    Navigator.pop(context, caloriesConsumed);
   }
 
   // Future<bool> isDarkMode() async {
