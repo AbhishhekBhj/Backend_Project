@@ -70,6 +70,7 @@ class _GoalSetScreenState extends State<GoalSetScreen> {
             child: ElevatedButton(
               child: Text("CONTINUE"),
               onPressed: () {
+                FocusManager.instance.primaryFocus?.unfocus();
                 pageController.nextPage(
                   duration: Duration(milliseconds: 100),
                   curve: Curves.bounceIn,

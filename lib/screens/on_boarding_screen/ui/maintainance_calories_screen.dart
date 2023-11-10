@@ -81,7 +81,7 @@ class _MaintainanceCaloriesPageState extends State<MaintainanceCaloriesPage> {
                 onPressed: () {
                   //TODO: Send Data for Calculating Maintainace Calories
                 },
-                child: Text("Submit Data"))
+                child: Text("Confirm Data"))
           ],
         ),
       ),
@@ -90,27 +90,27 @@ class _MaintainanceCaloriesPageState extends State<MaintainanceCaloriesPage> {
 
   Column selectGenderButton() {
     return Column(
-            children: genders.entries.map((entry) {
-              final genderKey = entry.key;
-              final genderValue = entry.value;
+      children: genders.entries.map((entry) {
+        final genderKey = entry.key;
+        final genderValue = entry.value;
 
-              return GenderButton(
-                text: genderValue,
-                onPressed: () {
-                  log(genderValue);
+        return GenderButton(
+          text: genderValue,
+          onPressed: () {
+            log(genderValue);
 
-                  // Update the selected genders map.
-                  setState(() {
-                    selectedGenders.updateAll((key, value) => value = false);
-                    selectedGenders[genderKey] = true;
-                  });
+            // Update the selected genders map.
+            setState(() {
+              selectedGenders.updateAll((key, value) => value = false);
+              selectedGenders[genderKey] = true;
+            });
 
-                  log(genderValue);
-                },
-                isSelected: selectedGenders[genderKey]!,
-              );
-            }).toList(),
-          );
+            log(genderValue);
+          },
+          isSelected: selectedGenders[genderKey]!,
+        );
+      }).toList(),
+    );
   }
 }
 

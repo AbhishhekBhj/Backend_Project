@@ -103,6 +103,8 @@ class _CaloricInformationState extends State<CaloricInformation> {
             border: OutlineInputBorder(),
             suffixIcon: IconButton(
               onPressed: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+
                 print(foodNameController.text);
                 if (foodNameController.text.isNotEmpty) {
                   caloriesBloc.add(CaloriesSearchByNameEvent(
@@ -131,8 +133,7 @@ class _CaloricInformationState extends State<CaloricInformation> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CaloriesLoggingPage(
-                            data: foodItem,callback:widget.callback
-                          ))),
+                          data: foodItem, callback: widget.callback))),
               child: Container(
                 padding: EdgeInsets.all(16.0),
                 margin: EdgeInsets.all(16.0),

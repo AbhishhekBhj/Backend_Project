@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 
-class Measurements extends StatefulWidget {
-  const Measurements({super.key});
+class MeasurementViewOptions extends StatelessWidget {
+  const MeasurementViewOptions({super.key});
 
-  @override
-  State<Measurements> createState() => _MeasurementsState();
-}
-
-class _MeasurementsState extends State<Measurements> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    List<String> bodyList = ["ARMS","QUADRICPES","WAIST","CALVES","CHEST"];
+    ThemeProvider themeProvider;
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [],
+      ),
+    );
   }
 }

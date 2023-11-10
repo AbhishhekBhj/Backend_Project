@@ -56,4 +56,6 @@ class SharedPreferenceManager {
 
     prefs.setDouble("caloriesConsumed", currentValue + value);
   }
+
+  
 }

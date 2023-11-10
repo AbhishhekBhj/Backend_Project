@@ -90,6 +90,7 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
             ),
             SizedBox(height: Get.height * 0.01),
             TextFormField(
+              style: TextStyle(color: isDarkMode ? Colors.black : Colors.grey),
               controller: servingSizeController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -154,6 +155,7 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 width: Get.width * 0.45,
                 child: ElevatedButton(
                   onPressed: () async {
+                    FocusManager.instance.primaryFocus?.unfocus();
                     addFood();
                   },
                   style: isDarkMode
@@ -213,7 +215,8 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
     double? proteinConsumed = widget.data!.proteinPerServing! * serving;
     double? caloriesConsumed = widget.data!.caloriesPerServing! * serving;
 
-    await sharedPreferenceManager.setCaloriesConsumedValue(caloriesConsumed);
+    await sharedPreferenceManager.setCaloriesConsumedValue(
+        caloriesConsumed); // this line is causing the issue
 
     double? calories = await sharedPreferenceManager.getCaloriesConsumedValue();
     log(calories.toString());

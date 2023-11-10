@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/features/measurements/ui/measurements.dart';
 import 'package:mygymbuddy/features/signup/ui/signup.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'utils/shared preferences/sharedpreferences_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
