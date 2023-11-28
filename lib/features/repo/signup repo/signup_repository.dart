@@ -38,9 +38,7 @@ class SignupRepository {
           filename: '${username}_profilepicture.jpg',
         ));
       }
-
       var response = await request.send();
-
       if (response.statusCode >= 200) {
         return true;
       } else {
