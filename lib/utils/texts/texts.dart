@@ -111,3 +111,4 @@ const appScreenName = "MY GYM BUDDY!";
 
 const appScreenText =
     "Track workouts, watch your progress on interactive graphs, set workout reminders, monitor nutrition, and crush your fitness goals. Let's kickstart your journey to a healthier, happier you with My Gym Buddy!";
+

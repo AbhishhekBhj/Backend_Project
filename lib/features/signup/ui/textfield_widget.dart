@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbuddy/colours/colours.dart';
 
 class UserModelFormFields extends StatelessWidget {
   final TextEditingController fullNameController;
@@ -85,3 +84,4 @@ class UserModelFormFields extends StatelessWidget {
     );
   }
 }
+

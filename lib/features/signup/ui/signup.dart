@@ -10,7 +10,6 @@ import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/textfield_widget.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_widget.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
-import 'package:mygymbuddy/widgets/widgets.dart';
 import 'dart:developer';
 
 class Signup extends StatefulWidget {
