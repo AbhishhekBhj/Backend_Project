@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbuddy/data/models/sample_body_data.dart';
-import 'package:mygymbuddy/features/add%20water%20drank/ui/drink_water.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 

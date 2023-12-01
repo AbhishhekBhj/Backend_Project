@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 
-import '../../../colours/colours.dart';
 
 class LoginForm extends StatelessWidget {
   final TextEditingController usernameController;

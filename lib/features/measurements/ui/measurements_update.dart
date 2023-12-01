@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/data/models/measurement_model.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';

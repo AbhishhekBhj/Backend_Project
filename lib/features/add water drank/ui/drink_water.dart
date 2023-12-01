@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
-import 'package:mygymbuddy/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
