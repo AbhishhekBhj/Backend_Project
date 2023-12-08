@@ -6,7 +6,6 @@ import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/setgoals/ui/goal_set.dart';
 import 'package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart';
-import 'package:mygymbuddy/widgets/widgets.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {

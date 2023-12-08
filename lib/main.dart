@@ -5,6 +5,7 @@ import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/signup/ui/signup_page_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'My Gym Buddy',
           theme: themeProvider.getTheme,
-          home: SplashScreen(),
+          home: SignupPageView(),
           debugShowCheckedModeBanner: false,
         );
       },

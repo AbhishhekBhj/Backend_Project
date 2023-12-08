@@ -48,6 +48,7 @@ dependencies:
   get: ^4.6.5
   sqflite: ^2.3.0
   path: ^1.8.3
+  email_validator: ^2.1.17
   audioplayers: ^5.2.0
   transparent_image: ^2.0.1
   smooth_page_indicator: ^1.1.0
