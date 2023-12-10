@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 
+import 'singup pages/enter_age.dart';
 import 'singup pages/enter_email.dart';
 import 'singup pages/enter_name.dart';
 import 'singup pages/enter_password.dart';
@@ -58,6 +59,7 @@ class _SignupPageViewState extends State<SignupPageView> {
   bool isValidEmail = true;
   bool isValidUsername = true;
   bool isValidPassword = true;
+  bool isValidAge = true;
 
   @override
   Widget build(BuildContext context) {
@@ -139,10 +141,12 @@ class _SignupPageViewState extends State<SignupPageView> {
                     },
                   )),
                   KeepAlivePage(
-                      child: Scaffold(
-                    body: Center(
-                      child: Text("hello to my page"),
-                    ),
+                      child: EnterAge(
+                    ageController: ageController,
+                    isValidAge: isValidAge,
+                    onChanged: () {
+                      isValidAgeCheck(ageController.text);
+                    },
                   )),
                   KeepAlivePage(
                       child: Scaffold(
@@ -253,6 +257,21 @@ class _SignupPageViewState extends State<SignupPageView> {
       return true;
     } else {
       return false;
+    }
+  }
+
+  bool isValidAgeCheck(String value) {
+    int age = int.parse(value);
+    if (age <= 13) {
+      setState(() {
+        isValidAge = false;
+      });
+      return false;
+    } else {
+      setState(() {
+        isValidAge = true;
+      });
+      return true;
     }
   }
 }
