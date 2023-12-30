@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'My Gym Buddy',
           theme: themeProvider.getTheme,
-          home: SignupPageView(),
+          home: SplashScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

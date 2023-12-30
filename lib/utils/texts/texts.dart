@@ -39,6 +39,7 @@ const aExerciseGallery = "assets/img/activities_images/book.png";
 const splashIcon = 'assets/img/splash_images/splash.png';
 const splashImage = 'assets/img/splash_images/image.jpg';
 const welcomeImage = 'assets/img/onboard_images/welcome.jpg';
+const greyImage = 'assets/img/greyimage.jpg';
 const unExpectedError = "An Unexpected Error Occured";
 
 const calculateBmi = "Calculate BMI";
@@ -111,4 +112,3 @@ const appScreenName = "MY GYM BUDDY!";
 
 const appScreenText =
     "Track workouts, watch your progress on interactive graphs, set workout reminders, monitor nutrition, and crush your fitness goals. Let's kickstart your journey to a healthier, happier you with My Gym Buddy!";
-

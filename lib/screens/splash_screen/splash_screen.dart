@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/home/ui/common_ui.dart';
+import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/welcome_screen.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transparent_image/transparent_image.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   startTimer() {
     timer = Timer(
-      Duration(seconds: 2),
+      Duration(seconds: 4),
       () {
         print('hi');
         checkUserNameAndNavigate();
@@ -40,9 +40,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Check whether to navigate to Signup Page or Home Page
     if (username != null) {
-      Get.offAll(() => BaseClass());
+      Get.offAll(() => WelcomeScreen());
     } else {
-      Get.offAll(() => BaseClass());
+      Get.offAll(() => WelcomeScreen());
     }
   }
 

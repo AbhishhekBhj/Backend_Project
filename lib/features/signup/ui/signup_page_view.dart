@@ -1,15 +1,17 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mygymbuddy/colours/colours.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
-
+import 'package:mygymbuddy/features/signup/ui/singup%20pages/add_profile_photo.dart';
+import 'package:mygymbuddy/features/signup/ui/singup%20pages/select%20_gender.dart';
 import 'singup pages/enter_age.dart';
+import 'singup pages/enter_bodyweight.dart';
 import 'singup pages/enter_email.dart';
+import 'singup pages/enter_height.dart';
 import 'singup pages/enter_name.dart';
 import 'singup pages/enter_password.dart';
 import 'singup pages/enter_username.dart';
+import 'singup pages/select_fitness_goal.dart';
 
 class SignupPageView extends StatefulWidget {
   const SignupPageView({super.key});
@@ -32,7 +34,7 @@ class _SignupPageViewState extends State<SignupPageView> {
   SignupBloc signupBloc = SignupBloc();
   @override
   void initState() {
-    _progress = 1 / 8;
+    _progress = 1 / 9;
     // TODO: implement initState
     super.initState();
   }
@@ -45,8 +47,12 @@ class _SignupPageViewState extends State<SignupPageView> {
   TextEditingController bodyWeightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
 
-// goal of the user
-  String goal = "";
+  String fullName = "";
+  String emailAddress = "";
+  String password = "";
+  String age = "";
+  String bodyWeight = "";
+  String height = "";
 // gender of the user
   String gender = "";
 // profile picture of the user
@@ -54,12 +60,16 @@ class _SignupPageViewState extends State<SignupPageView> {
 // activity level of the user
   String activityLevel = "";
 
+  String fitnessGoal = "";
+
 // check if the name is valid
   bool isValidName = true;
   bool isValidEmail = true;
   bool isValidUsername = true;
   bool isValidPassword = true;
   bool isValidAge = true;
+
+  bool isValidBodyWeight = true;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +113,7 @@ class _SignupPageViewState extends State<SignupPageView> {
                     // update the current page value to the new page value
                     _currentPage = value;
                     // update the progress bar value
-                    _progress = (value + 1) / 8;
+                    _progress = (value + 1) / 9;
                   });
                 },
                 controller: _pageController,
@@ -148,24 +158,20 @@ class _SignupPageViewState extends State<SignupPageView> {
                       isValidAgeCheck(ageController.text);
                     },
                   )),
+                  KeepAlivePage(child: SelectGender(gender: gender)),
                   KeepAlivePage(
-                      child: Scaffold(
-                    body: Center(
-                      child: Text("hello to my page"),
-                    ),
+                      child: EnterBodyWeight(
+                    bodyWeight: bodyWeightController,
+                    isValidBodyWeight: isValidBodyWeight,
+                    onChanged: () {
+                      checkValidWeight(double.parse(bodyWeightController.text));
+                    },
                   )),
                   KeepAlivePage(
-                      child: Scaffold(
-                    body: Center(
-                      child: Text("hello to my page"),
-                    ),
+                      child: SelectFitnessGoal(
+                    fitnessGoal: fitnessGoal,
                   )),
-                  KeepAlivePage(
-                      child: Scaffold(
-                    body: Center(
-                      child: Text("hello to my page"),
-                    ),
-                  )),
+                  KeepAlivePage(child: EnterHeight()),
                 ],
               ),
             ),
@@ -174,10 +180,14 @@ class _SignupPageViewState extends State<SignupPageView> {
         bottomSheet: CustomButton(
             text: "NEXT",
             onPressed: () {
-              _pageController.nextPage(
-                duration: Duration(milliseconds: 100),
-                curve: Curves.bounceIn,
-              );
+              if (_currentPage == 8) {
+                Get.to(AddProfilePhoto());
+              } else {
+                _pageController.nextPage(
+                  duration: Duration(milliseconds: 100),
+                  curve: Curves.bounceIn,
+                );
+              }
             }),
       ),
     );
@@ -224,6 +234,20 @@ class _SignupPageViewState extends State<SignupPageView> {
     } else {
       setState(() {
         isValidEmail = false;
+      });
+    }
+  }
+
+  void checkValidWeight(double weight) {
+    bool isValid = weight < 0;
+
+    if (isValid) {
+      setState(() {
+        isValidBodyWeight = true;
+      });
+    } else {
+      setState(() {
+        isValidBodyWeight = false;
       });
     }
   }
