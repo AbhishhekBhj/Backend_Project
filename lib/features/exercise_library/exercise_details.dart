@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbuddy/widgets/widgets.dart';
 
 class ExerciseDetails extends StatelessWidget {
   const ExerciseDetails({super.key, required this.exerciseName});
@@ -11,7 +10,6 @@ class ExerciseDetails extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            HeaderWidget(text: "Exercise Details Page"),
             Center(
               child: Text(
                 exerciseName,

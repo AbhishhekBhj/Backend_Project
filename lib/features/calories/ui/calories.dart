@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/colours/colours.dart';
+import 'dart:io' show Platform;
 import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
 import 'package:mygymbuddy/features/calories/ui/calories_loggind.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class CaloricInformation extends StatefulWidget {
   CaloricInformation({Key? key, required this.callback}) : super(key: key);
@@ -32,6 +34,8 @@ class _CaloricInformationState extends State<CaloricInformation> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -46,14 +50,16 @@ class _CaloricInformationState extends State<CaloricInformation> {
                       onPressed: () {
                         Get.back();
                       },
-                      icon: Icon(Icons.arrow_back)),
-                  Text(
+                      icon: Platform.isAndroid
+                          ? const Icon(Icons.arrow_back)
+                          : Icon(Icons.arrow_back_ios)),
+                  const Text(
                     "Search Calories",
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   )
                 ],
               ),
-              buildSearchTextField(),
+              buildSearchTextField(context),
               BlocConsumer<CaloriesBloc, CaloriesState>(
                 bloc: caloriesBloc,
                 listenWhen: (previous, current) =>
@@ -64,24 +70,26 @@ class _CaloricInformationState extends State<CaloricInformation> {
                 builder: (context, state) {
                   print(state.runtimeType);
                   switch (state.runtimeType) {
-                    case CaloriesLoadingState:
-                      return SizedBox(); // Don't display anything during loading
+                    // case CaloriesLoadingState:
+                    //   return const SizedBox(); // Don't display anything during loading
                     case CaloriesFetchingState:
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     case CaloriesFoundSuccessState:
                       return Expanded(
                         child: buildFoodList(
-                            (state as CaloriesFoundSuccessState).foodModel),
+                            (state as CaloriesFoundSuccessState).foodModel,
+                            context,
+                            isDarkMode),
                       );
 
                     case CaloriesFoundErrorState:
                       return Container(
-                        child: Center(
+                        child: const Center(
                           child: Text("Food Item Not found in our Database"),
                         ),
                       );
                     default:
-                      return SizedBox();
+                      return const SizedBox();
                   }
                 },
               ),
@@ -92,27 +100,34 @@ class _CaloricInformationState extends State<CaloricInformation> {
     );
   }
 
-  Widget buildSearchTextField() {
+  Widget buildSearchTextField(BuildContext context) {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: TextFormField(
+          onChanged: (value) {
+            if (foodNameController.text.isNotEmpty) {
+              caloriesBloc.add(CaloriesSearchByNameEvent(
+                foodModel: FoodModel(name: foodNameController.text),
+              ));
+            } else {}
+          },
           controller: foodNameController,
           decoration: InputDecoration(
-            labelText: 'Enter Food Name to find its Nutritional Content',
-            border: OutlineInputBorder(),
+            labelText: 'Enter Food Name to Search',
+            border: const OutlineInputBorder(),
             suffixIcon: IconButton(
               onPressed: () {
                 FocusManager.instance.primaryFocus?.unfocus();
 
                 print(foodNameController.text);
-                if (foodNameController.text.isNotEmpty) {
-                  caloriesBloc.add(CaloriesSearchByNameEvent(
-                    foodModel: FoodModel(name: foodNameController.text),
-                  ));
-                }
+                // if (foodNameController.text.isNotEmpty) {
+                //   caloriesBloc.add(CaloriesSearchByNameEvent(
+                //     foodModel: FoodModel(name: foodNameController.text),
+                //   ));
+                // }
               },
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
             ),
           ),
         ),
@@ -120,7 +135,8 @@ class _CaloricInformationState extends State<CaloricInformation> {
     );
   }
 
-  Widget buildFoodList(List<FoodModel> foodModel) {
+  Widget buildFoodList(
+      List<FoodModel> foodModel, BuildContext buildContext, bool isDarkMode) {
     if (foodModel.isNotEmpty) {
       return Container(
         height: 500,
@@ -129,24 +145,43 @@ class _CaloricInformationState extends State<CaloricInformation> {
           itemBuilder: (context, index) {
             final foodItem = foodModel[index];
             return GestureDetector(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CaloriesLoggingPage(
-                          data: foodItem, callback: widget.callback))),
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CaloriesLoggingPage(
+                            data: foodItem, callback: widget.callback)));
+              },
               child: Container(
-                padding: EdgeInsets.all(16.0),
-                margin: EdgeInsets.all(16.0),
-                color: MyColors.lightPurple,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.white),
+                  color: isDarkMode
+                      ? Colors.grey.shade600
+                      : Colors.deepPurpleAccent,
+                ),
+                padding: const EdgeInsets.all(16.0),
+                margin: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Name: ${foodItem.name}'),
                     Text(
-                        'Calories per Serving: ${foodItem.caloriesPerServing.toString()}'),
-                    Text('Serving Size: ${foodItem.servingSize.toString()} gm'),
+                      'Name: ${foodItem.name}',
+                      style: textStyle(isDarkMode),
+                    ),
                     Text(
-                        'Protein per Serving: ${foodItem.proteinPerServing.toString()} gm'),
+                      'Calories per Serving: ${foodItem.caloriesPerServing.toString()}',
+                      style: textStyle(isDarkMode),
+                    ),
+                    Text(
+                      'Serving Size: ${foodItem.servingSize.toString()} gm',
+                      style: textStyle(isDarkMode),
+                    ),
+                    Text(
+                      'Protein per Serving: ${foodItem.proteinPerServing.toString()} gm',
+                      style: textStyle(isDarkMode),
+                    ),
                   ],
                 ),
               ),
@@ -155,7 +190,11 @@ class _CaloricInformationState extends State<CaloricInformation> {
         ),
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
+  }
+
+  TextStyle textStyle(bool isDarkMode) {
+    return TextStyle(color: isDarkMode ? Colors.white : Colors.black);
   }
 }

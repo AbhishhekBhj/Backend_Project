@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/widgets/custom_header_widget.dart';
+import 'package:provider/provider.dart';
 
 class EnterPassword extends StatefulWidget {
   EnterPassword(
@@ -22,6 +24,8 @@ class _EnterPasswordState extends State<EnterPassword> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     return Scaffold(
       body: Column(
         children: [
@@ -42,7 +46,7 @@ class _EnterPasswordState extends State<EnterPassword> {
                       _obscurePassword
                           ? Icons.visibility
                           : Icons.visibility_off,
-                      color: Colors.black,
+                      color: isDarkMode ? Colors.white : Colors.black,
                     ),
                     onPressed: () {
                       setState(() {

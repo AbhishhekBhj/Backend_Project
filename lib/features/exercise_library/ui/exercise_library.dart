@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/exercise_library/exercise_details.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
+import 'package:mygymbuddy/widgets/custom_header_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:searchfield/searchfield.dart';
 
 class ExerciseLibrary extends StatefulWidget {
   ExerciseLibrary({Key? key}) : super(key: key);
@@ -10,9 +14,9 @@ class ExerciseLibrary extends StatefulWidget {
 }
 
 class _ExerciseLibraryState extends State<ExerciseLibrary> {
-  TextEditingController editingController = TextEditingController();
+  TextEditingController exerciseController = TextEditingController();
 
-  List<String> duplicateItems = [
+  List<String> exercises = [
     "Push-ups",
     "Sit-ups",
     "Squats",
@@ -113,63 +117,49 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
     "Russian Twists",
   ];
 
-  var items = <String>[];
+  late List<SearchFieldListItem> exerciseItem;
 
   @override
   void initState() {
-    items = duplicateItems;
+    exerciseItem =
+        exercises.map((e) => SearchFieldListItem(e, child: Text(e))).toList();
     super.initState();
-  }
-
-  void filterSearchResults(String query) {
-    setState(() {
-      items = duplicateItems
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     return Scaffold(
       body: Container(
         child: Column(
-          children: <Widget>[
-            SizedBox(height: Get.height * 0.1),
+          children: [
+            SizedBox(
+              height: Get.height * 0.05,
+            ),
+            const CustomHeaderWidget(text: "Exercise Gallery"),
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                onChanged: (value) {
-                  filterSearchResults(value);
-                },
-                controller: editingController,
-                decoration: InputDecoration(
-                    labelText: "Search for Exercise",
-                    hintText: "Search",
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      Get.to(ExerciseDetails(
-                        exerciseName: items[index],
-                      ));
-                    },
-                    title: Text(
-                      '${index + 1}. ${items[index]}',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  );
+              padding: EdgeInsets.symmetric(horizontal: Get.width * 0.07),
+              child: SearchField(
+                autoCorrect: true,
+                maxSuggestionsInViewPort: 10,
+                controller: exerciseController,
+                hint: "Enter Exercise Name",
+                suggestions: exerciseItem,
+                searchInputDecoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                            color: isDarkMode ? Colors.white : Colors.black))),
+                onSuggestionTap: (value) {
+                  Get.to(ExerciseDetails(
+                      exerciseName: value.searchKey.toString()));
                 },
               ),
-            ),
+            )
           ],
         ),
       ),

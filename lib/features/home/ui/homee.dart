@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/features/calories/ui/calories.dart';
 import 'package:mygymbuddy/features/setgoals/ui/goal_set.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {
@@ -47,6 +49,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+     final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     currentRemainingCalories =
         currentDailyCalorieGoal - currentConsumedCalories;
     return Scaffold(
@@ -65,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextFormField(
                     enabled: false,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 3, color: Colors.black),
                       ),
@@ -79,11 +83,11 @@ class _HomePageState extends State<HomePage> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                     onPressed: () {
-                      Get.to(GoalSetScreen());
+                      Get.to(const GoalSetScreen());
                     },
-                    child: Text("Set Fitness Goals")),
+                    child: const Text("Set Fitness Goals")),
               ),
-              Text(
+              const Text(
                 'Calories Summary',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -94,7 +98,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 height: Get.height * 0.45,
                 child: SfCircularChart(
-                  legend: Legend(
+                  legend: const Legend(
                     isVisible: true,
                     position: LegendPosition.bottom,
                   ),
@@ -107,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                       xValueMapper: (ChartData data, _) => data.category,
                       yValueMapper: (ChartData data, _) => data.value,
-                      dataLabelSettings: DataLabelSettings(
+                      dataLabelSettings: const DataLabelSettings(
                         isVisible: true,
                         labelPosition: ChartDataLabelPosition.inside,
                       ),
@@ -137,7 +141,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   TextStyle contentTextStyle() {
-    return TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
+    return const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
   }
 }
 

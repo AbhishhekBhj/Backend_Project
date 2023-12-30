@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   startTimer() {
     timer = Timer(
-      Duration(seconds: 4),
+      Duration(seconds: 2),
       () {
         print('hi');
         checkUserNameAndNavigate();

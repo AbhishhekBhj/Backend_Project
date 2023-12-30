@@ -14,7 +14,7 @@ class EnterHeight extends StatelessWidget {
           SizedBox(
             height: Get.height * 0.03,
           ),
-          Text(
+          const Text(
             'Enter Height',
             style: TextStyle(
               fontSize: 35,

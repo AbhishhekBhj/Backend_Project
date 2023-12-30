@@ -3,8 +3,9 @@ import 'dart:developer';
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:mygymbuddy/data/models/food_model.dart";
+import "package:mygymbuddy/provider/themes/theme_provider.dart";
 import "package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart";
-import "package:shared_preferences/shared_preferences.dart";
+import "package:provider/provider.dart";
 
 class CaloriesLoggingPage extends StatefulWidget {
   CaloriesLoggingPage({this.data, required this.callback});
@@ -18,29 +19,25 @@ class CaloriesLoggingPage extends StatefulWidget {
 class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
   SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
 
-  bool isDarkMode = false;
-  DarkMode() async {
-    var prefs = await SharedPreferences.getInstance();
-    isDarkMode = prefs.getBool('isDarkTheme')!;
-  }
-
   TextEditingController servingSizeController = TextEditingController();
 
   @override
   void initState() {
-    DarkMode();
     // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
+
     var dateTime = DateTime.now();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: isDarkMode ? Colors.black : Colors.deepPurpleAccent,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.white,
           ),
@@ -50,19 +47,20 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
           },
         ),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Add Food",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Food Name: ${widget.data!.name}",
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -74,66 +72,66 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
               children: [
                 Text(
                   "Serving Size ${widget.data!.servingSize} gm",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                 ),
               ],
             ),
-            Text(
-              "Servings",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            SizedBox(height: Get.height * 0.01),
-            TextFormField(
-              style: TextStyle(color: isDarkMode ? Colors.black : Colors.grey),
-              controller: servingSizeController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintStyle: TextStyle(
-                    color: isDarkMode ? Colors.black : Colors.blueGrey),
-                hintText: "Number of servings you consume",
-                fillColor: Colors.grey[200],
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
+            SizedBox(height: Get.height * 0.02),
+
+            Row(
+              children: [
+                const Text(
+                  "Servings",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Get.width * 0.2),
+                    child: TextFormField(
+                      style: TextStyle(
+                          color: isDarkMode
+                              ? Colors.black
+                              : Colors.deepPurpleAccent),
+                      controller: servingSizeController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(
+                            color: isDarkMode
+                                ? Colors.black
+                                : Colors.deepPurpleAccent),
+                        hintText: "Servings",
+                        contentPadding: EdgeInsets.only(left: 35),
+                        fillColor: Colors.grey[200],
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             // SizedBox(height: 20),
             SizedBox(height: Get.height * 0.01),
 
             SizedBox(height: Get.height * 0.01),
 
-            Text(
-              "Nutrition Facts",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+            _buildNutritionFact(
+                "Calories Per Serving", '${widget.data!.caloriesPerServing}'),
             SizedBox(height: Get.height * 0.01),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildNutritionFact("Calories Per Serving",
-                    '${widget.data!.caloriesPerServing}'),
-                _buildNutritionFact(
-                    "Protein", "${widget.data!.proteinPerServing}"),
-              ],
-            ),
-            SizedBox(height: Get.height * 0.01),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
+                const Text(
                   "Time",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -142,7 +140,7 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 ),
                 Text(
                   "${dateTime.hour}:${dateTime.minute}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                   ),
                 ),
@@ -162,19 +160,19 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                       ? ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         )
                       : ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
+                          backgroundColor: Colors.deepPurpleAccent,
                           foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           )),
-                  child: Text(
+                  child: const Text(
                     "LOG FOOD",
                     style: TextStyle(
                       fontSize: 20,
@@ -194,13 +192,13 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.grey,
           ),
         ),
         Text(
           value,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -223,15 +221,4 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
     widget.callback();
     Navigator.pop(context, caloriesConsumed);
   }
-
-  // Future<bool> isDarkMode() async {
-  //   SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
-  //   bool? darkMode = await sharedPreferenceManager.getDarkTheme();
-
-  //   if (darkMode != null) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 }

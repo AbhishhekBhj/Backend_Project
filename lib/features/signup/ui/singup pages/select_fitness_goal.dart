@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class SelectFitnessGoal extends StatefulWidget {
   SelectFitnessGoal({Key? key, required this.fitnessGoal}) : super(key: key);
@@ -25,15 +27,16 @@ class _SelectFitnessGoalState extends State<SelectFitnessGoal> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     return Scaffold(
       body: Center(
           child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
             height: Get.height * 0.03,
           ),
-          Text(
+          const Text(
             'Select Fitness Goal',
             style: TextStyle(
               fontSize: 35,
@@ -53,27 +56,31 @@ class _SelectFitnessGoalState extends State<SelectFitnessGoal> {
                     GestureDetector(
                       onTap: () {
                         toggleFitnessGoal(index);
-                        print(selectedFitnessGoal);
                         widget.fitnessGoal = fitnessGoal[index];
-                        print(widget.fitnessGoal);
                       },
                       child: Container(
                         padding: EdgeInsets.only(top: Get.height * 0.035),
                         height: Get.height * 0.1,
                         width: Get.width * 0.4,
-                        child: Text(fitnessGoal[index],
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                            textAlign: TextAlign.center),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Colors.black),
-                            color: Colors.black),
+                            border: Border.all(
+                                color:
+                                    isDarkMode ? Colors.black : Colors.white),
+                            color: isDarkMode
+                                ? Colors.grey.shade400
+                                : Colors.black),
+                        child: Text(fitnessGoal[index],
+                            style: TextStyle(
+                                color: isDarkMode ? Colors.black : Colors.white,
+                                fontSize: 15),
+                            textAlign: TextAlign.center),
                       ),
                     ),
                     selectedFitnessGoal == index
                         ? Icon(
                             Icons.check_circle,
-                            color: Colors.blueAccent,
+                            color: isDarkMode ? Colors.white : Colors.black,
                           )
                         : Container()
                   ],

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../provider/themes/theme_provider.dart';
 
 class SelectGender extends StatefulWidget {
   SelectGender({super.key, required this.gender});
@@ -27,6 +30,9 @@ class _SelectGenderState extends State<SelectGender> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
+
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
@@ -38,7 +44,7 @@ class _SelectGenderState extends State<SelectGender> {
             SizedBox(
               height: Get.height * 0.02,
             ),
-            Text(
+            const Text(
               'Select Gender',
               style: TextStyle(
                 fontSize: 35,
@@ -72,20 +78,24 @@ class _SelectGenderState extends State<SelectGender> {
                           padding: EdgeInsets.only(top: height * 0.035),
                           height: height * 0.1,
                           width: width * 0.4,
-                          child: Text(genderString[index],
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
-                              textAlign: TextAlign.center),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               border: Border.all(color: Colors.black),
-                              color: Colors.black),
+                              color: isDarkMode
+                                  ? Colors.grey.shade400
+                                  : Colors.black),
+                          child: Text(genderString[index],
+                              style: TextStyle(
+                                  color:
+                                      isDarkMode ? Colors.black : Colors.white,
+                                  fontSize: 15),
+                              textAlign: TextAlign.center),
                         ),
                       ),
                       selectedGender == index
                           ? Icon(
                               Icons.check_circle,
-                              color: Colors.blueAccent,
+                              color: isDarkMode ? Colors.white : Colors.black,
                             )
                           : Container()
                     ],

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/signup/ui/signup_page_view.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
+import 'package:provider/provider.dart';
 
 import 'demo_login_screen.dart';
 
@@ -10,6 +12,8 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     return Scaffold(
       body: Center(
         child: Column(
@@ -18,14 +22,14 @@ class WelcomeScreen extends StatelessWidget {
             SizedBox(
               height: Get.height * 0.05,
             ),
-            Text(
+            const Text(
               'Welcome',
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Divider(),
+            const Divider(),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -47,33 +51,59 @@ class WelcomeScreen extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Get.to(DemoLoginPage());
+                        Get.to(const DemoLoginPage());
                       },
-                      child: Text('Login'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF0DA0FF),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: Get.width * 0.1, vertical: 20),
-                        onPrimary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(fontSize: 20),
                       ),
+                      style: isDarkMode
+                          ? ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Get.width * 0.1, vertical: 20),
+                              foregroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                            )
+                          : ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Get.width * 0.1, vertical: 20),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                            ),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Get.to(SignupPageView());
+                        Get.to(const SignupPageView());
                       },
-                      child: Text('Signup'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF0DA0FF),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: Get.width * 0.1, vertical: 20),
-                        onPrimary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
+                      child: const Text(
+                        'Signup',
+                        style: TextStyle(fontSize: 20),
                       ),
+                      style: isDarkMode
+                          ? ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Get.width * 0.1, vertical: 20),
+                              foregroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                            )
+                          : ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Get.width * 0.1, vertical: 20),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                            ),
                     ),
                   ],
                 ),

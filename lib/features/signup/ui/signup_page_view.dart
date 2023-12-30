@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/singup%20pages/add_profile_photo.dart';
 import 'package:mygymbuddy/features/signup/ui/singup%20pages/select%20_gender.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'singup pages/enter_age.dart';
 import 'singup pages/enter_bodyweight.dart';
 import 'singup pages/enter_email.dart';
@@ -73,6 +75,8 @@ class _SignupPageViewState extends State<SignupPageView> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
@@ -81,6 +85,7 @@ class _SignupPageViewState extends State<SignupPageView> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -102,7 +107,7 @@ class _SignupPageViewState extends State<SignupPageView> {
             LinearProgressIndicator(
               value: _progress,
               minHeight: 6.0,
-              color: Colors.black,
+              color: isDarkMode ? Colors.grey.shade500 : Colors.black,
             ),
             SizedBox(
               height: screenHeight * 0.85,
@@ -171,7 +176,7 @@ class _SignupPageViewState extends State<SignupPageView> {
                       child: SelectFitnessGoal(
                     fitnessGoal: fitnessGoal,
                   )),
-                  KeepAlivePage(child: EnterHeight()),
+                  KeepAlivePage(child: const EnterHeight()),
                 ],
               ),
             ),
@@ -345,6 +350,8 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     var screenSize = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -354,18 +361,26 @@ class CustomButton extends StatelessWidget {
         height: screenSize.height * 0.08,
         child: ElevatedButton(
           onPressed: onPressed,
+          style: isDarkMode
+              ? ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey.shade500,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                )
+              : ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.grey.shade500,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                ),
           child: Text(
             text,
             style: TextStyle(
               fontSize: 20,
-              color: Colors.white,
               fontWeight: FontWeight.bold,
-            ),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(9),
             ),
           ),
         ),
