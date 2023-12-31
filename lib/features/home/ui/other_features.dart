@@ -64,9 +64,9 @@ class OtherFeaturePage extends StatelessWidget {
                   buildListTile(Icons.update, () {
                     Get.to(UpdateMeasurements());
                   }, "Update Your Measurements"),
-                  // buildListTile(FontAwesomeIcons.calculator, () {
-                  //   Get.to(BMI());
-                  // }, "Calculate BMI"),
+                  buildListTile(FontAwesomeIcons.calculator, () {
+                    Get.to(BMI());
+                  }, "Calculate BMI"),
                 ],
               ),
             ),
