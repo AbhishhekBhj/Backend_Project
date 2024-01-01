@@ -9,15 +9,20 @@ class UserModel {
   final String? password;
   final String? email;
   final String? age;
-  final XFile? image;
+  
+  final String? weight;
+  final String? height;
+  final String? gender;
+  final String? fitnessGoal;
+  
 
-  UserModel(
+  UserModel( 
       {this.name,
       this.username,
       this.password,
       this.email,
       this.age,
-      this.image});
+      this.weight, this.height, this.gender, this.fitnessGoal,});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -26,6 +31,14 @@ class UserModel {
       'password': password,
       'email': email,
       'age': age,
+      'body_weight': weight,
+      'body_height':height,
+      'gender':gender,
+      'fitness_goal':fitnessGoal,
+
+
+      
+
     };
   }
 
@@ -36,6 +49,9 @@ class UserModel {
       password: map['password'] as String,
       email: map['email'] as String,
       age: map['age'] as String,
+      gender:map['gender'] as String,
+      weight:map['body_weight'] as String,
+      fitnessGoal:map['fitness_goal'] as String,
     );
   }
 

@@ -66,11 +66,14 @@ class _SelectGenderState extends State<SelectGender> {
                       GestureDetector(
                         onTap: () {
                           toggleSelectedGender(index);
-
-                          if (index == 0) {
-                            widget.gender = genderString[index];
-                          } else if (index == 1) {
-                            widget.gender = genderString[index];
+                          if (selectedGender == index) {
+                            setState(() {
+                              widget.gender = genderString[index];
+                            });
+                          } else {
+                            setState(() {
+                              widget.gender = "";
+                            });
                           }
                           print(widget.gender);
                         },

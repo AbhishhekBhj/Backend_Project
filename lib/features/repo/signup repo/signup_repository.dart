@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 
 class SignupRepository {
   static Future<bool> signupUser({
@@ -10,8 +9,10 @@ class SignupRepository {
     String? age,
     String? email,
     String? password,
-    String? phonenumber,
-    XFile? image,
+    String? weight,
+    String? height,
+    String? gender,
+    String? fitnessGoal,
   }) async {
     try {
       var request = http.MultipartRequest(
@@ -25,19 +26,23 @@ class SignupRepository {
         'name': name ?? '',
         'age': age ?? '',
         'email': email ?? '',
+        'body_weight': weight ?? '',
+        'body_height': height ?? '',
+        'gender': gender ?? '',
+        'fitness_goal': fitnessGoal ?? '',
       });
 
-      if (image != null) {
-        // Convert XFile to File
-        var imageFile = File(image.path);
-        // Add the image file as a part of the request
-        request.files.add(http.MultipartFile(
-          'profile_picture',
-          imageFile.readAsBytes().asStream(),
-          imageFile.lengthSync(),
-          filename: '${username}_profilepicture.jpg',
-        ));
-      }
+      // if (image != null) {
+      //   // Convert XFile to File
+      //   var imageFile = File(image.path);
+      //   // Add the image file as a part of the request
+      //   request.files.add(http.MultipartFile(
+      //     'profile_picture',
+      //     imageFile.readAsBytes().asStream(),
+      //     imageFile.lengthSync(),
+      //     filename: '${username}_profilepicture.jpg',
+      //   ));
+      // }
       var response = await request.send();
       if (response.statusCode >= 200) {
         return true;

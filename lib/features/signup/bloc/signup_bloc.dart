@@ -29,9 +29,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       username: event.userModel.username,
       name: event.userModel.name,
       email: event.userModel.email,
-      image: event.userModel.image,
       password: event.userModel.password,
       age: event.userModel.age,
+      weight: event.userModel.weight,
+      height: event.userModel.height,
+      gender: event.userModel.gender,
+      fitnessGoal: event.userModel.fitnessGoal,
     );
     print(signup);
 

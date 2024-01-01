@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/data/models/signup_model.dart';
+import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/singup%20pages/add_profile_photo.dart';
 import 'package:mygymbuddy/features/signup/ui/singup%20pages/select%20_gender.dart';
@@ -37,6 +42,8 @@ class _SignupPageViewState extends State<SignupPageView> {
   @override
   void initState() {
     _progress = 1 / 9;
+    SignupBloc signupBloc = SignupBloc();
+
     // TODO: implement initState
     super.initState();
   }
@@ -89,13 +96,13 @@ class _SignupPageViewState extends State<SignupPageView> {
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               if (_currentPage == 0) {
                 Navigator.pop(context);
               } else {
                 _pageController.previousPage(
-                    duration: Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
                     curve: Curves.easeIn);
               }
             },
@@ -112,7 +119,7 @@ class _SignupPageViewState extends State<SignupPageView> {
             SizedBox(
               height: screenHeight * 0.85,
               child: PageView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (int value) {
                   setState(() {
                     // update the current page value to the new page value
@@ -180,18 +187,103 @@ class _SignupPageViewState extends State<SignupPageView> {
                 ],
               ),
             ),
+            BlocBuilder(
+              bloc: signupBloc,
+              builder: (context, state) {
+                if (state is SignupSuccessState) {
+                  Get.to(BaseClass());
+                } else if (state is SignupErrorState) {
+                  Get.snackbar("Error", "Error in signing up",
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM);
+                }
+                return Container();
+              },
+            )
           ],
         )),
         bottomSheet: CustomButton(
             text: "NEXT",
             onPressed: () {
-              if (_currentPage == 8) {
-                Get.to(AddProfilePhoto());
-              } else {
+              if (_currentPage == 0) {
+                if (fullNameController.text.isNotEmpty) {
+                  if (isValidName) {
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn);
+                  }
+                }
+              }
+              if (_currentPage == 1) {
+                if (emailController.text.isNotEmpty) {
+                  if (isValidEmail) {
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn);
+                  }
+                }
+              }
+              if (_currentPage == 2) {
+                if (usernameController.text.isNotEmpty) {
+                  if (isValidUsername) {
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn);
+                  }
+                }
+              }
+              if (_currentPage == 3) {
+                if (passwordController.text.isNotEmpty) {
+                  if (isValidPassword) {
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn);
+                  }
+                }
+              }
+              if (_currentPage == 4) {
+                if (ageController.text.isNotEmpty) {
+                  if (isValidAge) {
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn);
+                  }
+                }
+              }
+              if (_currentPage == 5) {
+                // if (gender.isNotEmpty) {
                 _pageController.nextPage(
-                  duration: Duration(milliseconds: 100),
-                  curve: Curves.bounceIn,
-                );
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              }
+              if (_currentPage == 6) {
+                if (bodyWeightController.text.isNotEmpty) {
+                  if (isValidBodyWeight) {
+                    _pageController.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn);
+                  }
+                }
+              }
+              if (_currentPage == 7) {
+                _pageController.nextPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              }
+
+              if (_currentPage == 8) {
+                signupBloc.add(SignUpClickedButtonEvent(
+                    userModel: UserModel(
+                  name: fullNameController.text,
+                  username: usernameController.text,
+                  password: passwordController.text,
+                  email: emailController.text,
+                  age: ageController.text,
+                  weight: bodyWeightController.text,
+                  fitnessGoal: fitnessGoal,
+                  gender: gender,
+                  height: heightController.text,
+                )));
               }
             }),
       ),
@@ -296,12 +388,12 @@ class _SignupPageViewState extends State<SignupPageView> {
         isValidAge = false;
       });
       return false;
-    } else {
+    } else if (age <= 100) {
       setState(() {
         isValidAge = true;
       });
-      return true;
     }
+    return true;
   }
 }
 
@@ -378,7 +470,7 @@ class CustomButton extends StatelessWidget {
                 ),
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

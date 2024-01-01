@@ -5,7 +5,7 @@ import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:provider/provider.dart';
 
-import 'demo_login_screen.dart';
+import 'logins.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

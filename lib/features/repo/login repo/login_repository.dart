@@ -11,7 +11,10 @@ class LoginRepository {
       var response = await client.post(
           Uri.parse("http://10.0.2.2:8000/logins/"),
           body: {"username": username, "password": password});
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log(response.body.toString());
+
         // await saveUserName(username);4
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('username', username ?? ''); // Save the username

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
@@ -18,7 +20,7 @@ class _SelectFitnessGoalState extends State<SelectFitnessGoal> {
   void toggleFitnessGoal(int index) {
     setState(() {
       if (selectedFitnessGoal == index) {
-        selectedFitnessGoal == -1;
+        selectedFitnessGoal = -1;
       } else {
         selectedFitnessGoal = index;
       }
@@ -56,7 +58,12 @@ class _SelectFitnessGoalState extends State<SelectFitnessGoal> {
                     GestureDetector(
                       onTap: () {
                         toggleFitnessGoal(index);
-                        widget.fitnessGoal = fitnessGoal[index];
+                        if (selectedFitnessGoal == index) {
+                          widget.fitnessGoal = fitnessGoal[index];
+                        } else {
+                          widget.fitnessGoal = "";
+                        }
+                        log(widget.fitnessGoal);
                       },
                       child: Container(
                         padding: EdgeInsets.only(top: Get.height * 0.035),
