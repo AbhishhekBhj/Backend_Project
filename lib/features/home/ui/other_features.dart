@@ -8,6 +8,7 @@ import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_view_history.dart';
 import 'package:mygymbuddy/features/profile/ui/view_profile.dart';
 import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
+import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/logins.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +91,7 @@ class OtherFeaturePage extends StatelessWidget {
                   //   themeProvider.swapTheme();
                   // }, "Change Theme"),
                   buildListTile(Icons.logout_rounded, () {
-                    Get.offAll(() => Login());
+                    Get.off(DemoLoginPage());
                   }, "Log out"),
                 ],
               ),

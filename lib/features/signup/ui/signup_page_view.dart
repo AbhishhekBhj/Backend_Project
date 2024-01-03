@@ -272,6 +272,8 @@ class _SignupPageViewState extends State<SignupPageView> {
               }
 
               if (_currentPage == 8) {
+                log(gender);
+                log(fitnessGoal);
                 signupBloc.add(SignUpClickedButtonEvent(
                     userModel: UserModel(
                   name: fullNameController.text,
