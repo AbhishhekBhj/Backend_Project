@@ -1,15 +1,17 @@
 import 'dart:developer';
 
 import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 import "package:get/get.dart";
+import "package:mygymbuddy/data/models/calorie_logging_model.dart";
 import "package:mygymbuddy/data/models/food_model.dart";
+import "package:mygymbuddy/features/calories/bloc/calories_bloc.dart";
 import "package:mygymbuddy/provider/themes/theme_provider.dart";
-import "package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart";
 import "package:provider/provider.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 class CaloriesLoggingPage extends StatefulWidget {
-  CaloriesLoggingPage({this.data, required this.callback});
-  Function callback;
+  CaloriesLoggingPage({this.data});
 
   @override
   State<CaloriesLoggingPage> createState() => _CaloriesLoggingPageState();
@@ -17,14 +19,25 @@ class CaloriesLoggingPage extends StatefulWidget {
 }
 
 class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
-  SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
-
   TextEditingController servingSizeController = TextEditingController();
+  CaloriesBloc caloriesBloc = CaloriesBloc();
+  late var username;
+  double? servingSizeConsume;
+  double? proteinPerSize;
+  double? servingSize;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    log(widget.data!.toString());
+    proteinPerSize = widget.data!.proteinPerServing;
+    servingSize = widget.data!.servingSize;
+    getName();
+  }
+
+  void getName() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    username = sharedPreferences.getString('username');
   }
 
   @override
@@ -42,7 +55,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
             color: Colors.white,
           ),
           onPressed: () {
-            widget.callback();
             Navigator.pop(context);
           },
         ),
@@ -94,6 +106,13 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: Get.width * 0.2),
                     child: TextFormField(
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          servingSizeConsume = double.parse(value);
+                        } else {
+                          servingSizeConsume = 0.0;
+                        }
+                      },
                       style: TextStyle(
                           color: isDarkMode
                               ? Colors.black
@@ -153,8 +172,22 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 width: Get.width * 0.45,
                 child: ElevatedButton(
                   onPressed: () async {
+                    log(servingSizeConsume.runtimeType.toString());
                     FocusManager.instance.primaryFocus?.unfocus();
-                    addFood();
+                    if (servingSizeConsume != null) {
+                      caloriesBloc.add(CaloriesConsumedLogEvent(
+                          caloriesLog: CaloriesLog(
+                        username: username,
+                        food: widget.data!.name,
+                        servingSizeConsumed: servingSize! * servingSizeConsume!,
+                        proteinConsumed: proteinPerSize! * servingSizeConsume!,
+                        carbsConsumed: 0,
+                        fatConsumed: 0,
+                        caloriesConsumed: widget.data!.caloriesPerServing,
+                      )));
+                    } else {
+                      Get.snackbar("Error", 'add serving size');
+                    }
                   },
                   style: isDarkMode
                       ? ElevatedButton.styleFrom(
@@ -181,6 +214,25 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                 ),
               ),
             ),
+            BlocBuilder(
+                bloc: caloriesBloc,
+                builder: (context, state) {
+                  if (state is CaloriesLoggingLoadingState) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is CaloriesLoggingSuccessState) {
+                    return const Center(
+                      child: Text("Food Logged"),
+                    );
+                  } else if (state is CaloriesLoggingErrorState) {
+                    return const Center(
+                      child: Text("Error Logging Food"),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }),
           ],
         ),
       ),
@@ -204,21 +256,5 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
         ),
       ],
     );
-  }
-
-  void addFood() async {
-    double serving = double.parse(servingSizeController.text);
-    double? servingSizeConsumed = widget.data!.servingSize! * serving;
-
-    double? proteinConsumed = widget.data!.proteinPerServing! * serving;
-    double? caloriesConsumed = widget.data!.caloriesPerServing! * serving;
-
-    await sharedPreferenceManager.setCaloriesConsumedValue(
-        caloriesConsumed); // this line is causing the issue
-
-    double? calories = await sharedPreferenceManager.getCaloriesConsumedValue();
-    log(calories.toString());
-    widget.callback();
-    Navigator.pop(context, caloriesConsumed);
   }
 }

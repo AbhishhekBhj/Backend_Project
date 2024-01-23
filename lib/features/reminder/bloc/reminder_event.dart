@@ -10,5 +10,5 @@ class RemindersInitialEvent extends ReminderEvent {
 class SetReminderClickedEvent extends ReminderEvent {
   final Reminder reminders;
 
-  SetReminderClickedEvent(this.reminders);
+  SetReminderClickedEvent({required this.reminders});
 }

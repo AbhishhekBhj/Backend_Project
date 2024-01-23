@@ -44,18 +44,16 @@ class SharedPreferenceManager {
     return isDarkTheme;
   }
 
-  Future<double> getCaloriesConsumedValue() async {
-    var prefs = await SharedPreferences.getInstance();
-    double? calories = prefs.getDouble("caloriesConsumed");
-    return calories!;
-  }
+  // Future<double> getCaloriesConsumedValue() async {
+  //   var prefs = await SharedPreferences.getInstance();
+  //   double? calories = prefs.getDouble("caloriesConsumed");
+  //   return calories!;
+  // }
 
-  Future<void> setCaloriesConsumedValue(double value) async {
-    double currentValue = await getCaloriesConsumedValue();
-    var prefs = await SharedPreferences.getInstance();
+  // Future<void> setCaloriesConsumedValue(double value) async {
+  //   double currentValue = await getCaloriesConsumedValue();
+  //   var prefs = await SharedPreferences.getInstance();
 
-    prefs.setDouble("caloriesConsumed", currentValue + value);
-  }
-
-  
+  //   prefs.setDouble("caloriesConsumed", currentValue + value);
+  // }
 }

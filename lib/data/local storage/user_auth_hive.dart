@@ -3,7 +3,8 @@ import 'package:hive/hive.dart';
 class UserAuthenticationLocalStorage {
 //opening hive box
 
-  static final Box<dynamic> userAuthenticationStore = Hive.box('userAuthenticationStore');
+  static final Box<dynamic> userAuthenticationStore =
+      Hive.box('userAuthenticationStore');
 
   static Future<void> saveUserName(String userName) async {
     await userAuthenticationStore.put('userName', userName);
@@ -33,6 +34,17 @@ class UserAuthenticationLocalStorage {
     await userAuthenticationStore.put('isProMember', isProMember);
   }
 
+  static Future<void> saveGender(String gender) async {
+    await userAuthenticationStore.put('gender', gender);
+  }
+
+  static Future saveFitnessGoal(String fitnessGoal) async {
+    await userAuthenticationStore.put('fitnessGoal', fitnessGoal);
+  }
+
+  static Future saveHeight(String height) async {
+    await userAuthenticationStore.put('height', height);
+  }
 
   //now getting data from hive box
 

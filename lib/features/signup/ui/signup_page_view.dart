@@ -4,12 +4,14 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/data/local%20storage/user_auth_hive.dart';
 import 'package:mygymbuddy/data/models/signup_model.dart';
 import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/singup%20pages/add_profile_photo.dart';
 import 'package:mygymbuddy/features/signup/ui/singup%20pages/select%20_gender.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
+import 'package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart';
 import 'package:provider/provider.dart';
 import 'singup pages/enter_age.dart';
 import 'singup pages/enter_bodyweight.dart';
@@ -92,7 +94,6 @@ class _SignupPageViewState extends State<SignupPageView> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -226,6 +227,8 @@ class _SignupPageViewState extends State<SignupPageView> {
               if (_currentPage == 2) {
                 if (usernameController.text.isNotEmpty) {
                   if (isValidUsername) {
+                    SharedPreferenceManager()
+                        .saveUsername(usernameController.text);
                     _pageController.nextPage(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.easeIn);

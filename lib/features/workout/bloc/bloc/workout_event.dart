@@ -13,4 +13,4 @@ class AddWorkoutEvent extends WorkoutEvent {
 
 class ViewWorkoutHistoryEvent extends WorkoutEvent {}
 
-
+class GetWorkoutFromServerEvent extends WorkoutEvent {}

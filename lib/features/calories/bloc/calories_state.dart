@@ -21,15 +21,8 @@ class CaloriesFoundSuccessState extends CaloriesState {
 
 class CaloriesFoundErrorState extends CaloriesState {}
 
-class CaloriesLoggingSuccessState extends CaloriesState {
-  final String successMessage;
 
-  CaloriesLoggingSuccessState({required this.successMessage});
-}
+class CaloriesLoggingLoadingState extends CaloriesState {}
+class CaloriesLoggingSuccessState extends CaloriesState {}
 
-class CaloriesLoggingErrorState extends CaloriesState {
-  final String failureMessage;
-
-  CaloriesLoggingErrorState({required this.failureMessage});
-
-}
+class CaloriesLoggingErrorState extends CaloriesState {}

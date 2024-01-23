@@ -27,29 +27,29 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  Future<double> returnCaloriesConsumed(
-      SharedPreferenceManager sharedPreferenceManager) async {
-    double value = await sharedPreferenceManager.getCaloriesConsumedValue();
-    log(value.toString());
-    return value;
-  }
+  // Future<double> returnCaloriesConsumed(
+  //     SharedPreferenceManager sharedPreferenceManager) async {
+  //   double value = await sharedPreferenceManager.getCaloriesConsumedValue();
+  //   log(value.toString());
+  //   return value;
+  // }
 
-  Future<void> initializeData() async {
-    SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
-    final consumedCalories =
-        await returnCaloriesConsumed(sharedPreferenceManager);
+  // Future<void> initializeData() async {
+  //   SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
+  //   final consumedCalories =
+  //       await returnCaloriesConsumed(sharedPreferenceManager);
 
-    setState(() {
-      currentConsumedCalories = consumedCalories;
-      print(currentConsumedCalories);
-      currentRemainingCalories =
-          currentDailyCalorieGoal - currentConsumedCalories;
-    });
-  }
+  //   setState(() {
+  //     currentConsumedCalories = consumedCalories;
+  //     print(currentConsumedCalories);
+  //     currentRemainingCalories =
+  //         currentDailyCalorieGoal - currentConsumedCalories;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-     final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     currentRemainingCalories =
         currentDailyCalorieGoal - currentConsumedCalories;
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(CaloricInformation(callback: initializeData));
+                  Get.to(CaloricInformation());
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -78,14 +78,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                    onPressed: () {
-                      Get.to(const GoalSetScreen());
-                    },
-                    child: const Text("Set Fitness Goals")),
               ),
               const Text(
                 'Calories Summary',

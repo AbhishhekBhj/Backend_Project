@@ -5,12 +5,12 @@ import 'dart:io' show Platform;
 import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
 import 'package:mygymbuddy/features/calories/ui/calories_loggind.dart';
+import 'package:mygymbuddy/features/calories/ui/shimmer_effect.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class CaloricInformation extends StatefulWidget {
-  CaloricInformation({Key? key, required this.callback}) : super(key: key);
-  Function callback;
+  CaloricInformation({Key? key}) : super(key: key);
 
   @override
   State<CaloricInformation> createState() => _CaloricInformationState();
@@ -73,7 +73,7 @@ class _CaloricInformationState extends State<CaloricInformation> {
                     // case CaloriesLoadingState:
                     //   return const SizedBox(); // Don't display anything during loading
                     case CaloriesFetchingState:
-                      return const Center(child: CircularProgressIndicator());
+                      return ShimmerFoodItem();
                     case CaloriesFoundSuccessState:
                       return Expanded(
                         child: buildFoodList(
@@ -150,8 +150,8 @@ class _CaloricInformationState extends State<CaloricInformation> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CaloriesLoggingPage(
-                            data: foodItem, callback: widget.callback)));
+                        builder: (context) =>
+                            CaloriesLoggingPage(data: foodItem)));
               },
               child: Container(
                 decoration: BoxDecoration(

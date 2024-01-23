@@ -1,9 +1,16 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:mygymbuddy/data/models/measurement_model.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
+import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class UpdateMeasurements extends StatefulWidget {
   const UpdateMeasurements({super.key});
@@ -29,7 +36,7 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
   final MeasurementsBloc measurementBloc = MeasurementsBloc();
   @override
   void initState() {
-    measurementBloc.add(MeasurementsInitialEvent());
+    // measurementBloc.add(MeasurementsInitialEvent());
     super.initState();
   }
 
@@ -53,191 +60,202 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
 
-    return BlocConsumer<MeasurementsBloc, MeasurementsState>(
-      bloc: measurementBloc,
-      listenWhen: (previous, current) => current is MeasurementsActionState,
-      buildWhen: (previous, current) => current is! MeasurementsActionState,
-      listener: (context, state) {},
-      builder: (context, state) {
-        switch (state.runtimeType) {
-          case MeasurementsInitial:
-            return GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Scaffold(
-                  body: ListView(
-                padding: EdgeInsets.all(20),
-                children: [
-                  Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: screenWidth * 0.085,
-                          horizontal: screenWidth * 0.07),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          HeaderWidget(text: "UPDATE MEASUREMENTS"),
-                          TextFormField(
-                              controller: bodyweightController,
-                              decoration: const InputDecoration(
-                                  hintText: bodyWeightHintText,
-                                  labelText: bodyWeightLabel)),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: leftArmLabel,
-                              hintText: leftArmHintText,
-                            ),
-                            controller: leftArmController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: rightArmLabel,
-                              hintText: rightArmHintText,
-                            ),
-                            controller: rightArmController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: leftForeArmLabel,
-                              hintText: leftForeArmHintText,
-                            ),
-                            controller: leftForearmController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: rightForeLabel,
-                              hintText: rightForeHintText,
-                            ),
-                            controller: rightForearmController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: chestLabel,
-                              hintText: chestHintText,
-                            ),
-                            controller: chestController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: waistLabel,
-                              hintText: waistHintText,
-                            ),
-                            controller: waistController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: leftQuadricepLabel,
-                              hintText: leftQuadricepHintText,
-                            ),
-                            controller: leftQuadricepController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: rightQuadricepLabel,
-                              hintText: rightQuadricepHintText,
-                            ),
-                            controller: rightQuadricepController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: leftCalveLabel,
-                              hintText: leftCalveHintText,
-                            ),
-                            controller: leftCalveController,
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: rightCalveLabel,
-                                hintText: rightCalveHintText),
-                            controller: rightCalveController,
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                measurementBloc
-                                    .add(MeasurementsUpdateClickedEvent(
-                                  measurementModel: Measurement(
-                                    leftArm: double.tryParse(
-                                            leftArmController.text) ??
-                                        0.0,
-                                    rightArm: double.tryParse(
-                                            rightArmController.text) ??
-                                        0.0,
-                                    chest:
-                                        double.tryParse(chestController.text) ??
-                                            0.0,
-                                    leftQuadricep: double.tryParse(
-                                            leftQuadricepController.text) ??
-                                        0.0,
-                                    rightQuadricep: double.tryParse(
-                                            rightQuadricepController.text) ??
-                                        0.0,
-                                    leftCalve: double.tryParse(
-                                            leftCalveController.text) ??
-                                        0.0,
-                                    rightCalve: double.tryParse(
-                                            rightCalveController.text) ??
-                                        0.0,
-                                    leftForearm: double.tryParse(
-                                            leftForearmController.text) ??
-                                        0.0,
-                                    rightForearm: double.tryParse(
-                                            rightForearmController.text) ??
-                                        0.0,
-                                    waist:
-                                        double.tryParse(waistController.text) ??
-                                            0.0,
-                                    bodyweight: double.tryParse(
-                                            bodyweightController.text) ??
-                                        0.0,
-                                  ),
-                                ));
-                              },
-                              child: Text(updateMeasurements)),
-                          Text(
-                              "Note: The average of your left and right side bodypart will be stored ")
-                        ],
-                      ))
-                ],
-              )),
-            );
-
-          case MeasurementHistoryViewLoadingState:
-            return CircularProgressIndicator(
-              color: Colors.black,
-            );
-
-          case MeasurementUpdateLoadingState:
-            return CircularProgressIndicator(
-              color: Colors.black,
-            );
-
-          case MeasurementHistoryViewFailureState:
-            return Center(
-              child: Text(
-                  "An Unexpected Error Occured while requesting this page",
-                  style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-            );
-
-          case MeasurmentsUpdateFailureState:
-            return Center(
-              child: Text(
-                  "An Unexpected Error Occured while updating measuremetn",
-                  style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-            );
-
-          case MeasurementUpdateSuccessState:
-            //ToDo: show alert box
-            return Text("Cool");
-        }
-        return Scaffold();
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
       },
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Platform.isAndroid
+                    ? const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      )
+                    : Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black,
+                      )),
+            backgroundColor: isDarkMode ? Colors.white : Colors.black,
+            title: Text(
+              updateMeasurements,
+              style: TextStyle(color: isDarkMode ? Colors.black : Colors.white),
+            ),
+          ),
+          body: ListView(
+            children: [
+              Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: screenWidth * 0.085,
+                      horizontal: screenWidth * 0.07),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                          controller: bodyweightController,
+                          decoration: const InputDecoration(
+                              hintText: bodyWeightHintText,
+                              labelText: bodyWeightLabel)),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: leftArmLabel,
+                          hintText: leftArmHintText,
+                        ),
+                        controller: leftArmController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: rightArmLabel,
+                          hintText: rightArmHintText,
+                        ),
+                        controller: rightArmController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: leftForeArmLabel,
+                          hintText: leftForeArmHintText,
+                        ),
+                        controller: leftForearmController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: rightForeLabel,
+                          hintText: rightForeHintText,
+                        ),
+                        controller: rightForearmController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: chestLabel,
+                          hintText: chestHintText,
+                        ),
+                        controller: chestController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: waistLabel,
+                          hintText: waistHintText,
+                        ),
+                        controller: waistController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: leftQuadricepLabel,
+                          hintText: leftQuadricepHintText,
+                        ),
+                        controller: leftQuadricepController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: rightQuadricepLabel,
+                          hintText: rightQuadricepHintText,
+                        ),
+                        controller: rightQuadricepController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: leftCalveLabel,
+                          hintText: leftCalveHintText,
+                        ),
+                        controller: leftCalveController,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: rightCalveLabel,
+                            hintText: rightCalveHintText),
+                        controller: rightCalveController,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            if (validateFields()) {
+                              measurementBloc
+                                  .add(MeasurementsUpdateClickedEvent(
+                                measurementModel: Measurement(
+                                  leftArm:
+                                      double.tryParse(leftArmController.text) ??
+                                          0.0,
+                                  rightArm: double.tryParse(
+                                          rightArmController.text) ??
+                                      0.0,
+                                  chest:
+                                      double.tryParse(chestController.text) ??
+                                          0.0,
+                                  leftQuadricep: double.tryParse(
+                                          leftQuadricepController.text) ??
+                                      0.0,
+                                  rightQuadricep: double.tryParse(
+                                          rightQuadricepController.text) ??
+                                      0.0,
+                                  leftCalve: double.tryParse(
+                                          leftCalveController.text) ??
+                                      0.0,
+                                  rightCalve: double.tryParse(
+                                          rightCalveController.text) ??
+                                      0.0,
+                                  leftForearm: double.tryParse(
+                                          leftForearmController.text) ??
+                                      0.0,
+                                  rightForearm: double.tryParse(
+                                          rightForearmController.text) ??
+                                      0.0,
+                                  waist:
+                                      double.tryParse(waistController.text) ??
+                                          0.0,
+                                  bodyweight: double.tryParse(
+                                          bodyweightController.text) ??
+                                      0.0,
+                                ),
+                              ));
+                            } else {
+                              Fluttertoast.showToast(
+                                  backgroundColor: Colors.deepPurpleAccent,
+                                  msg: "Please fill all the fields");
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                isDarkMode ? Colors.white : Colors.black,
+                          ),
+                          child: Text(
+                            updateMeasurements,
+                            style: TextStyle(
+                                color:
+                                    isDarkMode ? Colors.black : Colors.white),
+                          )),
+                    ],
+                  )),
+              BlocConsumer(
+                bloc: measurementBloc,
+                builder: (context, state) {
+                  if (state is MeasurementUpdateLoadingState) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return Container();
+                },
+                listener: (context, state) {
+                  if (state is MeasurementUpdateSuccessState) {
+                    clearAllTextFields();
+                    Fluttertoast.showToast(
+                        backgroundColor: Colors.deepPurpleAccent,
+                        msg: "Measurements Updated Successfully");
+                  }
+
+                  if (state is MeasurmentsUpdateFailureState) {
+                    Fluttertoast.showToast(
+                        backgroundColor: Colors.deepPurpleAccent,
+                        msg:
+                            "An Unexpected Error Occured while updating measurements");
+                  }
+                },
+              )
+            ],
+          )),
     );
   }
 
@@ -255,5 +273,19 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
       leftCalveController.clear();
       rightCalveController.clear();
     });
+  }
+
+  bool validateFields() {
+    return leftArmController.text.isNotEmpty &&
+        rightArmController.text.isNotEmpty &&
+        chestController.text.isNotEmpty &&
+        leftQuadricepController.text.isNotEmpty &&
+        rightQuadricepController.text.isNotEmpty &&
+        leftCalveController.text.isNotEmpty &&
+        rightCalveController.text.isNotEmpty &&
+        leftForearmController.text.isNotEmpty &&
+        rightForearmController.text.isNotEmpty &&
+        waistController.text.isNotEmpty &&
+        bodyweightController.text.isNotEmpty;
   }
 }

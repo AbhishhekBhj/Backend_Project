@@ -32,15 +32,57 @@ class CaloriesRepository {
   }
 }
 
+class CaloriesLogRepository {
+  static Future<bool> logCalories({
+    required String? username,
+    required String? food,
+    required double? servingSizeConsumed,
+    required double? proteinConsumed,
+    required double? carbsConsumed,
+    required double? fatConsumed,
+    required double? caloriesConsumed,
+  }) async {
+    var client = http.Client();
 
+    try {
+      var response = await client.post(
+        Uri.parse("http://10.0.2.2:8000/caloricintake/post/"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "username": username ?? '',
+          "food": food ?? '',
+          "serving_size_consumed": servingSizeConsumed,
+          "protein_consumed": proteinConsumed,
+          "carbs_consumed": carbsConsumed,
+          "fats_consumed": fatConsumed,
+          "calories_consumed": caloriesConsumed,
+          "timestamp": DateTime.now().toString(),
+        }),
+      );
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      log(e.toString() + "error");
+      return false;
+    } finally {
+      client.close();
+    }
+  }
+}
 
 class MultiCaloriesRepository {
   static Future<List<FoodModel>> getCaloricInformation(
       {String? foodName}) async {
     var client = http.Client();
     try {
-      var response = await client.get(
-          Uri.parse("http://10.0.2.2:8000/foods/get/$foodName/"));
+      var response = await client
+          .get(Uri.parse("http://10.0.2.2:8000/foods/get/$foodName/"));
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final List<dynamic> foodDataList = json.decode(response.body);
@@ -49,8 +91,6 @@ class MultiCaloriesRepository {
         List<FoodModel> foodInfoList = foodDataList
             .map((foodData) => FoodModel.fromMap(foodData))
             .toList();
-
-            
 
         return foodInfoList;
       } else {
