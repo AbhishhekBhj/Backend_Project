@@ -54,30 +54,21 @@ class _HomePageState extends State<HomePage> {
     currentRemainingCalories =
         currentDailyCalorieGoal - currentConsumedCalories;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          shape: CircleBorder(),
+          foregroundColor: Colors.white,
+          backgroundColor: isDarkMode ? Colors.white30 : Colors.black,
+          onPressed: () {
+            Get.to(
+              CaloricInformation(),
+            );
+          }),
       body: SafeArea(
         child: Center(
           child: ListView(
             children: [
               SizedBox(
                 height: Get.height * 0.05,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(CaloricInformation());
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextFormField(
-                    enabled: false,
-                    decoration: const InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 3, color: Colors.black),
-                      ),
-                      hintText: "Search for Food",
-                      suffixIcon: Icon(Icons.search),
-                    ),
-                  ),
-                ),
               ),
               const Text(
                 'Calories Summary',
