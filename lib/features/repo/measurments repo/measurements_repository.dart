@@ -1,55 +1,63 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MeasurementsRepository {
   static Future<bool> updateMeasurements({
-    double? bodyWeight,
-    double? leftArm,
-    double? rightArm,
-    double? leftQuadriceps,
-    double? rightQuadriceps,
-    double? leftCalve,
-    double? rightCalve,
-    double? chest,
-    double? leftForearm,
-    double? rightForearm,
-    double? waist,
+    required double height,
+    required double weight,
+    required double chestSize,
+    required double waistSize,
+    required double hipSize,
+    required double leftArm,
+    required double rightArm,
+    required double leftQuadricep,
+    required double rightQuadricep,
+    required double leftCalf,
+    required double rightCalf,
+    required double leftForearm,
+    required double rightForearm,
+    required String notes,
   }) async {
     var client = http.Client();
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var username = preferences.getString('username');
+    String? accessToken = await getAccessToken();
+    var userId = UserDataManager.userData['user_id'];
     try {
       var url = Uri.parse(
-          "http://10.0.2.2:8000/measurement/setmeasurement/$username/");
+          "http://10.0.2.2:8000/api/measurements/addmeasurement/$userId/");
 
-      // Create a multipart request
-      var request = http.MultipartRequest('POST', url);
+      var body = {
+        "height": height,
+        "weight": weight,
+        "chest_size": chestSize,
+        "waist_size": waistSize,
+        "hip_size": hipSize,
+        "left_arm": leftArm,
+        "right_arm": rightArm,
+        "left_quadricep": leftQuadricep,
+        "right_quadricep": rightQuadricep,
+        "left_calf": leftCalf,
+        "right_calf": rightCalf,
+        "left_forearm": leftForearm,
+        "right_forearm": rightForearm,
+        "notes": notes,
+      };
 
-      // Add fields to the request
-      request.fields['username'] = username!;
-      request.fields['bodyweight'] = bodyWeight.toString();
-      request.fields['left_arm'] = leftArm.toString();
-      request.fields['right_arm'] = rightArm.toString();
-      request.fields['left_quadricep'] = leftQuadriceps.toString();
-      request.fields['right_quadricep'] = rightQuadriceps.toString();
-      request.fields['left_calve'] = leftCalve.toString();
-      request.fields['right_calve'] = rightCalve.toString();
-      request.fields['chest'] = chest.toString();
-      request.fields['left_forearm'] = leftForearm.toString();
-      request.fields['right_forearm'] = rightForearm.toString();
-      request.fields['waist'] = waist.toString();
+      var response = await client.post(
+        url,
+        body: body,
+        headers: {"Authorization": "Bearer $accessToken"},
+      );
 
-      // Send the request and get the response
-      var response = await request.send();
+      Map<String, dynamic> responseData = jsonDecode(response.body);
+      var message = responseData['message'];
 
-      // Check the response and return true if the request was successful
-      if (response.statusCode == 201 ||
-          (response.statusCode >= 200 && response.statusCode <= 299)) {
+      if (message == 'Measurement added successfully') {
         return true;
       } else {
-        // Handle other response statuses or errors here
         return false;
       }
     } catch (e) {

@@ -1,97 +1,83 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/features/profile/bloc/bloc/profile_bloc.dart';
 import 'package:mygymbuddy/features/profile/ui/edit_profile.dart';
+import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 
 class ViewProfile extends StatefulWidget {
-  ViewProfile({Key? key}) : super(key: key);
-
   @override
   State<ViewProfile> createState() => _ViewProfileState();
 }
 
 class _ViewProfileState extends State<ViewProfile> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ProfileBloc profileBloc = ProfileBloc();
     return Scaffold(
-      body: BlocConsumer<ProfileBloc, ProfileState>(
-        bloc: profileBloc,
-        listener: (context, state) {
-          if (state is NavigateEditPageState) {}
-        },
-        builder: (context, state) {
-          if (state is ProfileLoadingState) {
-            return const CircularProgressIndicator();
-          }
-
-          if (state is ProfileViewFailureState) {
-            return Center(
-              child: Container(
-                child: const Text(
-                  "Error Loading the Page Try again",
-                  style: TextStyle(color: Colors.red),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  const Text(
+                    "Profile Information",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: ClipOval(
+                  child: Container(
+                    width: 250, // Adjust the width and height as needed
+                    height: 250, // to control the circular shape
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: UserDataManager.userData["profile_picture"] != ""
+                        ? Image.network(
+                            'http://10.0.2.2:8000/media/${UserDataManager.userData['profile_picture']!}',
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            color: Colors.grey,
+                            child: Icon(Icons.person,
+                                size: 50, color: Colors.white),
+                          ),
+                  ),
                 ),
               ),
-            );
-          }
-
-          if (state is ProfileInitial) {
-            return SafeArea(
-              child: Center(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: const Icon(Icons.arrow_back)),
-                        const Text(
-                          "Profile Information",
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 100,
-                          backgroundImage: AssetImage(splashImage),
-                        ),
-                        Positioned(
-                            right: Get.width * 0.06,
-                            top: Get.height * 0.2,
-                            child: IconButton(
-                              onPressed: () {
-                                Get.to(() => EditProfile());
-                              },
-                              icon: Icon(FontAwesomeIcons.cameraRetro),
-                              color: Colors.blueAccent,
-                            ))
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    _buildText("UserName", "Abhishek123"),
-                    _buildText("Full Name", "Abhishek Bhujel"),
-                    _buildText("Age", "20"),
-                    _buildText("Current Fitness Goal", "Cutting"),
-                    _buildText("Email", "abc@example.com"),
-                    _buildText("Member Since", "2023-09-01"),
-                    _buildText("Pro Member Since", "2023-09-05"),
-                  ],
-                ),
-              ),
-            );
-          }
-          return const SizedBox();
-        },
+              const SizedBox(height: 20),
+              _buildText("UserName", UserDataManager.userData['username']!),
+              _buildText("Full Name", UserDataManager.userData['name']!),
+              _buildText("Age", UserDataManager.userData['age'].toString()!),
+              _buildText("Current Fitness Goal",
+                  UserDataManager.userData['fitness_goal']!),
+              _buildText("Email", UserDataManager.userData['email']!),
+              _buildText("Pro Member Since",
+                  UserDataManager.userData['is_pro_member']! ? "Yes" : "No"),
+              _buildText(
+                  "Fitness Level", UserDataManager.userData['fitness_level']!),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -13,46 +13,15 @@ class HomeInitial extends HomeState {
   // Represents the initial state of the home page.
 }
 
-class HomeLoadingState extends HomeState {}
-
-class HomeLoadedSuccessState extends HomeState {
-  // Represents the state when the home page content has been successfully loaded.
-  final List<FeatureModel> featuresModelList;
-
-  HomeLoadedSuccessState({required this.featuresModelList});
+class HomePageFetchDataLoadingState extends HomeActionState {
+  // Represents the state when the home page is fetching data.
 }
 
-class HomeErrorState extends HomeState {
-  // Represents the state when an error occurs on the home page.
+class HomePageFetchDataSuccessState extends HomeActionState {
+  final HomeModel homeModel;
+  HomePageFetchDataSuccessState(this.homeModel);
 }
 
-class HomeNavigateToWorkoutPageActionState extends HomeActionState {
-  // Represents the state when the home page needs to navigate to the workout page.
-}
-class HomeNavigateToMeditatePageActionState extends HomeActionState{}
-
-class HomeNavigateToExerciseGalleryPageActionState extends HomeActionState{}
-
-class HomeNavigateToCaloriesPageActionState extends HomeState {
-  // Represents the state when the home page needs to navigate to the calories page.
-}
-
-class HomeNavigateToBmiPageActionState extends HomeActionState {
-  // Represents the state when the home page needs to navigate to the BMI page.
-}
-
-class HomeNavigateToRemindersPageActionState extends HomeActionState {
-  // Represents the state when the home page needs to navigate to the reminders page.
-}
-
-class HomeNavigateToMeasurementsPageActionState extends HomeActionState {
-  // Represents the state when the home page needs to navigate to the measurements page.
-}
-
-class HomeNavigateToDrinkWaterPageActionState extends HomeActionState {
-  // Represents the state when the home page needs to navigate to the drink water page.
-}
-
-class HomeClickSideBarOptionActionState extends HomeState {
-  // Represents the state when a sidebar option has been clicked.
+class HomePageFetchDataFailureState extends HomeActionState {
+  
 }

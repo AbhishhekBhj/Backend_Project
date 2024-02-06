@@ -4,7 +4,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/data/local%20storage/user_auth_hive.dart';
 import 'package:mygymbuddy/data/models/signup_model.dart';
 import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';

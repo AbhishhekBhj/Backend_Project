@@ -47,4 +47,15 @@ class ExerciseModel {
       targetBodyPart: List<int>.from(map['target_body_part']),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'exercise_name': exerciseName,
+      'exercise_details': exerciseDetails,
+      'exercise_image': exerciseImage,
+      'calories_burned_per_hour': caloriesBurnedPerHour,
+      'target_body_part': targetBodyPart,
+    };
+  }
 }

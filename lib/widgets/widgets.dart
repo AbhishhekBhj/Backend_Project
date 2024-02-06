@@ -59,94 +59,94 @@ class LoginFormField extends StatelessWidget {
   }
 }
 
-class FeaturesWidget extends StatelessWidget {
-  FeaturesWidget({
-    Key? key,
-    required this.textTheme,
-    required this.homeBloc,
-  }) : super(key: key);
+// class FeaturesWidget extends StatelessWidget {
+//   FeaturesWidget({
+//     Key? key,
+//     required this.textTheme,
+//     required this.homeBloc,
+//   }) : super(key: key);
 
-  final HomeBloc homeBloc;
-  final TextTheme textTheme;
-  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+//   final HomeBloc homeBloc;
+//   final TextTheme textTheme;
+//   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: Scaffold(
-        appBar: CommonAppBar(),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10),
-          child: GridView.count(
-            // scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            crossAxisCount: 2, // Number of columns in the grid
-            crossAxisSpacing: 20.0, // Spacing between columns
-            mainAxisSpacing: 20.0, // Spacing between rows
-            children: [
-              FeatureCard(
-                image: aWorkout,
-                title: aStartWorkoutTitle,
-                subTitle: aStartWorkoutSubTitle,
-                onTap: () {
-                  homeBloc.add(StartWorkoutClickedEvent());
-                },
-              ),
-              FeatureCard(
-                image: aCalories,
-                title: aCaloriesTitle,
-                subTitle: aCaloriesSubTitle,
-                onTap: () {
-                  homeBloc.add(DietTrackerClickedEvent());
-                },
-              ),
-              FeatureCard(
-                image: aReminder,
-                title: aRemindersTitle,
-                subTitle: aRemindersSubTitle,
-                onTap: () {
-                  homeBloc.add(RemindersClickedEvent());
-                },
-              ),
-              FeatureCard(
-                image: aGlass,
-                title: aDrinkWaterTitle,
-                subTitle: aDrinkWaterSubTitle,
-                onTap: () {
-                  homeBloc.add(DrinkWaterClickedEvent());
-                },
-              ),
-              FeatureCard(
-                image: aBmi,
-                title: aBmiTitle,
-                subTitle: aBmiSubTitle,
-                onTap: () {
-                  homeBloc.add(BmiClickedEvent());
-                },
-              ),
-              FeatureCard(
-                image: aTape,
-                title: aMeasurementTitle,
-                subTitle: aMeasurementSubTitle,
-                onTap: () {
-                  homeBloc.add(MeasurementsClickedEvent());
-                },
-              ),
-              FeatureCard(
-                  image: aExerciseGallery,
-                  title: aExerciseGalleryTitle,
-                  subTitle: aExerciseGallerySubTitle),
-              FeatureCard(
-                  image: aMeditate,
-                  title: aMeditateTitle,
-                  subTitle: aMeditateSubTitle)
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Material(
+//       child: Scaffold(
+//         appBar: CommonAppBar(),
+//         body: Padding(
+//           padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 10),
+//           child: GridView.count(
+//             // scrollDirection: Axis.vertical,
+//             shrinkWrap: true,
+//             crossAxisCount: 2, // Number of columns in the grid
+//             crossAxisSpacing: 20.0, // Spacing between columns
+//             mainAxisSpacing: 20.0, // Spacing between rows
+//             children: [
+//               FeatureCard(
+//                 image: aWorkout,
+//                 title: aStartWorkoutTitle,
+//                 subTitle: aStartWorkoutSubTitle,
+//                 onTap: () {
+//                   homeBloc.add(StartWorkoutClickedEvent());
+//                 },
+//               ),
+//               FeatureCard(
+//                 image: aCalories,
+//                 title: aCaloriesTitle,
+//                 subTitle: aCaloriesSubTitle,
+//                 onTap: () {
+//                   homeBloc.add(DietTrackerClickedEvent());
+//                 },
+//               ),
+//               FeatureCard(
+//                 image: aReminder,
+//                 title: aRemindersTitle,
+//                 subTitle: aRemindersSubTitle,
+//                 onTap: () {
+//                   homeBloc.add(RemindersClickedEvent());
+//                 },
+//               ),
+//               FeatureCard(
+//                 image: aGlass,
+//                 title: aDrinkWaterTitle,
+//                 subTitle: aDrinkWaterSubTitle,
+//                 onTap: () {
+//                   homeBloc.add(DrinkWaterClickedEvent());
+//                 },
+//               ),
+//               FeatureCard(
+//                 image: aBmi,
+//                 title: aBmiTitle,
+//                 subTitle: aBmiSubTitle,
+//                 onTap: () {
+//                   homeBloc.add(BmiClickedEvent());
+//                 },
+//               ),
+//               FeatureCard(
+//                 image: aTape,
+//                 title: aMeasurementTitle,
+//                 subTitle: aMeasurementSubTitle,
+//                 onTap: () {
+//                   homeBloc.add(MeasurementsClickedEvent());
+//                 },
+//               ),
+//               FeatureCard(
+//                   image: aExerciseGallery,
+//                   title: aExerciseGalleryTitle,
+//                   subTitle: aExerciseGallerySubTitle),
+//               FeatureCard(
+//                   image: aMeditate,
+//                   title: aMeditateTitle,
+//                   subTitle: aMeditateSubTitle)
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class FeatureCard extends StatelessWidget {
   final String image;

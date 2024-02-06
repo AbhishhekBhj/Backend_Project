@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
 import 'package:mygymbuddy/features/exercise_library/ui/exercise_library.dart';
+import 'package:mygymbuddy/features/home/ui/edit_profile.dart';
 import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_view_history.dart';
@@ -12,6 +14,10 @@ import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/logins.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:provider/provider.dart';
+
+import '../../../functions/shared_preference_functions.dart';
+import '../../profile/bloc/bloc/profile_bloc.dart';
+import '../../profile/ui/change_password.dart';
 
 class OtherFeaturePage extends StatelessWidget {
   const OtherFeaturePage({Key? key});
@@ -42,7 +48,7 @@ class OtherFeaturePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
               child: Column(
@@ -78,8 +84,16 @@ class OtherFeaturePage extends StatelessWidget {
                     "Account",
                     style: textstyle(),
                   ),
-                  buildListTile(
-                      FontAwesomeIcons.bookOpen, () {}, "Change Password"),
+                  buildListTile(FontAwesomeIcons.bookOpen, () {
+                    Get.to(BlocProvider(
+                      create: (context) => ProfileBloc(),
+                      child: ChangePasswordScreen(),
+                    ));
+                  }, "Change Password"),
+
+                  buildListTile(Icons.person_2, () {
+                    Get.to(EditProfileScreen());
+                  }, "Edit Profile"),
 
                   DarkModeSwitchTile(),
 
@@ -113,36 +127,47 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Container(
-          width: Get.height * 0.1,
-          height: Get.height * 0.1,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage(splashImage),
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: ClipOval(
+              child: Container(
+                  width: Get.height * 0.12,
+                  height: Get.height * 0.12,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: UserDataManager.userData["profile_picture"] != ""
+                      ? Image.network(
+                          'http://10.0.2.2:8000/media/${UserDataManager.userData['profile_picture']!}',
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          color: Colors.grey,
+                          child:
+                              Icon(Icons.person, size: 50, color: Colors.white),
+                        )),
             ),
           ),
-        ),
-        Column(
-          children: [
-            Text(
-              "USERNAME",
-              style: TextStyle(fontSize: 20),
-            ),
-            TextButton(
-                onPressed: () {
-                  Get.to(ViewProfile());
-                },
-                child: Text("View Profile"))
-          ],
-        ),
-      ],
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                UserDataManager.userData["username"],
+                style: TextStyle(fontSize: 20),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Get.to(ViewProfile());
+                  },
+                  child: Text("View Profile"))
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

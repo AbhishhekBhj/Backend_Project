@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/welcome_screen.dart';
+import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Timer? timer;
   @override
   void initState() {
-    print('hi');
+    UserDataManager.init();
     startTimer();
     super.initState();
   }
@@ -35,8 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkUserNameAndNavigate() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var username = sharedPreferences.getString('username');
+    String? username = await getUsername();
 
     // Check whether to navigate to Signup Page or Home Page
     if (username != null) {

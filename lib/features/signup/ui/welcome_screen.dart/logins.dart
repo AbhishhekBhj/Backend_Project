@@ -7,6 +7,8 @@ import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 
+import '../loader/custom_loader.dart';
+
 class DemoLoginPage extends StatefulWidget {
   const DemoLoginPage({super.key});
 
@@ -116,16 +118,10 @@ class _DemoLoginPageState extends State<DemoLoginPage> {
                   },
                   bloc: loginBloc,
                   builder: (context, state) {
-                    if (state is LoginFailureState) {
-                      return Text("Error loggin in");
+                    if (state is LoginLoadingState) {
+                      return CustomLoader();
                     }
-
-                    return Column(
-                      children: [
-                        if (state is LoginLoadingState)
-                          CircularProgressIndicator(),
-                      ],
-                    );
+                    return Container();
                   },
                 )
               ],

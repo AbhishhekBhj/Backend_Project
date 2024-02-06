@@ -5,16 +5,22 @@ sealed class ProfileState {}
 
 final class ProfileInitial extends ProfileState {}
 
-class ProfileLoadingState extends ProfileState {}
 
-class ProfileViewFailureState extends ProfileState {}
 
-class NavigateEditPageState extends ProfileState {}
-
-class ProfileEditInitialState extends ProfileState {}
 
 class ProfileEditLoadingState extends ProfileState {}
 
 class ProfileEditSuccessState extends ProfileState {}
 
 class ProfileEditFailureState extends ProfileState {}
+
+
+class PasswordChangeLoadingState extends ProfileState {}
+class PasswordChangeSuccessState extends ProfileState {}
+class PasswordChangeFailureState extends ProfileState {}
+
+
+class PasswordCheckLoadingState extends ProfileState {}
+class PasswordCheckSuccessState extends ProfileState {}
+class PasswordCheckFailureState extends ProfileState {}
+

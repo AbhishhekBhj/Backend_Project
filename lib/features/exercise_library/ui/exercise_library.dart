@@ -1,16 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/data/models/exercise_gallery.dart';
-import 'package:mygymbuddy/features/exercise_library/bloc/bloc/exercise_library_bloc.dart';
 import 'package:mygymbuddy/features/exercise_library/exercise_details.dart';
+import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
-import 'package:mygymbuddy/widgets/custom_header_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:searchfield/searchfield.dart';
+
+import '../../../data/models/home_model.dart';
 
 class ExerciseLibrary extends StatefulWidget {
   ExerciseLibrary({Key? key}) : super(key: key);
@@ -21,13 +18,13 @@ class ExerciseLibrary extends StatefulWidget {
 
 class _ExerciseLibraryState extends State<ExerciseLibrary> {
   TextEditingController exerciseController = TextEditingController();
-  ExerciseLibraryBloc exerciseLibraryBloc = ExerciseLibraryBloc();
+  HomeBloc homeBloc = HomeBloc();
 
-  List<ExerciseModel> exercise = [];
+  List<Exercise> exercise = [];
 
   @override
   void initState() {
-    exerciseLibraryBloc.add(ExerciseGalleryFetchEvent());
+    homeBloc.add(HomePageFetchRequiredDataEvent());
     super.initState();
   }
 
@@ -36,13 +33,13 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
 
-    return BlocBuilder<ExerciseLibraryBloc, ExerciseLibraryState>(
-        bloc: exerciseLibraryBloc,
+    return BlocBuilder<HomeBloc, HomeState>(
+        bloc: homeBloc,
         builder: (context, state) {
-          if (state is ExerciseLibraryLoading) {
+          if (state is HomePageFetchDataLoadingState) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is ExerciseLibraryLoaded) {
-            exercise = state.exerciseGallery;
+          } else if (state is HomePageFetchDataSuccessState) {
+            exercise = state.homeModel.exerciseData;
 
             return SafeArea(
               child: Scaffold(
@@ -53,33 +50,31 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
-                body: Container(
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: exercise.length,
-                    padding: const EdgeInsets.all(15),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.65,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 5,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Get.to(
-                            ExerciseDetails(
-                              exerciseName: exercise[index].exerciseName,
-                              exerciseDetails: exercise[index].exerciseDetails,
-                              exerciseImage: exercise[index].exerciseImage,
-                              caloriesBurnedPerHour:
-                                  exercise[index].caloriesBurnedPerHour,
-                              targetBodyPart: exercise[index].targetBodyPart,
-                            ),
-                          );
-                        },
-                        child: Card(
+                body: GestureDetector(
+                  onTap: () {
+                    Get.to(ExerciseDetails(
+exerciseDetails: exercise[0].exerciseDetails,
+                      exerciseImage: exercise[0].exerciseImage,
+                      exerciseName: exercise[0].exerciseName,
+                      caloriesBurnedPerHour: exercise[0].caloriesBurnedPerHour,
+                      targetBodyPart: exercise[0].targetBodyPart,
+                    ));
+                  },
+                  child: Container(
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: exercise.length,
+                      padding: const EdgeInsets.all(15),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.65,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 5,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          shape: CircleBorder(),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -90,15 +85,21 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                               // You can also display the image here if available
                             ],
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
             );
           }
-          return Container();
+          return Scaffold(
+              appBar: AppBar(
+                title: const Text("Exercise Gallery"),
+              ),
+              body: Container(
+                child: Text(state.toString()),
+              ));
         });
   }
 }

@@ -7,9 +7,9 @@ sealed class MeasurementsEvent {}
 class MeasurementsInitialEvent extends MeasurementsEvent {}
 
 class MeasurementsUpdateClickedEvent extends MeasurementsEvent {
-  final Measurement measurementModel;
+  final BodyMeasurement bodyMeasurement;
   MeasurementsUpdateClickedEvent({
-    required this.measurementModel,
+    required this.bodyMeasurement,
   });
 }
 

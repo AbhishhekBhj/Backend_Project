@@ -14,7 +14,7 @@ class ExerciseDetails extends StatelessWidget {
   final String exerciseName;
   final String exerciseDetails;
   final String? exerciseImage;
-  final double caloriesBurnedPerHour;
+  final int caloriesBurnedPerHour;
   final List<int> targetBodyPart;
 
   @override
@@ -36,7 +36,7 @@ class ExerciseDetails extends StatelessWidget {
               width: double.infinity,
               child: (exerciseImage != null)
                   ? Image.network(
-                      exerciseImage!,
+                      'http:127.0.0.1:8000$exerciseImage!',
                       width: double.infinity,
                       height: 200,
                       fit: BoxFit.cover,
@@ -90,21 +90,15 @@ class ExerciseDetails extends StatelessWidget {
   String getBodyPartName(int id) {
     // Assuming you have a mapping from ID to body part name
     Map<int, String> bodyPartMapping = {
-      11: "Triceps",
-      12: "Biceps",
-      13: "Quads",
-      14: "Hamstrings",
-      15: "Chest",
-      16: "Back",
-      17: "Abs",
-      18: "Shoulders",
-      19: "Calves",
-      20: "Glutes",
-      21: "Forearms",
-      22: "Lats",
-      23: "Obliques",
-      24: "Traps",
-      25: "Rhomboids",
+      1: "Front Deltoids",
+      2: "Rear Deltoids",
+      3: "Quadriceps",
+      4: "Hamstrings",
+      5: "Glutes",
+      6: "Lower Back",
+      7: "Lats",
+      8: "Chest",
+      9: "Forearms",
     };
     return bodyPartMapping[id] ?? "Unknown";
   }

@@ -25,6 +25,15 @@ class BaseClass extends StatefulWidget {
 }
 
 class _BaseClassState extends State<BaseClass> {
+  late HomeBloc homeBloc;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    homeBloc = HomeBloc();
+    homeBloc.add(HomePageFetchRequiredDataEvent());
+  }
+
   @override
   void dispose() {
     // Dispose of the HomeBloc instance when the widget is disposed
@@ -38,61 +47,70 @@ class _BaseClassState extends State<BaseClass> {
     bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     int? selectedIndex = (widget.indexNum == null) ? 0 : widget.indexNum;
 
-    return BlocConsumer<HomeBloc, HomeState>(
-      bloc: homeBloc, // Use the pre-created HomeBloc instance
-      listener: (context, state) {
-        // You can add listeners here if needed
-      },
-      builder: (context, state) {
-        if (state is HomeInitial) {
-          return Scaffold(
-            // backgroundColor: Colors.grey[50],
-            bottomNavigationBar: Container(
-              child: BottomNavigationBar(
-                backgroundColor: isDarkMode ? Colors.white30 : Colors.black,
-                type: BottomNavigationBarType.fixed,
-                currentIndex: selectedIndex!,
-                selectedItemColor: isDarkMode ? Colors.black : Colors.white30,
-                selectedFontSize: 15,
-                unselectedItemColor: Colors.white,
-                onTap: _onItemTapped,
-                items: const [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.home), label: "Home"),
-                  BottomNavigationBarItem(
-                      icon: Icon(FontAwesomeIcons.glassWaterDroplet),
-                      label: "Drink Water"),
-                  BottomNavigationBarItem(
-                      icon: Icon(
-                        FontAwesomeIcons.dumbbell,
-                      ),
-                      label: "Workout"),
-                  BottomNavigationBarItem(
-                      icon: Icon(FontAwesomeIcons.clock), label: "Meditate"),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.menu), label: "More Options")
-                ],
-              ),
-            ),
-            body: IndexedStack(
-              
-              index: selectedIndex,
-              children: const [
-                HomePage(),
-                DrinkWater(),
-                WorkoutLoggingPage(),
-                StartMeditation(),
-                OtherFeaturePage()
-              ],
-            ),
-          );
-        }
-
-        return const Scaffold(
-          body: Center(child: Text("Error Loading Page")),
-        );
-      },
+    return Scaffold(
+      // backgroundColor: Colors.grey[50],
+      bottomNavigationBar: Container(
+        child: BottomNavigationBar(
+          backgroundColor: isDarkMode ? Colors.white30 : Colors.black,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: selectedIndex!,
+          selectedItemColor: isDarkMode ? Colors.black : Colors.white30,
+          selectedFontSize: 15,
+          unselectedItemColor: Colors.white,
+          onTap: _onItemTapped,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.glassWaterDroplet),
+                label: "Drink Water"),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  FontAwesomeIcons.dumbbell,
+                ),
+                label: "Workout"),
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.clock), label: "Meditate"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.menu), label: "More Options")
+          ],
+        ),
+      ),
+      body: IndexedStack(
+        index: selectedIndex,
+        children: const [
+          HomePage(),
+          DrinkWater(),
+          WorkoutLoggingPage(),
+          StartMeditation(),
+          OtherFeaturePage()
+        ],
+      ),
     );
+
+    // return BlocConsumer<HomeBloc, HomeState>(
+    //   bloc: homeBloc, // Use the pre-created HomeBloc instance
+    //   listener: (context, state) {
+    //     // You can add listeners here if needed
+    //   },
+    //   builder: (context, state) {
+    //     if (state is HomePageFetchDataSuccessState) {
+    //     }
+
+    //     // if (state is HomePageFetchDataLoadingState) {
+    //     //   return const Scaffold(
+    //     //     body: Center(child: CircularProgressIndicator()),
+    //     //   );
+    //     // }
+
+    //     // if (state is HomePageFetchDataFailureState) {
+    //     //   return const Scaffold(
+    //     //     body: Center(child: Text("An error occurred")),
+    //     //   );
+    //     // }
+
+    //     return Scaffold();
+    //   },
+    // );
   }
 
   void _onItemTapped(int index) {

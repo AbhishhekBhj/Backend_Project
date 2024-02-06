@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'package:mygymbuddy/data/models/measurement_model.dart';
 import 'package:mygymbuddy/features/repo/measurments%20repo/measurements_repository.dart';
@@ -25,28 +26,31 @@ class MeasurementsBloc extends Bloc<MeasurementsEvent, MeasurementsState> {
       Emitter<MeasurementsState> emit) async {
     emit(MeasurementUpdateLoadingState());
     bool updateMeasurement = await MeasurementsRepository.updateMeasurements(
-      
-      bodyWeight: event.measurementModel.bodyweight,
-      leftArm: event.measurementModel.leftArm,
-      rightArm: event.measurementModel.rightArm,
-      chest: event.measurementModel.chest,
-      leftQuadriceps: event.measurementModel.leftQuadricep,
-      rightQuadriceps: event.measurementModel.rightQuadricep,
-      leftCalve: event.measurementModel.leftCalve,
-      rightCalve: event.measurementModel.rightCalve,
-      leftForearm: event.measurementModel.leftForearm,
-      rightForearm: event.measurementModel.rightForearm,
-      waist: event.measurementModel.waist,
-    );
+        height: event.bodyMeasurement.height,
+        weight: event.bodyMeasurement.weight,
+        chestSize: event.bodyMeasurement.chestSize,
+        waistSize: event.bodyMeasurement.waistSize,
+        hipSize: event.bodyMeasurement.hipSize,
+        leftArm: event.bodyMeasurement.leftArm,
+        rightArm: event.bodyMeasurement.rightArm,
+        leftQuadricep: event.bodyMeasurement.leftQuadricep,
+        rightQuadricep: event.bodyMeasurement.rightQuadricep,
+        leftCalf: event.bodyMeasurement.leftCalf,
+        rightCalf: event.bodyMeasurement.rightCalf,
+        leftForearm: event.bodyMeasurement.leftForearm,
+        rightForearm: event.bodyMeasurement.rightForearm,
+        notes: event.bodyMeasurement.notes);
     if (updateMeasurement) {
+      Fluttertoast.showToast(msg: 'Measurement updated successfully');
       emit(MeasurementUpdateSuccessState());
     } else {
+      Fluttertoast.showToast(msg: 'Failed to update measurement');
       emit(MeasurmentsUpdateFailureState());
     }
   }
 
   FutureOr<void> measurementsHistoryViewEvent(
       MeasurementsHistoryViewEvent event, Emitter<MeasurementsState> emit) {
-    // Handle history view event...
+   
   }
 }

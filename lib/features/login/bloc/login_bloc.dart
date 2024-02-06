@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:meta/meta.dart';
 import 'package:mygymbuddy/data/models/login_model.dart';
 import 'package:mygymbuddy/features/repo/login%20repo/login_repository.dart';
@@ -31,6 +33,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (loginUserSuccess) {
       emit(LoginSuccessState());
     } else {
+      Fluttertoast.showToast(
+          msg: "Login Failed",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       emit(LoginFailureState());
     }
   }
