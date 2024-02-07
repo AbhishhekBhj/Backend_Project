@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/colours/colours.dart';
 import 'package:mygymbuddy/data/models/exercise_entry.dart';
+import 'package:mygymbuddy/features/workout/ui/add_set.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,7 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
   List<ExerciseEntry> workoutEntries = [];
 
   List<String> exerciseName = [];
+
 
   @override
   Widget build(BuildContext context) {

@@ -6,6 +6,8 @@ import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
 import 'package:mygymbuddy/features/calories/ui/calories_loggind.dart';
 import 'package:mygymbuddy/features/calories/ui/shimmer_effect.dart';
+import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
+import 'package:mygymbuddy/features/internet/ui/no_internet.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +19,14 @@ class CaloricInformation extends StatefulWidget {
 }
 
 class _CaloricInformationState extends State<CaloricInformation> {
+  late InternetBloc internetBloc;
   final CaloriesBloc caloriesBloc = CaloriesBloc();
   final TextEditingController foodNameController = TextEditingController();
 
   @override
   void initState() {
     caloriesBloc.add(CaloriesInitalEvent());
+    internetBloc = BlocProvider.of<InternetBloc>(context);
     super.initState();
   }
 
@@ -40,62 +44,73 @@ class _CaloricInformationState extends State<CaloricInformation> {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: Platform.isAndroid
-                          ? const Icon(Icons.arrow_back)
-                          : Icon(Icons.arrow_back_ios)),
-                  const Text(
-                    "Search Calories",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              buildSearchTextField(context),
-              BlocConsumer<CaloriesBloc, CaloriesState>(
-                bloc: caloriesBloc,
-                listenWhen: (previous, current) =>
-                    current is CaloriesActionState,
-                buildWhen: (previous, current) =>
-                    current is! CaloriesActionState,
-                listener: (context, state) {},
-                builder: (context, state) {
-                  print(state.runtimeType);
-                  switch (state.runtimeType) {
-                    // case CaloriesLoadingState:
-                    //   return const SizedBox(); // Don't display anything during loading
-                    case CaloriesFetchingState:
-                      return ShimmerFoodItem();
-                    case CaloriesFoundSuccessState:
-                      return Expanded(
-                        child: buildFoodList(
-                            (state as CaloriesFoundSuccessState).foodModel,
-                            context,
-                            isDarkMode),
-                      );
+      child: BlocBuilder<InternetBloc, InternetState>(
+        builder: (context, state) {
+          if (state is InternetLostState) {
+            return NoInternet();
+          } else {
+            return Scaffold(
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            icon: Platform.isAndroid
+                                ? const Icon(Icons.arrow_back)
+                                : Icon(Icons.arrow_back_ios)),
+                        const Text(
+                          "Search Calories",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    buildSearchTextField(context),
+                    BlocConsumer<CaloriesBloc, CaloriesState>(
+                      bloc: caloriesBloc,
+                      listenWhen: (previous, current) =>
+                          current is CaloriesActionState,
+                      buildWhen: (previous, current) =>
+                          current is! CaloriesActionState,
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        print(state.runtimeType);
+                        switch (state.runtimeType) {
+                          // case CaloriesLoadingState:
+                          //   return const SizedBox(); // Don't display anything during loading
+                          case CaloriesFetchingState:
+                            return ShimmerFoodItem();
+                          case CaloriesFoundSuccessState:
+                            return Expanded(
+                              child: buildFoodList(
+                                  (state as CaloriesFoundSuccessState)
+                                      .foodModel,
+                                  context,
+                                  isDarkMode),
+                            );
 
-                    case CaloriesFoundErrorState:
-                      return Container(
-                        child: const Center(
-                          child: Text("Food Item Not found in our Database"),
-                        ),
-                      );
-                    default:
-                      return const SizedBox();
-                  }
-                },
+                          case CaloriesFoundErrorState:
+                            return Container(
+                              child: const Center(
+                                child:
+                                    Text("Food Item Not found in our Database"),
+                              ),
+                            );
+                          default:
+                            return const SizedBox();
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
+            );
+          }
+        },
       ),
     );
   }

@@ -6,7 +6,9 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData _selectedTheme = ThemeData();
 
-  ThemeData lightTheme = ThemeData.light(useMaterial3: true);
+  ThemeData lightTheme = ThemeData.light(useMaterial3: true
+      // useMaterial3: true,
+      );
 
   ThemeData darkTheme = ThemeData.dark();
 

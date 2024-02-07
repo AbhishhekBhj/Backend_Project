@@ -23,7 +23,7 @@ class _ChooseWorkoutState extends State<ChooseWorkout> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    log(widget.exercise.toString());
+    log(widget.exercise.length.toString());
   }
 
   @override
@@ -44,19 +44,30 @@ class _ChooseWorkoutState extends State<ChooseWorkout> {
         //   color: Colors.red,
         // ),
         body: SizedBox(
-          height: Get.height * 0.75,
-          child: ListView.builder(
+          //
+          child: ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(
+              height: Get.height * 0.02,
+            ),
+            padding: const EdgeInsets.all(8),
+
             // shrinkWrap: true,
             itemBuilder: (context, index) {
-              return ListTile(
-                trailing: const Icon(Icons.add),
-                leading: const Icon(Icons.fitness_center),
-                title: Text(
-                    "${widget.exercise[index].exerciseName}List length: ${widget.exercise.length}"),
-                onTap: () {
-                  widget.onSelectExercise(widget.exercise[index]);
-                  Navigator.of(context).pop();
-                },
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  border: Border.all(
+                      color: isDarkMode ? Colors.white : Colors.black),
+                ),
+                child: ListTile(
+                  trailing: const Icon(Icons.add),
+                  leading: const Icon(Icons.fitness_center),
+                  title: Text("${widget.exercise[index].exerciseName}"),
+                  onTap: () {
+                    widget.onSelectExercise(widget.exercise[index]);
+                    Navigator.of(context).pop();
+                  },
+                ),
               );
             },
             itemCount: widget.exercise.length,

@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/features/workout/ui/add_set.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/home_model.dart';
@@ -23,6 +27,9 @@ class _StartWorkoutState extends State<StartWorkout> {
 
   List<Workout> workout = [];
   List<Exercise> exercise = [];
+
+  List<Exercise> exerciseName = [];
+  List<AddSetWidget> addSetWidgetList = [];
 
   void _showFinishWorkoutDialog() {
     showDialog(
@@ -50,17 +57,30 @@ class _StartWorkoutState extends State<StartWorkout> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    homeBloc.add(HomePageFetchRequiredDataEvent());
+  }
+
   bool showAppBar = true;
 
   void setSelectedExercise(Exercise selectedExercise) {
-    setState(() {
-      exercise.add(selectedExercise);
-    });
+    if (exerciseName.contains(selectedExercise)) {
+      Get.snackbar("Error", "Exercise already added");
+    } else {
+      setState(() {
+        exerciseName.add(selectedExercise);
+        addSetWidgetList.add(AddSetWidget(
+          exerciseName: selectedExercise.exerciseName,
+        ));
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    bool startedWorkout = workout.length == 0;
+    bool startedWorkout = exerciseName.length == 0;
 
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
@@ -81,13 +101,7 @@ class _StartWorkoutState extends State<StartWorkout> {
                 child: Scaffold(
                   appBar: showAppBar
                       ? AppBar(
-                          leading: IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_ios_new,
-                              color: isDarkMode ? Colors.black : Colors.white,
-                            ),
-                            onPressed: () => Navigator.of(context).pop(),
-                          ),
+                          automaticallyImplyLeading: false,
                           backgroundColor:
                               isDarkMode ? Colors.white : Colors.black,
                           actions: [
@@ -137,46 +151,105 @@ class _StartWorkoutState extends State<StartWorkout> {
                         }
                         return true;
                       },
-                      child: ListView(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                        addAutomaticKeepAlives: true,
-                        shrinkWrap: true,
-                        children: [
-                          startedWorkout
-                              ? Column(
+                      child: startedWorkout
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.dumbbell,
+                                    color: isDarkMode
+                                        ? Colors.white
+                                        : Colors.blueAccent,
+                                  ),
+                                  Text(
+                                    "You haven't Started Your Workout Yet",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      log(exercise.toString());
+                                      Get.to(
+                                        ChooseWorkout(
+                                          exercise: exercise,
+                                          onSelectExercise: setSelectedExercise,
+                                        ),
+                                      );
+                                    },
+                                    child: Text("Start Workout"),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : ListView.separated(
+                              separatorBuilder: (context, index) => Divider(),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Get.width * 0.03,
+                                  vertical: Get.height * 0.03),
+                              itemCount: addSetWidgetList.length,
+                              itemBuilder: (context, index) {
+                                return Column(
                                   children: [
-                                    Text(
-                                        "You haven't started a workout yet. Tap the button below to start a workout."),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Get.to(
-                                          ChooseWorkout(
-                                            exercise: exercise,
-                                            onSelectExercise:
-                                                setSelectedExercise,
-                                          ),
-                                        );
-                                      },
-                                      child: Text("Start Workout"),
+                                    addSetWidgetList[index],
+                                    SizedBox(
+                                      height: Get.height * 0.05,
                                     ),
-                                    // Display selected exercise(s) here
-                                    ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: exercise.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          title: Text(
-                                              exercise[index].exerciseName),
-                                          // Add more details or actions related to the selected exercise here
-                                        );
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          addSetWidgetList.removeAt(index); 
+                                          exerciseName.removeAt(index);
+                                        });
                                       },
+                                      child: Container(
+                                        color: isDarkMode
+                                            ? Colors.white
+                                            : Colors.blueAccent,
+                                        width: Get.width * 0.39,
+                                        height: Get.height * 0.065,
+                                        child: Center(
+                                          child: Text(
+                                            "Remove Exercise",
+                                            style: TextStyle(
+                                                color: isDarkMode
+                                                    ? Colors.black
+                                                    : Colors.white),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
-                                )
-                              : Container()
-                        ],
-                      )),
+                                );
+                              },
+                            )),
+                  bottomSheet: !startedWorkout
+                      ? GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              ChooseWorkout(
+                                exercise: exercise,
+                                onSelectExercise: setSelectedExercise,
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: Get.width * 0.39,
+                            height: Get.height * 0.065,
+                            color:
+                                isDarkMode ? Colors.white : Colors.blueAccent,
+                            child: Center(
+                              child: Text(
+                                "+ Add Exercise",
+                                style: TextStyle(
+                                    color: isDarkMode
+                                        ? Colors.black
+                                        : Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                      : null,
                 ),
               );
             },
