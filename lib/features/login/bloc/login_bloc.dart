@@ -13,15 +13,15 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
     on<LoginEvent>((event, emit) {
-      on<LoginInitialEvent>(loginInitialEvent);
+      // on<LoginInitialEvent>(loginInitialEvent);
       on<LoginButtonClickedEvent>(loginButtonClickedEvent);
     });
   }
 
-  FutureOr<void> loginInitialEvent(
-      LoginInitialEvent event, Emitter<LoginState> emit) {
-    emit(LoginInitial());
-  }
+  // FutureOr<void> loginInitialEvent(
+  //     LoginInitialEvent event, Emitter<LoginState> emit) {
+  //   emit(LoginInitial());
+  // }
 
   FutureOr<void> loginButtonClickedEvent(
       LoginButtonClickedEvent event, Emitter<LoginState> emit) async {

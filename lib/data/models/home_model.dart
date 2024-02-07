@@ -28,6 +28,8 @@ class Exercise {
       caloriesBurnedPerHour: json['calories_burned_per_hour'],
     );
   }
+
+  static fromMap(Exercise exerciseData) {}
 }
 
 class Workout {

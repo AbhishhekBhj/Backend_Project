@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
+import 'package:mygymbuddy/features/internet/ui/no_internet.dart';
 
 import 'package:provider/provider.dart';
 
@@ -39,6 +41,15 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
   final TextEditingController notesController = TextEditingController();
 
   final MeasurementsBloc measurementBloc = MeasurementsBloc();
+
+  late InternetBloc internetBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    internetBloc = BlocProvider.of<InternetBloc>(context);
+  }
 
   @override
   void dispose() {
@@ -92,204 +103,217 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
             ),
           ),
         ),
-        body: ListView(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                vertical: screenWidth * 0.085,
-                horizontal: screenWidth * 0.07,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+        body: BlocBuilder<InternetBloc, InternetState>(
+          bloc: internetBloc,
+          builder: (context, state) {
+            if (state is InternetLostState) {
+              return const  NoInternet();
+            } else {
+              return ListView(
                 children: [
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: heightController,
-                    decoration: const InputDecoration(
-                      hintText: 'Height (cm)',
-                      labelText: 'Height',
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: screenWidth * 0.085,
+                      horizontal: screenWidth * 0.07,
                     ),
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: bodyweightController,
-                    decoration: const InputDecoration(
-                      hintText: 'Body Weight (kg)',
-                      labelText: 'Body Weight',
-                    ),
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Left Arm (inches)',
-                      hintText: 'Left Arm',
-                    ),
-                    controller: leftArmController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Right Arm (inches)',
-                      hintText: 'Right Arm',
-                    ),
-                    controller: rightArmController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Left Forearm (inches)',
-                      hintText: 'Left Forearm',
-                    ),
-                    controller: leftForearmController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Right Forearm (inches)',
-                      hintText: 'Right Forearm',
-                    ),
-                    controller: rightForearmController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Chest (inches)',
-                      hintText: 'Chest',
-                    ),
-                    controller: chestController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Waist (inches)',
-                      hintText: 'Waist',
-                    ),
-                    controller: waistController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Left Quadricep (inches)',
-                      hintText: 'Left Quadricep',
-                    ),
-                    controller: leftQuadricepController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Right Quadricep (inches)',
-                      hintText: 'Right Quadricep',
-                    ),
-                    controller: rightQuadricepController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Left Calve (inches)',
-                      hintText: 'Left Calve',
-                    ),
-                    controller: leftCalveController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Right Calve (inches)',
-                      hintText: 'Right Calve',
-                    ),
-                    controller: rightCalveController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Hip Size (inches)',
-                      hintText: 'Hip Size',
-                    ),
-                    controller: hipSizeController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                      labelText: 'Notes',
-                      hintText: 'Additional Notes',
-                    ),
-                    controller: notesController,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (validateFields()) {
-                        measurementBloc.add(
-                          MeasurementsUpdateClickedEvent(
-                            bodyMeasurement: BodyMeasurement(
-                              height:
-                                  double.tryParse(heightController.text) ?? 0.0,
-                              weight:
-                                  double.tryParse(bodyweightController.text) ??
-                                      0.0,
-                              chestSize:
-                                  double.tryParse(chestController.text) ?? 0.0,
-                              waistSize:
-                                  double.tryParse(waistController.text) ?? 0.0,
-                              hipSize:
-                                  double.tryParse(hipSizeController.text) ??
-                                      0.0,
-                              leftArm:
-                                  double.tryParse(leftArmController.text) ??
-                                      0.0,
-                              rightArm:
-                                  double.tryParse(rightArmController.text) ??
-                                      0.0,
-                              leftQuadricep: double.tryParse(
-                                      leftQuadricepController.text) ??
-                                  0.0,
-                              rightQuadricep: double.tryParse(
-                                      rightQuadricepController.text) ??
-                                  0.0,
-                              leftCalf:
-                                  double.tryParse(leftCalveController.text) ??
-                                      0.0,
-                              rightCalf:
-                                  double.tryParse(rightCalveController.text) ??
-                                      0.0,
-                              leftForearm:
-                                  double.tryParse(leftForearmController.text) ??
-                                      0.0,
-                              rightForearm: double.tryParse(
-                                      rightForearmController.text) ??
-                                  0.0,
-                              notes: notesController.text,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          controller: heightController,
+                          decoration: const InputDecoration(
+                            hintText: 'Height (cm)',
+                            labelText: 'Height',
+                          ),
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          controller: bodyweightController,
+                          decoration: const InputDecoration(
+                            hintText: 'Body Weight (kg)',
+                            labelText: 'Body Weight',
+                          ),
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Left Arm (inches)',
+                            hintText: 'Left Arm',
+                          ),
+                          controller: leftArmController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Right Arm (inches)',
+                            hintText: 'Right Arm',
+                          ),
+                          controller: rightArmController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Left Forearm (inches)',
+                            hintText: 'Left Forearm',
+                          ),
+                          controller: leftForearmController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Right Forearm (inches)',
+                            hintText: 'Right Forearm',
+                          ),
+                          controller: rightForearmController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Chest (inches)',
+                            hintText: 'Chest',
+                          ),
+                          controller: chestController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Waist (inches)',
+                            hintText: 'Waist',
+                          ),
+                          controller: waistController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Left Quadricep (inches)',
+                            hintText: 'Left Quadricep',
+                          ),
+                          controller: leftQuadricepController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Right Quadricep (inches)',
+                            hintText: 'Right Quadricep',
+                          ),
+                          controller: rightQuadricepController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Left Calve (inches)',
+                            hintText: 'Left Calve',
+                          ),
+                          controller: leftCalveController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Right Calve (inches)',
+                            hintText: 'Right Calve',
+                          ),
+                          controller: rightCalveController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Hip Size (inches)',
+                            hintText: 'Hip Size',
+                          ),
+                          controller: hipSizeController,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                            labelText: 'Notes',
+                            hintText: 'Additional Notes',
+                          ),
+                          controller: notesController,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (validateFields()) {
+                              measurementBloc.add(
+                                MeasurementsUpdateClickedEvent(
+                                  bodyMeasurement: BodyMeasurement(
+                                    height: double.tryParse(
+                                            heightController.text) ??
+                                        0.0,
+                                    weight: double.tryParse(
+                                            bodyweightController.text) ??
+                                        0.0,
+                                    chestSize:
+                                        double.tryParse(chestController.text) ??
+                                            0.0,
+                                    waistSize:
+                                        double.tryParse(waistController.text) ??
+                                            0.0,
+                                    hipSize: double.tryParse(
+                                            hipSizeController.text) ??
+                                        0.0,
+                                    leftArm: double.tryParse(
+                                            leftArmController.text) ??
+                                        0.0,
+                                    rightArm: double.tryParse(
+                                            rightArmController.text) ??
+                                        0.0,
+                                    leftQuadricep: double.tryParse(
+                                            leftQuadricepController.text) ??
+                                        0.0,
+                                    rightQuadricep: double.tryParse(
+                                            rightQuadricepController.text) ??
+                                        0.0,
+                                    leftCalf: double.tryParse(
+                                            leftCalveController.text) ??
+                                        0.0,
+                                    rightCalf: double.tryParse(
+                                            rightCalveController.text) ??
+                                        0.0,
+                                    leftForearm: double.tryParse(
+                                            leftForearmController.text) ??
+                                        0.0,
+                                    rightForearm: double.tryParse(
+                                            rightForearmController.text) ??
+                                        0.0,
+                                    notes: notesController.text,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Fluttertoast.showToast(
+                                backgroundColor: Colors.deepPurpleAccent,
+                                msg: 'Please fill all the fields',
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                isDarkMode ? Colors.white : Colors.black,
+                          ),
+                          child: Text(
+                            'Update Measurements',
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.black : Colors.white,
                             ),
                           ),
-                        );
-                      } else {
-                        Fluttertoast.showToast(
-                          backgroundColor: Colors.deepPurpleAccent,
-                          msg: 'Please fill all the fields',
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isDarkMode ? Colors.white : Colors.black,
-                    ),
-                    child: Text(
-                      'Update Measurements',
-                      style: TextStyle(
-                        color: isDarkMode ? Colors.black : Colors.white,
-                      ),
+                        ),
+                      ],
                     ),
                   ),
+                  BlocBuilder(
+                    bloc: measurementBloc,
+                    builder: (context, state) {
+                      if (state is MeasurementUpdateLoadingState) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return Container();
+                    },
+                  ),
                 ],
-              ),
-            ),
-            BlocBuilder(
-              bloc: measurementBloc,
-              builder: (context, state) {
-                if (state is MeasurementUpdateLoadingState) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return Container();
-              },
-            ),
-          ],
+              );
+            }
+          },
         ),
       ),
     );

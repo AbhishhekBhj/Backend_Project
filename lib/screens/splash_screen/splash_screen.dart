@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,9 +38,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   checkUserNameAndNavigate() async {
     String? username = await getUsername();
+    log(username!);
 
     // Check whether to navigate to Signup Page or Home Page
-    if (username != null) {
+    if (username.isNotEmpty) {
       Get.offAll(() => BaseClass());
     } else {
       Get.offAll(() => WelcomeScreen());

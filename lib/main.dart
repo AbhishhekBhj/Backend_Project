@@ -3,8 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:mygymbuddy/features/add%20water%20drank/bloc/bloc/water_drink_bloc.dart';
+import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
+import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
+import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/workout/bloc/bloc/workout_bloc.dart';
+import 'package:mygymbuddy/features/workout/ui/workout.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,11 +54,14 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider<SignupBloc>(
               create: (context) => SignupBloc(),
-            )
+            ),
+            BlocProvider(create: (context) => InternetBloc()),
+            BlocProvider(create: (context) => LoginBloc()),
           ],
           child: GetMaterialApp(
             title: 'My Gym Buddy',
             theme: themeProvider.getTheme,
+            // home: UpdateMeasurements(),
             home: SplashScreen(),
             debugShowCheckedModeBanner: false,
           ),

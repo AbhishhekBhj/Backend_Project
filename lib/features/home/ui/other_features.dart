@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
 import 'package:mygymbuddy/features/exercise_library/ui/exercise_library.dart';
 import 'package:mygymbuddy/features/home/ui/edit_profile.dart';
-import 'package:mygymbuddy/features/login/ui/login.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_view_history.dart';
 import 'package:mygymbuddy/features/profile/ui/view_profile.dart';

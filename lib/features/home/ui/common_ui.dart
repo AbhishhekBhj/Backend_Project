@@ -8,6 +8,7 @@ import 'package:mygymbuddy/features/home/ui/homee.dart';
 import 'package:mygymbuddy/features/home/ui/other_features.dart';
 import 'package:mygymbuddy/features/meditate/ui/meditate.dart';
 import 'package:mygymbuddy/features/workout/ui/start_workout.dart';
+import 'package:mygymbuddy/features/workout/ui/workout.dart';
 import 'package:provider/provider.dart';
 
 import '../../../provider/themes/theme_provider.dart';
@@ -80,7 +81,8 @@ class _BaseClassState extends State<BaseClass> {
         children: const [
           HomePage(),
           DrinkWater(),
-          WorkoutLoggingPage(),
+          StartWorkout(),
+          // WorkoutLoggingPage(),
           StartMeditation(),
           OtherFeaturePage()
         ],
