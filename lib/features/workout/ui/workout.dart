@@ -31,6 +31,115 @@ class _StartWorkoutState extends State<StartWorkout> {
   List<Exercise> exerciseName = [];
   List<AddSetWidget> addSetWidgetList = [];
 
+  void _showWorkoutQuitDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Quit Workout"),
+          content: Text("Are you sure you want to quit the workout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAddExerciseDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Add Exercise"),
+          content: Text("Are you sure you want to add an exercise?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showRemoveExerciseDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Remove Exercise"),
+          content: Text("Are you sure you want to remove the exercise?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showQuitWorkoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Quit Workout"),
+          content: Text("Are you sure you want to quit the workout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  //reset the staee of the lists
+                  exerciseName = [];
+                  addSetWidgetList = [];
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showFinishWorkoutDialog() {
     showDialog(
       context: context,
@@ -140,7 +249,7 @@ class _StartWorkoutState extends State<StartWorkout> {
                           if (notification.scrollDelta! > 0) {
                             setState(() {
                               //user is scrolling down
-                              showAppBar = false;
+                              showAppBar = false; 
                             });
                           } else if (notification.scrollDelta! < 0) {
                             //user is scrolling up
@@ -198,7 +307,7 @@ class _StartWorkoutState extends State<StartWorkout> {
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          addSetWidgetList.removeAt(index); 
+                                          addSetWidgetList.removeAt(index);
                                           exerciseName.removeAt(index);
                                         });
                                       },
@@ -224,29 +333,59 @@ class _StartWorkoutState extends State<StartWorkout> {
                               },
                             )),
                   bottomSheet: !startedWorkout
-                      ? GestureDetector(
-                          onTap: () {
-                            Get.to(
-                              ChooseWorkout(
-                                exercise: exercise,
-                                onSelectExercise: setSelectedExercise,
+                      ? Padding(
+                          padding: EdgeInsets.only(bottom: Get.height * 0.035),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  _showQuitWorkoutDialog();
+                                },
+                                child: Container(
+                                  width: Get.width * 0.39,
+                                  height: Get.height * 0.065,
+                                  color: isDarkMode
+                                      ? Colors.white
+                                      : Colors.blueAccent,
+                                  child: Center(
+                                    child: Text(
+                                      "Quit Workout",
+                                      style: TextStyle(
+                                          color: isDarkMode
+                                              ? Colors.black
+                                              : Colors.white),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            );
-                          },
-                          child: Container(
-                            width: Get.width * 0.39,
-                            height: Get.height * 0.065,
-                            color:
-                                isDarkMode ? Colors.white : Colors.blueAccent,
-                            child: Center(
-                              child: Text(
-                                "+ Add Exercise",
-                                style: TextStyle(
-                                    color: isDarkMode
-                                        ? Colors.black
-                                        : Colors.white),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(
+                                    ChooseWorkout(
+                                      exercise: exercise,
+                                      onSelectExercise: setSelectedExercise,
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: Get.width * 0.39,
+                                  height: Get.height * 0.065,
+                                  color: isDarkMode
+                                      ? Colors.white
+                                      : Colors.blueAccent,
+                                  child: Center(
+                                    child: Text(
+                                      "+ Add Exercise",
+                                      style: TextStyle(
+                                          color: isDarkMode
+                                              ? Colors.black
+                                              : Colors.white),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         )
                       : null,

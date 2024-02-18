@@ -5,6 +5,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:mygymbuddy/features/add%20water%20drank/bloc/bloc/water_drink_bloc.dart';
 import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
+import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/workout/bloc/bloc/workout_bloc.dart';
@@ -22,6 +23,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
 
   runApp(
     ChangeNotifierProvider(
@@ -58,6 +61,7 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider(create: (context) => InternetBloc()),
             BlocProvider(create: (context) => LoginBloc()),
+            BlocProvider(create: (context) => MeasurementsBloc())
           ],
           child: GetMaterialApp(
             title: 'My Gym Buddy',

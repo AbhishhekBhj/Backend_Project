@@ -15,8 +15,10 @@ import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../functions/shared_preference_functions.dart';
+import '../../measurements/ui/update_measurement.dart';
 import '../../profile/bloc/bloc/profile_bloc.dart';
 import '../../profile/ui/change_password.dart';
+import '../../progress/ui/progress.dart';
 
 class OtherFeaturePage extends StatelessWidget {
   const OtherFeaturePage({Key? key});
@@ -65,10 +67,10 @@ class OtherFeaturePage extends StatelessWidget {
                     Get.to(ExerciseLibrary());
                   }, "Exercise Gallery"),
                   buildListTile(FontAwesomeIcons.chartColumn, () {
-                    Get.to(ViewMeasurementsHistory());
+                    Get.to(ViewProgressOptions());
                   }, "Progress"),
                   buildListTile(Icons.update, () {
-                    Get.to(UpdateMeasurements());
+                    Get.to(UpdateMeasurementsScreen());
                   }, "Update Your Measurements"),
                   buildListTile(FontAwesomeIcons.calculator, () {
                     Get.to(BMI());

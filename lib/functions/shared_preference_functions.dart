@@ -1,6 +1,10 @@
+import "dart:convert";
 import "dart:developer";
 
+import "package:hive_flutter/hive_flutter.dart";
 import "package:shared_preferences/shared_preferences.dart";
+
+import "../data/models/home_model.dart";
 
 // this file will contain all the function to set and get values wherever shared preference is required
 Future<void> saveUsername(String? username) async {
@@ -34,6 +38,14 @@ Future<void> saveRefreshToken(String? refreshToken) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString(
       'refreshToken', refreshToken ?? ''); // Save the refresh token
+}
+
+Future<void> saveExerciseList(List<Exercise> exerciseList) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  log('method invoked, exerciseList: $exerciseList');
+  bool value = await prefs.setStringList(
+      "exerciseList", exerciseList.map((e) => e.toJson().toString()).toList());
+  log(value.toString());
 }
 
 class SharedPreferenceHelper {
@@ -83,11 +95,30 @@ class UserDataManager {
 
   static Map<String, dynamic> get userData => _userData;
 
-  static void set userData(Map<String, dynamic> userData) {
+  static set userData(Map<String, dynamic> userData) {
     _userData = userData;
   }
 
   static Future<void> init() async {
     _userData = await SharedPreferenceHelper.getUserData();
+  }
+}
+
+class ExerciseBox {
+  static const String _boxName = "exerciseList";
+
+  Future<void> saveExerciseList(List<Exercise> exerciseList) async {
+    log('method invokeds, exerciseList: $exerciseList');
+    var box = await Hive.openBox<Exercise>(_boxName);
+    await box.clear();
+    await box.addAll(exerciseList);
+    await box.close();
+  }
+
+  Future<List<Exercise>> getExerciseList() async {
+    var box = await Hive.openBox<Exercise>(_boxName);
+    List<Exercise> exerciseList = box.values.toList();
+    await box.close();
+    return exerciseList;
   }
 }

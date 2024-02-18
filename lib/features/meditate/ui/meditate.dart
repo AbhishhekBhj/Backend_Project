@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:mygymbuddy/audio/play_notification_audio.dart';
 
 class StartMeditation extends StatefulWidget {
   const StartMeditation({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class StartMeditation extends StatefulWidget {
 }
 
 class _HomePageState extends State<StartMeditation> {
+  final PlayNotificiationSound playNotificiationSound =
+      PlayNotificiationSound();
   AudioPlayer audioPlayer = AudioPlayer();
 
   Timer? timer;
@@ -55,6 +58,8 @@ class _HomePageState extends State<StartMeditation> {
   }
 
   stopTimerr() {
+    playNotificiationSound.playNotification();
+
     timer!.cancel();
     setState(() {});
   }

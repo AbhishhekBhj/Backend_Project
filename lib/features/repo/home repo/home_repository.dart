@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:mygymbuddy/data/models/home_model.dart';
 import 'package:mygymbuddy/functions/shared_preference_functions.dart';
@@ -34,6 +35,15 @@ class HomeRepository {
         waterIntakeData = homeModel.waterIntakeData;
         reminderData = homeModel.reminderData;
         measurementData = homeModel.measurementData;
+
+        ExerciseBox exerciseBox = ExerciseBox();
+        await exerciseBox.saveExerciseList(exerciseData);
+        // final exerciseDataList = exerciseData.map((e) => e.toJson()).toList();
+
+        // final exerciseDataBox = await Hive.openBox('exerciseData');
+        // await exerciseDataBox.put('exerciseData', exerciseDataList);
+
+        // saveExerciseList(exerciseData);
       }
       return HomeModel(
         exerciseData: exerciseData,

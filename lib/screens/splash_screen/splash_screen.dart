@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (username.isNotEmpty) {
       Get.offAll(() => BaseClass());
     } else {
-      Get.offAll(() => WelcomeScreen());
+      Get.offAll(() => BaseClass());
     }
   }
 

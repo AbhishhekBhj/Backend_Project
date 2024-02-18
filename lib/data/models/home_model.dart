@@ -30,6 +30,8 @@ class Exercise {
   }
 
   static fromMap(Exercise exerciseData) {}
+
+  toJson() {}
 }
 
 class Workout {

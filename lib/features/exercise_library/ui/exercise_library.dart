@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/exercise_library/exercise_details.dart';
 import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
+import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +23,15 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
 
   List<Exercise> exercise = [];
 
+  List<Exercise> exerciseData = [];
+
   @override
   void initState() {
-    homeBloc.add(HomePageFetchRequiredDataEvent());
+    // homeBloc.add(HomePageFetchRequiredDataEvent());
     super.initState();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +58,7 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                 body: GestureDetector(
                   onTap: () {
                     Get.to(ExerciseDetails(
-exerciseDetails: exercise[0].exerciseDetails,
+                      exerciseDetails: exercise[0].exerciseDetails,
                       exerciseImage: exercise[0].exerciseImage,
                       exerciseName: exercise[0].exerciseName,
                       caloriesBurnedPerHour: exercise[0].caloriesBurnedPerHour,
@@ -79,7 +84,7 @@ exerciseDetails: exercise[0].exerciseDetails,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Image(image: AssetImage(aWorkout)),
-                              Text(exercise[index].exerciseName),
+                              Text(exerciseData[index].exerciseName),
                               const SizedBox(height: 10),
                               // Add more details if needed
                               // You can also display the image here if available
