@@ -26,20 +26,7 @@ class MeasurementsBloc extends Bloc<MeasurementsEvent, MeasurementsState> {
       Emitter<MeasurementsState> emit) async {
     emit(MeasurementUpdateLoadingState());
     bool updateMeasurement = await MeasurementsRepository.updateMeasurements(
-        height: event.bodyMeasurement.height,
-        weight: event.bodyMeasurement.weight,
-        chestSize: event.bodyMeasurement.chestSize,
-        waistSize: event.bodyMeasurement.waistSize,
-        hipSize: event.bodyMeasurement.hipSize,
-        leftArm: event.bodyMeasurement.leftArm,
-        rightArm: event.bodyMeasurement.rightArm,
-        leftQuadricep: event.bodyMeasurement.leftQuadricep,
-        rightQuadricep: event.bodyMeasurement.rightQuadricep,
-        leftCalf: event.bodyMeasurement.leftCalf,
-        rightCalf: event.bodyMeasurement.rightCalf,
-        leftForearm: event.bodyMeasurement.leftForearm,
-        rightForearm: event.bodyMeasurement.rightForearm,
-        notes: event.bodyMeasurement.notes);
+        bodyMeasurement: event.bodyMeasurement);
     if (updateMeasurement) {
       Fluttertoast.showToast(msg: 'Measurement updated successfully');
       emit(MeasurementUpdateSuccessState());
@@ -50,7 +37,5 @@ class MeasurementsBloc extends Bloc<MeasurementsEvent, MeasurementsState> {
   }
 
   FutureOr<void> measurementsHistoryViewEvent(
-      MeasurementsHistoryViewEvent event, Emitter<MeasurementsState> emit) {
-   
-  }
+      MeasurementsHistoryViewEvent event, Emitter<MeasurementsState> emit) {}
 }

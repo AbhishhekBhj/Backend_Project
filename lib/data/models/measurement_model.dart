@@ -8,7 +8,8 @@ class BodyMeasurement {
   final double hipSize;
   final double leftArm;
   final double rightArm;
-  
+  final int user;
+
   final double leftQuadricep;
   final double rightQuadricep;
   final double leftCalf;
@@ -25,7 +26,6 @@ class BodyMeasurement {
     required this.hipSize,
     required this.leftArm,
     required this.rightArm,
-    
     required this.leftQuadricep,
     required this.rightQuadricep,
     required this.leftCalf,
@@ -33,6 +33,7 @@ class BodyMeasurement {
     required this.leftForearm,
     required this.rightForearm,
     required this.notes,
+    required this.user,
   });
 
   Map<String, dynamic> toMap() {
@@ -44,7 +45,6 @@ class BodyMeasurement {
       'hipSize': hipSize,
       'leftArm': leftArm,
       'rightArm': rightArm,
-      
       'leftQuadricep': leftQuadricep,
       'rightQuadricep': rightQuadricep,
       'leftCalf': leftCalf,
@@ -52,11 +52,13 @@ class BodyMeasurement {
       'leftForearm': leftForearm,
       'rightForearm': rightForearm,
       'notes': notes,
+      'user': user,
     };
   }
 
   factory BodyMeasurement.fromMap(Map<String, dynamic> map) {
     return BodyMeasurement(
+      user: map['id'] as int,
       height: map['height'] as double,
       weight: map['weight'] as double,
       chestSize: map['chest_size'] as double,
@@ -64,7 +66,6 @@ class BodyMeasurement {
       hipSize: map['hip_size'] as double,
       leftArm: map['left_arm'] as double,
       rightArm: map['right_arm'] as double,
-     
       leftQuadricep: map['left_quadricep'] as double,
       rightQuadricep: map['right_quadricep'] as double,
       leftCalf: map['left_calf'] as double,

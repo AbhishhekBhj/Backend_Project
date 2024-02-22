@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 
@@ -32,22 +33,19 @@ class ExerciseDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 200,
-              width: double.infinity,
-              child: (exerciseImage != null)
-                  ? Image.network(
-                      'http:127.0.0.1:8000$exerciseImage!',
-                      width: double.infinity,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      splashIcon,
-                      width: double.infinity,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-            ),
+                width: double.infinity,
+                child: CachedNetworkImage(
+                  imageUrl: 'http://10.0.2.2:8000${exerciseImage!}',
+                  placeholder: (context, url) => Container(
+                    color: Colors.grey,
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.grey,
+                    child: Image.asset('assets/img/noimage.png'),
+                  ),
+                  fit: BoxFit.cover,
+                )),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
@@ -74,6 +72,7 @@ class ExerciseDetails extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
+                  Text(exerciseImage!.length.toString()),
                 ],
               ),
             ),

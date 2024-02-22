@@ -1,4 +1,4 @@
-class Exercise {
+class Exercises {
   final int exerciseId;
   final String exerciseName;
   final String exerciseDetails;
@@ -7,7 +7,7 @@ class Exercise {
   final List<int> targetBodyPart;
   final int caloriesBurnedPerHour;
 
-  Exercise({
+  Exercises({
     required this.exerciseId,
     required this.exerciseName,
     required this.exerciseDetails,
@@ -17,8 +17,8 @@ class Exercise {
     required this.caloriesBurnedPerHour,
   });
 
-  factory Exercise.fromJson(Map<String, dynamic> json) {
-    return Exercise(
+  factory Exercises.fromJson(Map<String, dynamic> json) {
+    return Exercises(
       exerciseId: json['exercise_id'],
       exerciseName: json['exercise_name'],
       exerciseDetails: json['exercise_details'],
@@ -29,7 +29,7 @@ class Exercise {
     );
   }
 
-  static fromMap(Exercise exerciseData) {}
+  static fromMap(Exercises exerciseData) {}
 
   toJson() {}
 }
@@ -137,7 +137,7 @@ class Reminder {
 }
 
 class HomeModel {
-  final List<Exercise> exerciseData;
+  final List<Exercises> exerciseData;
   final Map<String, dynamic> workoutData;
   final Map<String, dynamic> waterIntakeData;
   final Map<String, dynamic> reminderData;
@@ -154,9 +154,9 @@ class HomeModel {
 
   factory HomeModel.fromJson(Map<String, dynamic> json) {
     return HomeModel(
-      exerciseData: List<Exercise>.from(
+      exerciseData: List<Exercises>.from(
         json['data']['exercise_data']
-            .map((exercise) => Exercise.fromJson(exercise)),
+            .map((exercise) => Exercises.fromJson(exercise)),
       ),
       workoutData: json['data']['workout_data'],
       waterIntakeData: json['data']['water_intake_data'],

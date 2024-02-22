@@ -27,26 +27,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  // Future<double> returnCaloriesConsumed(
-  //     SharedPreferenceManager sharedPreferenceManager) async {
-  //   double value = await sharedPreferenceManager.getCaloriesConsumedValue();
-  //   log(value.toString());
-  //   return value;
-  // }
-
-  // Future<void> initializeData() async {
-  //   SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager();
-  //   final consumedCalories =
-  //       await returnCaloriesConsumed(sharedPreferenceManager);
-
-  //   setState(() {
-  //     currentConsumedCalories = consumedCalories;
-  //     print(currentConsumedCalories);
-  //     currentRemainingCalories =
-  //         currentDailyCalorieGoal - currentConsumedCalories;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -55,14 +35,18 @@ class _HomePageState extends State<HomePage> {
         currentDailyCalorieGoal - currentConsumedCalories;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          shape: CircleBorder(),
-          foregroundColor: Colors.white,
-          backgroundColor: isDarkMode ? Colors.white30 : Colors.black,
-          onPressed: () {
-            Get.to(
-              CaloricInformation(),
-            );
-          }),
+        onPressed: () {
+          Get.to(
+            CaloricInformation(),
+          );
+        },
+        backgroundColor: Colors.deepPurple,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        elevation: 4.0,
+      ),
       body: SafeArea(
         child: Center(
           child: ListView(

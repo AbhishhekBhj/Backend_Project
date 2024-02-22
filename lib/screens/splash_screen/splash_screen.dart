@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/features/graph/ui/graph_ui.dart';
 import 'package:mygymbuddy/features/home/ui/common_ui.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/welcome_screen.dart';
 import 'package:mygymbuddy/functions/shared_preference_functions.dart';
@@ -44,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (username.isNotEmpty) {
       Get.offAll(() => BaseClass());
     } else {
-      Get.offAll(() => BaseClass());
+      Get.offAll(() => WelcomeScreen());
     }
   }
 

@@ -94,10 +94,10 @@ class _DemoLoginPageState extends State<DemoLoginPage> {
                   },
                   child: Text('Login'),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF0DA0FF),
+                    backgroundColor: Color(0xFF0DA0FF),
                     padding: EdgeInsets.symmetric(
                         horizontal: Get.width * 0.25, vertical: 20),
-                    onPrimary: Colors.white,
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32.0),
                     ),

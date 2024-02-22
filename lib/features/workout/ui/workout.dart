@@ -26,9 +26,9 @@ class _StartWorkoutState extends State<StartWorkout> {
   late InternetBloc internetBloc;
 
   List<Workout> workout = [];
-  List<Exercise> exercise = [];
+  List<Exercises> exercise = [];
 
-  List<Exercise> exerciseName = [];
+  List<Exercises> exerciseName = [];
   List<AddSetWidget> addSetWidgetList = [];
 
   void _showWorkoutQuitDialog() {
@@ -174,7 +174,7 @@ class _StartWorkoutState extends State<StartWorkout> {
 
   bool showAppBar = true;
 
-  void setSelectedExercise(Exercise selectedExercise) {
+  void setSelectedExercise(Exercises selectedExercise) {
     if (exerciseName.contains(selectedExercise)) {
       Get.snackbar("Error", "Exercise already added");
     } else {

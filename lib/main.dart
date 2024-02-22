@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:mygymbuddy/data/models/home_model.dart';
 import 'package:mygymbuddy/features/add%20water%20drank/bloc/bloc/water_drink_bloc.dart';
 import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
@@ -18,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/home/bloc/home_bloc.dart';
+import 'functions/exercise.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +27,7 @@ Future<void> main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
+  Hive.registerAdapter(ExerciseAdapter());
 
   runApp(
     ChangeNotifierProvider(

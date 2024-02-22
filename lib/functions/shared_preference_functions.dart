@@ -5,6 +5,7 @@ import "package:hive_flutter/hive_flutter.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "../data/models/home_model.dart";
+import 'exercise.dart';
 
 // this file will contain all the function to set and get values wherever shared preference is required
 Future<void> saveUsername(String? username) async {
@@ -40,7 +41,7 @@ Future<void> saveRefreshToken(String? refreshToken) async {
       'refreshToken', refreshToken ?? ''); // Save the refresh token
 }
 
-Future<void> saveExerciseList(List<Exercise> exerciseList) async {
+Future<void> saveExerciseList(List<Exercises> exerciseList) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   log('method invoked, exerciseList: $exerciseList');
   bool value = await prefs.setStringList(
@@ -107,18 +108,41 @@ class UserDataManager {
 class ExerciseBox {
   static const String _boxName = "exerciseList";
 
-  Future<void> saveExerciseList(List<Exercise> exerciseList) async {
-    log('method invokeds, exerciseList: $exerciseList');
+  static Future<void> saveExerciseList(List<dynamic> exerciseList) async {
+    // Convert each dynamic object into an Exercise object
+    List<Exercise> exercises = exerciseList.map((dynamic item) {
+      return Exercise.fromJson(item);
+    }).toList();
+
+    // Save the list of Exercise objects
     var box = await Hive.openBox<Exercise>(_boxName);
     await box.clear();
-    await box.addAll(exerciseList);
-    await box.close();
+    await box.addAll(exercises);
   }
 
-  Future<List<Exercise>> getExerciseList() async {
+  static Future<List<Exercise>> getExerciseList() async {
     var box = await Hive.openBox<Exercise>(_boxName);
     List<Exercise> exerciseList = box.values.toList();
-    await box.close();
+    log(exerciseList.toString() + "exerciseList");
     return exerciseList;
   }
 }
+
+
+// class ExerciseBox {
+//   static const String _boxName = "exerciseList";
+
+//   static Future<void> saveExercisesList(List<Exercises> exercisesList) async {
+//     var box = await Hive.openBox<Exercises>(_boxName);
+//     await box.clear();
+//     await box.addAll(exercisesList);
+//     await box.close();
+//   }
+
+// static  Future<List<Exercises>> getExercisesList() async {
+//     var box = await Hive.openBox<Exercises>(_boxName);
+//     List<Exercises> exercisesList = box.values.toList();
+//     await box.close();
+//     return exercisesList;
+//   }
+// }

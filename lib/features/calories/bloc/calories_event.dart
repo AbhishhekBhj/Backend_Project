@@ -7,9 +7,9 @@ sealed class CaloriesEvent {}
 class CaloriesInitalEvent extends CaloriesEvent {}
 
 class CaloriesSearchByNameEvent extends CaloriesEvent {
-  final FoodModel foodModel;
+  final String foodname;
   CaloriesSearchByNameEvent({
-    required this.foodModel,
+    required this.foodname,
   });
 }
 

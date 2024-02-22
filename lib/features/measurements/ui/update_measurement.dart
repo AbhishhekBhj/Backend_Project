@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +10,7 @@ import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dar
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../data/models/measurement_model.dart';
 import '../../../functions/shared_preference_functions.dart';
 import '../../../provider/themes/theme_provider.dart';
 
@@ -79,7 +79,6 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
           if (state is InternetRestoredState) {
             return BlocBuilder<MeasurementsBloc, MeasurementsState>(
               builder: (context, state) {
-                // if (state is MeasurementsInitial) {}
                 return Scaffold(
                   appBar: AppBar(
                     leadingWidth: Get.width * 0.2,
@@ -92,28 +91,54 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                       TextButton(
                           child: const Text("Save"),
                           onPressed: () {
-                            isProMember
-                                ? showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return Container(
-                                        child: Center(
-                                          child: Text("Yo are a Pro Member"),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return Container(
-                                        child: Center(
-                                          child:
-                                              Text("You are not a Pro Member"),
-                                        ),
-                                      );
-                                    },
-                                  );
+                            measurementsBloc.add(
+                              MeasurementsUpdateClickedEvent(
+                                bodyMeasurement: BodyMeasurement(
+                                  height:
+                                      double.tryParse(heightController.text) ??
+                                          0,
+                                  leftArm:
+                                      double.tryParse(leftArmController.text) ??
+                                          0,
+                                  rightArm: double.tryParse(
+                                          rightArmController.text) ??
+                                      0,
+                                  leftForearm: double.tryParse(
+                                          leftForearmController.text) ??
+                                      0,
+                                  rightForearm: double.tryParse(
+                                          rightForearmController.text) ??
+                                      0,
+                                  chestSize:
+                                      double.tryParse(chestController.text) ??
+                                          0,
+                                  waistSize:
+                                      double.tryParse(waistController.text) ??
+                                          0,
+                                  leftQuadricep: double.tryParse(
+                                          leftQuadricepController.text) ??
+                                      0,
+                                  rightQuadricep: double.tryParse(
+                                          rightQuadricepController.text) ??
+                                      0,
+                                  leftCalf: double.tryParse(
+                                          leftCalveController.text) ??
+                                      0,
+                                  rightCalf: double.tryParse(
+                                          rightCalveController.text) ??
+                                      0,
+                                  hipSize:
+                                      double.tryParse(hipSizeController.text) ??
+                                          0,
+                                  notes: notesController.text,
+                                  user:
+                                      UserDataManager.userData['user_id'] ?? 1,
+                                  weight: double.tryParse(
+                                          bodyweightController.text) ??
+                                      0,
+                                ),
+                              ),
+                            );
                           })
                     ],
                     title: const Text('Update Measurements'),
@@ -181,7 +206,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: leftArmController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -197,7 +222,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: rightArmController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -213,7 +238,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: leftForearmController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -229,7 +254,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: rightForearmController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -245,7 +270,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: chestController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -261,7 +286,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: waistController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -277,7 +302,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: leftQuadricepController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -293,7 +318,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: rightQuadricepController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -309,7 +334,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: leftCalveController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -325,7 +350,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: rightCalveController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -341,7 +366,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: hipSizeController,
                                       ),
                                     )
-                                  : LockWidget()
+                                  : const LockWidget()
                             ],
                           ),
                           const Divider(),
@@ -353,7 +378,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                 height: Get.height * 0.25,
                                 width: Get.width * 0.5,
                                 child: TextFormField(
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                       border: OutlineInputBorder()),
                                   maxLines: 4,
                                   keyboardType: TextInputType.text,
@@ -370,7 +395,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
               },
             );
           } else {
-            return NoInternet();
+            return const NoInternet();
           }
         },
       ),
@@ -385,21 +410,59 @@ class LockWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _notProMemberDialogBottomSheet(context) {
+    void notProMemberDialogBottomSheet(context) {
       showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
             height: Get.height * 0.2,
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text("You are not a Pro Member"),
-                const Text("Upgrade to Pro Member to unlock this feature"),
+                const Text(
+                  "You are not a Pro Member",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const Text(
+                  "Upgrade to Pro Member to unlock this feature",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 ElevatedButton(
                   onPressed: () {
                     Get.back();
+                    // Add functionality to navigate to the upgrade screen
                   },
-                  child: const Text("Upgrade"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurpleAccent,
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    "Upgrade",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -410,8 +473,8 @@ class LockWidget extends StatelessWidget {
 
     return IconButton(
         onPressed: () {
-          _notProMemberDialogBottomSheet(context);
+          notProMemberDialogBottomSheet(context);
         },
-        icon: Icon(FontAwesomeIcons.lock));
+        icon: const Icon(FontAwesomeIcons.lock));
   }
 }

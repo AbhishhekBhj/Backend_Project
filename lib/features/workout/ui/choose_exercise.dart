@@ -11,8 +11,8 @@ class ChooseWorkout extends StatefulWidget {
   ChooseWorkout(
       {Key? key, required this.exercise, required this.onSelectExercise});
 
-  final List<Exercise> exercise;
-  Function(Exercise) onSelectExercise;
+  final List<Exercises> exercise;
+  Function(Exercises) onSelectExercise;
 
   @override
   State<ChooseWorkout> createState() => _ChooseWorkoutState();

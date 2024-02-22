@@ -80,18 +80,22 @@ class _CaloricInformationState extends State<CaloricInformation> {
                       builder: (context, state) {
                         print(state.runtimeType);
                         switch (state.runtimeType) {
-                          // case CaloriesLoadingState:
-                          //   return const SizedBox(); // Don't display anything during loading
                           case CaloriesFetchingState:
-                            return ShimmerFoodItem();
-                          case CaloriesFoundSuccessState:
-                            return Expanded(
-                              child: buildFoodList(
-                                  (state as CaloriesFoundSuccessState)
-                                      .foodModel,
-                                  context,
-                                  isDarkMode),
+                            return Image.asset(
+                              'assets/img/loading3.gif',
+                              height: Get.height * 0.25,
                             );
+                          case CaloriesFoundSuccessState:
+                            List<FoodModel> foodModel =
+                                (state as CaloriesFoundSuccessState).foodModel;
+                            return foodNameController.text.isNotEmpty
+                                ? Expanded(
+                                    child: buildFoodList(
+                                        foodModel, context, isDarkMode),
+                                  )
+                                : Center(
+                                    child: Text("Enter Food Name to Search"),
+                                  );
 
                           case CaloriesFoundErrorState:
                             return Container(
@@ -123,7 +127,7 @@ class _CaloricInformationState extends State<CaloricInformation> {
           onChanged: (value) {
             if (foodNameController.text.isNotEmpty) {
               caloriesBloc.add(CaloriesSearchByNameEvent(
-                foodModel: FoodModel(name: foodNameController.text),
+                foodname: foodNameController.text,
               ));
             } else {}
           },
@@ -182,19 +186,19 @@ class _CaloricInformationState extends State<CaloricInformation> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Name: ${foodItem.name}',
+                      'Name: ${foodItem.foodName}',
                       style: textStyle(isDarkMode),
                     ),
                     Text(
-                      'Calories per Serving: ${foodItem.caloriesPerServing.toString()}',
+                      'Calories per Serving: ${foodItem.foodCaloriesPerServing.toString()}',
                       style: textStyle(isDarkMode),
                     ),
                     Text(
-                      'Serving Size: ${foodItem.servingSize.toString()} gm',
+                      'Serving Size: ${foodItem.foodServingSize.toString()} gm',
                       style: textStyle(isDarkMode),
                     ),
                     Text(
-                      'Protein per Serving: ${foodItem.proteinPerServing.toString()} gm',
+                      'Protein per Serving: ${foodItem.foodProteinPerServing.toString()} gm',
                       style: textStyle(isDarkMode),
                     ),
                   ],

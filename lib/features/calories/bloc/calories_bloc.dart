@@ -30,7 +30,7 @@ class CaloriesBloc extends Bloc<CaloriesEvent, CaloriesState> {
       CaloriesSearchByNameEvent event, Emitter<CaloriesState> emit) async {
     final List<FoodModel> foodData =
         await MultiCaloriesRepository.getCaloricInformation(
-            foodName: event.foodModel.name);
+            foodName: event.foodname!);
     emit(CaloriesFetchingState());
 
     if (foodData.isNotEmpty) {
@@ -46,13 +46,7 @@ class CaloriesBloc extends Bloc<CaloriesEvent, CaloriesState> {
       CaloriesConsumedLogEvent event, Emitter<CaloriesState> emit) async {
     emit(CaloriesLoggingLoadingState());
     bool caloriesLoggingSuccess = await CaloriesLogRepository.logCalories(
-        username: event.caloriesLog.username,
-        food: event.caloriesLog.food,
-        servingSizeConsumed: event.caloriesLog.servingSizeConsumed,
-        proteinConsumed: event.caloriesLog.proteinConsumed,
-        carbsConsumed: event.caloriesLog.carbsConsumed,
-        fatConsumed: event.caloriesLog.fatConsumed,
-        caloriesConsumed: event.caloriesLog.caloriesConsumed);
+        caloriesLog: event.caloriesLog!);
 
     if (caloriesLoggingSuccess) {
       emit(CaloriesLoggingSuccessState());

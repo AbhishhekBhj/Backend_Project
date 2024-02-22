@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
 import 'package:mygymbuddy/features/internet/ui/no_internet.dart';
+import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 
 import 'package:provider/provider.dart';
 
@@ -107,7 +108,7 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
           bloc: internetBloc,
           builder: (context, state) {
             if (state is InternetLostState) {
-              return const  NoInternet();
+              return const NoInternet();
             } else {
               return ListView(
                 children: [
@@ -277,6 +278,7 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
                                             rightForearmController.text) ??
                                         0.0,
                                     notes: notesController.text,
+                                    user: UserDataManager.userData['user_id'],
                                   ),
                                 ),
                               );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/features/graph/ui/graph_ui.dart';
 
 class ViewProgressOptions extends StatelessWidget {
   const ViewProgressOptions({super.key});
@@ -35,7 +36,9 @@ class ViewProgressOptions extends StatelessWidget {
             icon: FontAwesomeIcons.glassWhiskey,
           ),
           ProgressCard(
-            onTap: () {},
+            onTap: () {
+              Get.to(Graph());
+            },
             title: 'Nutrition Progress',
             icon: FontAwesomeIcons.utensils,
           ),

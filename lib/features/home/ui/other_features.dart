@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,8 +22,32 @@ import '../../profile/bloc/bloc/profile_bloc.dart';
 import '../../profile/ui/change_password.dart';
 import '../../progress/ui/progress.dart';
 
-class OtherFeaturePage extends StatelessWidget {
+class OtherFeaturePage extends StatefulWidget {
   const OtherFeaturePage({Key? key});
+
+  @override
+  State<OtherFeaturePage> createState() => _OtherFeaturePageState();
+}
+
+class _OtherFeaturePageState extends State<OtherFeaturePage> {
+  List<dynamic> exerciseGallery = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    List<dynamic> exercises = await ExerciseBox.getExerciseList();
+
+    setState(() {
+      // Update the state with the loaded exercises
+      exerciseGallery = exercises;
+      log(exerciseGallery.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +90,9 @@ class OtherFeaturePage extends StatelessWidget {
                     Get.to(Reminders());
                   }, "Set Reminders"),
                   buildListTile(FontAwesomeIcons.book, () {
-                    Get.to(ExerciseLibrary());
+                    Get.to(ExerciseLibrary(
+                      exercise: exerciseGallery,
+                    ));
                   }, "Exercise Gallery"),
                   buildListTile(FontAwesomeIcons.chartColumn, () {
                     Get.to(ViewProgressOptions());

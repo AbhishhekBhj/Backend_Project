@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:mygymbuddy/data/models/home_model.dart';
 import 'package:mygymbuddy/functions/shared_preference_functions.dart';
@@ -13,7 +12,7 @@ class HomeRepository {
     String? username = await getUsername();
     var client = http.Client();
 
-    List<Exercise> exerciseData = [];
+    List<Exercises> exerciseData = [];
     Map<String, dynamic> workoutData = {};
     Map<String, dynamic> waterIntakeData = {};
     Map<String, dynamic> reminderData = {};
@@ -25,7 +24,6 @@ class HomeRepository {
 
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       int status = responseBody['status'];
-      log(status.toString());
 
       if (status == 200) {
         HomeModel homeModel = HomeModel.fromJson(responseBody);
@@ -36,8 +34,8 @@ class HomeRepository {
         reminderData = homeModel.reminderData;
         measurementData = homeModel.measurementData;
 
-        ExerciseBox exerciseBox = ExerciseBox();
-        await exerciseBox.saveExerciseList(exerciseData);
+        await ExerciseBox.saveExerciseList(
+            responseBody['data']['exercise_data']);
         // final exerciseDataList = exerciseData.map((e) => e.toJson()).toList();
 
         // final exerciseDataBox = await Hive.openBox('exerciseData');

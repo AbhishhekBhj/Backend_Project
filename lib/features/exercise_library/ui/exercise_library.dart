@@ -1,110 +1,98 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/exercise_library/exercise_details.dart';
-import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
-import 'package:mygymbuddy/functions/shared_preference_functions.dart';
-import 'package:mygymbuddy/provider/themes/theme_provider.dart';
-import 'package:mygymbuddy/utils/texts/texts.dart';
-import 'package:provider/provider.dart';
 
-import '../../../data/models/home_model.dart';
+import '../../../functions/exercise.dart';
+import 'add_custom_exercise.dart';
 
-class ExerciseLibrary extends StatefulWidget {
-  ExerciseLibrary({Key? key}) : super(key: key);
+class ExerciseLibrary extends StatelessWidget {
+  final List<dynamic> exercise;
 
-  @override
-  _ExerciseLibraryState createState() => _ExerciseLibraryState();
-}
-
-class _ExerciseLibraryState extends State<ExerciseLibrary> {
-  TextEditingController exerciseController = TextEditingController();
-  HomeBloc homeBloc = HomeBloc();
-
-  List<Exercise> exercise = [];
-
-  List<Exercise> exerciseData = [];
-
-  @override
-  void initState() {
-    // homeBloc.add(HomePageFetchRequiredDataEvent());
-    super.initState();
-  }
-
-  
+  const ExerciseLibrary({Key? key, required this.exercise}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
-
-    return BlocBuilder<HomeBloc, HomeState>(
-        bloc: homeBloc,
-        builder: (context, state) {
-          if (state is HomePageFetchDataLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is HomePageFetchDataSuccessState) {
-            exercise = state.homeModel.exerciseData;
-
-            return SafeArea(
-              child: Scaffold(
-                appBar: AppBar(
-                  title: const Text("Exercise Gallery"),
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {},
+            ),
+            IconButton(
+                onPressed: () {
+                  Get.to(const AddCustomExercise());
+                },
+                icon: const Icon(Icons.add))
+          ],
+          title: const Text("Exercise Gallery"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
+        body: GridView.builder(
+          shrinkWrap: true,
+          itemCount: exercise.length,
+          padding: const EdgeInsets.all(15),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.65,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 5,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            final exerciseItem = exercise[index];
+            return GestureDetector(
+              onTap: () {
+                Get.to(ExerciseDetails(
+                  exerciseDetails: exerciseItem.exerciseDetails,
+                  exerciseImage: exerciseItem.exerciseImage,
+                  exerciseName: exerciseItem.exerciseName,
+                  caloriesBurnedPerHour: exerciseItem.caloriesBurnedPerHour,
+                  targetBodyPart: exerciseItem.targetBodyPart,
+                ));
+              },
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                body: GestureDetector(
-                  onTap: () {
-                    Get.to(ExerciseDetails(
-                      exerciseDetails: exercise[0].exerciseDetails,
-                      exerciseImage: exercise[0].exerciseImage,
-                      exerciseName: exercise[0].exerciseName,
-                      caloriesBurnedPerHour: exercise[0].caloriesBurnedPerHour,
-                      targetBodyPart: exercise[0].targetBodyPart,
-                    ));
-                  },
-                  child: Container(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: exercise.length,
-                      padding: const EdgeInsets.all(15),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.65,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: Get.height * 0.12,
+                      height: Get.height * 0.12,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
                       ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          shape: CircleBorder(),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Image(image: AssetImage(aWorkout)),
-                              Text(exerciseData[index].exerciseName),
-                              const SizedBox(height: 10),
-                              // Add more details if needed
-                              // You can also display the image here if available
-                            ],
-                          ),
-                        );
-                      },
+                      // child: Image.network(
+                      //     "http://10.0.2.2:8000${exerciseItem.exerciseImage!}"),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            'http://10.0.2.2:8000${exerciseItem.exerciseImage!}',
+                        placeholder: (context, url) =>
+                            Image.asset("assets/img/imageloading.gif"),
+                        errorWidget: (context, url, error) => Container(
+                            child: Image.asset('assets/img/noimage.png')),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
+                    const Divider(),
+                    Text(exerciseItem.exerciseName!),
+
+                    Text(exerciseItem.exerciseImage!),
+                    const SizedBox(height: 10),
+                    // Add more details if needed
+                  ],
                 ),
               ),
             );
-          }
-          return Scaffold(
-              appBar: AppBar(
-                title: const Text("Exercise Gallery"),
-              ),
-              body: Container(
-                child: Text(state.toString()),
-              ));
-        });
+          },
+        ),
+      ),
+    );
   }
 }

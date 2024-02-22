@@ -8,7 +8,7 @@ final class ExerciseLibraryInitial extends ExerciseLibraryState {}
 final class ExerciseLibraryLoading extends ExerciseLibraryState {}
 
 final class ExerciseLibraryLoaded extends ExerciseLibraryState {
-  final List<ExerciseModel> exerciseGallery;
+  final List<dynamic> exerciseGallery;
 
   ExerciseLibraryLoaded({required this.exerciseGallery});
 }
