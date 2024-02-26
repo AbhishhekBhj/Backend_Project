@@ -9,6 +9,7 @@ import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
 import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
+import 'package:mygymbuddy/features/signup/ui/otp.dart';
 import 'package:mygymbuddy/features/workout/bloc/bloc/workout_bloc.dart';
 import 'package:mygymbuddy/features/workout/ui/add_set.dart';
 import 'package:mygymbuddy/features/workout/ui/workout.dart';
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
             // home: AddSetWidget(
             //   exerciseName: "Squats",
             // ),
-            home: SplashScreen(),
+            home: OTPScreen(),
             debugShowCheckedModeBanner: false,
           ),
         );

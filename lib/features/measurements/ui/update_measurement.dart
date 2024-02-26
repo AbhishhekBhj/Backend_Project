@@ -13,6 +13,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../data/models/measurement_model.dart';
 import '../../../functions/shared_preference_functions.dart';
 import '../../../provider/themes/theme_provider.dart';
+import '../../../widgets/not_pro_member_widget.dart';
 
 class UpdateMeasurementsScreen extends StatefulWidget {
   const UpdateMeasurementsScreen({super.key});
@@ -206,7 +207,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: leftArmController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -222,7 +223,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: rightArmController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -238,7 +239,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: leftForearmController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -254,7 +255,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: rightForearmController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -270,7 +271,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: chestController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -286,7 +287,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: waistController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -302,7 +303,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: leftQuadricepController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -318,7 +319,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: rightQuadricepController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -334,7 +335,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: leftCalveController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -350,7 +351,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: rightCalveController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -366,7 +367,7 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
                                         controller: hipSizeController,
                                       ),
                                     )
-                                  : const LockWidget()
+                                  : const NotProMemberWidget()
                             ],
                           ),
                           const Divider(),
@@ -400,81 +401,5 @@ class _UpdateMeasurementsScreenState extends State<UpdateMeasurementsScreen> {
         },
       ),
     );
-  }
-}
-
-class LockWidget extends StatelessWidget {
-  const LockWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    void notProMemberDialogBottomSheet(context) {
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            height: Get.height * 0.2,
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text(
-                  "You are not a Pro Member",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const Text(
-                  "Upgrade to Pro Member to unlock this feature",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.back();
-                    // Add functionality to navigate to the upgrade screen
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurpleAccent,
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    "Upgrade",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    }
-
-    return IconButton(
-        onPressed: () {
-          notProMemberDialogBottomSheet(context);
-        },
-        icon: const Icon(FontAwesomeIcons.lock));
   }
 }

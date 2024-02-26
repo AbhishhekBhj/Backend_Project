@@ -1,7 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:mygymbuddy/functions/shared_preference_functions.dart';
+import 'package:mygymbuddy/widgets/image_picker_widget.dart';
+import "dart:io";
 
 class AddCustomExercise extends StatefulWidget {
   const AddCustomExercise({Key? key}) : super(key: key);
@@ -11,11 +13,21 @@ class AddCustomExercise extends StatefulWidget {
 }
 
 class _AddCustomExerciseState extends State<AddCustomExercise> {
+  File? imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    isProMember = UserDataManager.userData['is_pro_member'];
+  }
+
   TextEditingController exerciseNameController = TextEditingController();
   TextEditingController caloriesBurnedPerHourController =
       TextEditingController();
 
-  List bodyParts = [];
+  List<String> bodyParts = [];
+
+  late bool isProMember;
 
   void addItemToList(String item) {
     setState(() {
@@ -23,7 +35,6 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
     });
   }
 
-  
   void removeItemFromList(int index) {
     setState(() {
       bodyParts.removeAt(index);
@@ -32,7 +43,7 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
 
   Map<int, String> exerciseData = {
     1: 'Front Delts',
-    2: 'Reat Delts',
+    2: 'Rear Delts',
     3: 'Quadriceps',
     4: 'Hamstrings',
     5: 'Glutes Maximus',
@@ -51,17 +62,27 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Custom Exercise'),
-      ),
-      body: Center(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Custom Exercise'),
+        ),
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           children: [
             const Text('Add Custom Exercise'),
+            PickImageWidget(
+              isProMember: isProMember,
+              onImageCropped: (File image) {
+                setState(() {
+                  imageFile = image;
+                });
+              },
+            ),
             TextFormField(
-              autofocus: true,
               controller: exerciseNameController,
               decoration: const InputDecoration(
                 labelText: 'Exercise Name',
@@ -76,7 +97,7 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
             ),
             ListTile(
               onTap: () {
-                _showBodyPartDialog(context, exerciseData, bodyParts);
+                _showBodyPartDialog(context);
               },
               title: Column(
                 children: [
@@ -89,7 +110,7 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("Exercise Type"),
+                const Text("Exercise Type"),
                 DropdownButton<int>(
                   value: 1,
                   items: exerciseType.entries
@@ -110,12 +131,19 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
     );
   }
 
-  void _showBodyPartDialog(
-      BuildContext context, Map<int, String> exerciseData, List bodyParts) {
+  void _showBodyPartDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
-        return BodyPartDialog(exerciseData: exerciseData, bodyParts: bodyParts);
+        return BodyPartDialog(
+          exerciseData: exerciseData,
+          initialBodyParts: bodyParts,
+          onBodyPartsChanged: (List<String> updatedBodyParts) {
+            setState(() {
+              bodyParts = updatedBodyParts;
+            });
+          },
+        );
       },
     );
   }
@@ -123,13 +151,14 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
 
 class BodyPartDialog extends StatefulWidget {
   final Map<int, String> exerciseData;
-  final List bodyParts;
-  // final VoidCallback? onSelected;
+  final List<String> initialBodyParts;
+  final Function(List<String>) onBodyPartsChanged;
 
   const BodyPartDialog({
     Key? key,
     required this.exerciseData,
-    required this.bodyParts,
+    required this.initialBodyParts,
+    required this.onBodyPartsChanged,
   }) : super(key: key);
 
   @override
@@ -137,50 +166,78 @@ class BodyPartDialog extends StatefulWidget {
 }
 
 class _BodyPartDialogState extends State<BodyPartDialog> {
-  late List<bool> selectedBodyParts;
+  late List<String> bodyParts;
 
   @override
   void initState() {
     super.initState();
-    selectedBodyParts =
-        List.generate(widget.exerciseData.length, (index) => false);
+    bodyParts = List.from(widget.initialBodyParts);
   }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Select Target Body Parts'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Select Target Body Parts'),
+      ),
+      body: Column(
         children: [
-          for (var i = 1; i <= widget.exerciseData.length; i++)
-            CheckboxListTile(
-              value: widget.bodyParts.contains(widget.exerciseData[i]),
-              onChanged: (bool? value) {
-                log(value.toString());
-                log(widget.exerciseData[i]!);
-                if (value == true) {
-                  setState(() {
-                    widget.bodyParts.add(widget.exerciseData[i]);
-                  });
-                } else {
-                  setState(() {
-                    widget.bodyParts.remove(widget.exerciseData[i]);
-                  });
-                }
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.exerciseData.length,
+              itemBuilder: (BuildContext context, int index) {
+                final int key = widget.exerciseData.keys.elementAt(index);
+                final String value = widget.exerciseData[key]!;
+                return CheckboxListTile(
+                  value: bodyParts.contains(value),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value == true) {
+                        bodyParts.add(widget.exerciseData[key]!);
+                      } else {
+                        bodyParts.remove(widget.exerciseData[key]!);
+                      }
+                      widget.onBodyPartsChanged(bodyParts);
+                    });
+                  },
+                  title: Text(value),
+                );
               },
-              title: Text(widget.exerciseData[i]!),
             ),
+          ),
         ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Done'),
+      bottomSheet: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+          height: 60,
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.blue,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: const Center(
+            child: Text(
+              'Save',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
-      ],
+      ),
     );
   }
 }
