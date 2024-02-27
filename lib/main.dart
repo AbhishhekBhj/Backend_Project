@@ -2,35 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:mygymbuddy/data/models/home_model.dart';
 import 'package:mygymbuddy/features/add%20water%20drank/bloc/bloc/water_drink_bloc.dart';
 import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
-import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
+import 'package:mygymbuddy/features/reminder/ui/reminder.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
-import 'package:mygymbuddy/features/signup/ui/otp.dart';
 import 'package:mygymbuddy/features/workout/bloc/bloc/workout_bloc.dart';
-import 'package:mygymbuddy/features/workout/ui/add_set.dart';
-import 'package:mygymbuddy/features/workout/ui/workout.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:timezone/data/latest.dart' as tz;
 import 'features/home/bloc/home_bloc.dart';
 import 'functions/exercise.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  tz.initializeTimeZones();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(ExerciseAdapter());
 
   runApp(
+    // ChangeNotifierProvider(
+    //   create: (_) => DownloadProvider(),
+    //   child: dummy(),
+    // ),
     ChangeNotifierProvider(
       create: (BuildContext context) {
         return ThemeProvider(
@@ -74,7 +74,9 @@ class MyApp extends StatelessWidget {
             // home: AddSetWidget(
             //   exerciseName: "Squats",
             // ),
-            home: OTPScreen(),
+            home: MyHomePage(
+              title: "Abhishek",
+            ),
             debugShowCheckedModeBanner: false,
           ),
         );

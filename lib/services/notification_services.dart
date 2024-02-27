@@ -1,72 +1,68 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:timezone/timezone.dart' as tz;
 
-class NotificationServices {
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+class NotificationService {
+  final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-//android configuration
+  Future<void> initNotification() async {
+    AndroidInitializationSettings initializationSettingsAndroid =
+        const AndroidInitializationSettings('flutter_logo');
 
-  final AndroidInitializationSettings _androidInitializationSettings =
-      AndroidInitializationSettings('logo');
+    var initializationSettingsIOS = DarwinInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+        onDidReceiveLocalNotification:
+            (int id, String? title, String? body, String? payload) async {});
 
-  @Summary("This method will be used to initalize the notfications to be sent")
-  void initializeNotifications() async {
-    InitializationSettings initializationSettings =
-        InitializationSettings(android: _androidInitializationSettings);
-
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    await notificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) async {});
   }
 
-  @Summary("use flutter local notfication to send notification to the user")
-  void sendNotifications(String title, String body) async {
-    //instance is required to send notifications in android
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails("channelId", "channelName",
-            enableVibration: true,
-            importance: Importance.max,
-            priority: Priority.high,
-            playSound: true);
-
-//use the same instance of android notification details
-    NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
-    await _flutterLocalNotificationsPlugin.show(
-        1, title, body, notificationDetails);
+  notificationDetails() {
+    return const NotificationDetails(
+        android: AndroidNotificationDetails('channelId', 'channelName',
+            importance: Importance.max),
+        iOS: DarwinNotificationDetails());
   }
 
-  @Summary(
-      "use flutter local notfication to send notification to the user with some interval")
-  void sendNotificationsWithInterval(String title, String body) async {
-    //instance is required to send notifications in android
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails("channelId", "channelName",
-            enableVibration: true,
-            importance: Importance.max,
-            priority: Priority.high);
-
-//use the same instance of android notification details
-    NotificationDetails notificationDetails =
-        NotificationDetails(android: androidNotificationDetails);
-    await _flutterLocalNotificationsPlugin.zonedSchedule(
-      10,
-      title,
-      body,
-      tz.TZDateTime.now(tz.local).add(Duration(seconds: 5)),
-      notificationDetails,
-      payload: "hi",
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
+  Future showNotification(
+      {int id = 0, String? title, String? body, String? payLoad}) async {
+    return notificationsPlugin.show(
+        id, title, body, await notificationDetails());
   }
 
-  void stopNotification() async {
-    //cancels notification with that particular id
-    _flutterLocalNotificationsPlugin.cancel(1);
-
-    //cancels all notifications
-
-    _flutterLocalNotificationsPlugin.cancelAll();
+  Future scheduleNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payload,
+    required DateTime scheduledNotificationDateTime,
+  }) async {
+    try {
+      await notificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        tz.TZDateTime.from(
+          scheduledNotificationDateTime,
+          tz.local,
+        ),
+        await notificationDetails(),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+      log('Notification scheduled successfully.');
+    } catch (e) {
+      log('Error scheduling notification: $e');
+    }
   }
 }
