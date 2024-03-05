@@ -21,3 +21,10 @@ class SignupErrorState extends SignupState{}
 
 
 class SignupNavigationState extends SignupActionState{}
+
+
+class VerifyOtpSuccessState extends SignupActionState{}
+
+class VerifyOtpErrorState extends SignupState{}
+
+class VerifyOtpLoadingState extends SignupState{}

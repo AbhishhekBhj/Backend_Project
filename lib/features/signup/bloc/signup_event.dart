@@ -9,12 +9,21 @@ class SignupInitialEvent extends SignupEvent {
 }
 
 class SignUpClickedButtonEvent extends SignupEvent{
-final UserModel userModel;
+final UserSignupModel userModel;
   SignUpClickedButtonEvent({
     required this.userModel,
   });
 }
 
+
+
+
+class VerifyOtpButtonClickedEvent extends SignupEvent {
+  final String otp;
+  VerifyOtpButtonClickedEvent({
+    required this.otp,
+  });
+}
 class RedirectLoginPageClickedEvent extends SignupEvent {}
 
 

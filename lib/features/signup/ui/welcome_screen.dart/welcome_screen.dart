@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/features/signup/ui/signup_page_view.dart';
+import 'package:mygymbuddy/features/signup/ui/signup_page.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:provider/provider.dart';
@@ -79,7 +79,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Get.to(const SignupPageView());
+                        Get.to(const SignupPage());
                       },
                       child: const Text(
                         'Signup',

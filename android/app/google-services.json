@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1078689433506",
-    "project_id": "push-notifier-d2ad9",
-    "storage_bucket": "push-notifier-d2ad9.appspot.com"
+    "project_number": "886408525094",
+    "project_id": "pushnotifications-b3ed8",
+    "storage_bucket": "pushnotifications-b3ed8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1078689433506:android:729c38e454c92a012654fb",
+        "mobilesdk_app_id": "1:886408525094:android:b1190ca17297a9f23a3de7",
         "android_client_info": {
           "package_name": "com.example.mygymbuddy"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCNitFcFD9P0b1f-oFJ9rIA3HcWeRRlr4c"
+          "current_key": "AIzaSyAM5fZKOWKen04_UqeK5ZiR_z4QthyAMBM"
         }
       ],
       "services": {

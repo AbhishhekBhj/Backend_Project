@@ -78,6 +78,7 @@ dependencies:
   timezone: ^0.9.2
   flutter_datetime_picker_plus: 
   syncfusion_flutter_pdf: ^23.2.7
+  firebase_analytics: ^10.8.0
 
   
   # connectivity_plus: ^4.0.2
