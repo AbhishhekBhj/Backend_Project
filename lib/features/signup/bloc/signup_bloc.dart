@@ -16,6 +16,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     on<SignUpClickedButtonEvent>(signUpClickedButtonEvent);
     on<RedirectLoginPageClickedEvent>(redirectLoginPageClickedEvent);
     on<VerifyOtpButtonClickedEvent>(verifyOtpButtonClickedEvent);
+    on<SendOtpEvent>(sendOtpEvent);
+    on<UploadProfilePhotoClickedEvent>(uploadProfilePhotoClickedEvent);
   }
 
   FutureOr<void> signupInitialEvent(
@@ -41,7 +43,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     ));
 
     if (signup == true) {
-      print('acv');
       emit(SignupSuccessState());
       Fluttertoast.showToast(
           msg: "Signup successful",
@@ -91,6 +92,64 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       emit(VerifyOtpErrorState());
       Fluttertoast.showToast(
           msg: "OTP verification failed",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  FutureOr<void> sendOtpEvent(
+      SendOtpEvent event, Emitter<SignupState> emit) async {
+    emit(OtpSendLoadingState());
+
+    bool sendOTP = await SendOtpRepository.sendOTPToMail(event.emailAddress);
+
+    if (sendOTP) {
+      emit(OtpSendSuccessState());
+      Fluttertoast.showToast(
+          msg: "OTP sent successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      emit(OtpSendErrorState());
+      Fluttertoast.showToast(
+          msg: "OTP sending failed",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  FutureOr<void> uploadProfilePhotoClickedEvent(
+      UploadProfilePhotoClickedEvent event, Emitter<SignupState> emit) async {
+    emit(UploadProfilePhotoLoadingState());
+
+    bool uploadPhoto = await PhotoUploadRepository.uploadPhoto(event.imagePath);
+
+    if (uploadPhoto) {
+      emit(UploadProfilePhotoSuccessState());
+      Fluttertoast.showToast(
+          msg: "Profile photo uploaded successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      emit(UploadProfilePhotoFailureState());
+      Fluttertoast.showToast(
+          msg: "Profile photo uploading failed",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

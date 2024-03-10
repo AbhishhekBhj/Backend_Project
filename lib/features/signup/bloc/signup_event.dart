@@ -15,6 +15,14 @@ final UserSignupModel userModel;
   });
 }
 
+class SendOtpEvent extends SignupEvent{
+  final String emailAddress;
+  SendOtpEvent({
+    required this.emailAddress,
+  });
+}
+
+
 
 
 
@@ -25,5 +33,12 @@ class VerifyOtpButtonClickedEvent extends SignupEvent {
   });
 }
 class RedirectLoginPageClickedEvent extends SignupEvent {}
+
+class UploadProfilePhotoClickedEvent extends SignupEvent {
+  final String imagePath;
+  UploadProfilePhotoClickedEvent({
+    required this.imagePath,
+  });
+}
 
 

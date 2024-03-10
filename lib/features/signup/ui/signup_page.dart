@@ -201,7 +201,7 @@ class _SignupPageState extends State<SignupPage> {
                   hintText: 'Enter your current fitness',
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               GestureDetector(
@@ -209,19 +209,22 @@ class _SignupPageState extends State<SignupPage> {
                   if (_formKey.currentState!.validate()) {
                     log('Signup clicked');
 
-                    _signupBloc.add(SignUpClickedButtonEvent(
-                      userModel: UserSignupModel(
-                        username: _usernameController.text,
-                        name: _nameController.text,
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        height: (_heightController.text),
-                        weight: (_weightController.text),
-                        age: (_ageController.text),
-                        fitnessGoal: (_fitnessGoalController.text),
-                        fitnessLevel: (_currentFitnessController.text),
-                      ),
-                    ));
+                    _signupBloc
+                        .add(SendOtpEvent(emailAddress: _emailController.text));
+
+                    // _signupBloc.add(SignUpClickedButtonEvent(
+                    //   userModel: UserSignupModel(
+                    //     username: _usernameController.text,
+                    //     name: _nameController.text,
+                    //     email: _emailController.text,
+                    //     password: _passwordController.text,
+                    //     height: (_heightController.text),
+                    //     weight: (_weightController.text),
+                    //     age: (_ageController.text),
+                    //     fitnessGoal: (_fitnessGoalController.text),
+                    //     fitnessLevel: (_currentFitnessController.text),
+                    //   ),
+                    // ));
 
                     ;
                   } else {

@@ -126,13 +126,7 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
 
                   DarkModeSwitchTile(),
 
-                  // buildListTile(FontAwesomeIcons.moon, () {
-                  //   //use provider to detect change and change theme
-                  //   ThemeProvider
-                  //       themeProvider = //listen is set to false to avoid this part rebuilding itself
-                  //       Provider.of<ThemeProvider>(context, listen: false);
-                  //   themeProvider.swapTheme();
-                  // }, "Change Theme"),
+                 
                   buildListTile(Icons.logout_rounded, () {
                     Get.off(DemoLoginPage());
                   }, "Log out"),
@@ -143,6 +137,26 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
         ),
       ),
     );
+  }
+
+  void showLogoutModalBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 200,
+            child: Column(
+              children: [
+                Text("Are you sure you want to log out?"),
+                ElevatedButton(
+                    onPressed: () {
+                      Get.offAll(DemoLoginPage());
+                    },
+                    child: Text("Log out"))
+              ],
+            ),
+          );
+        });
   }
 
   TextStyle textstyle() => TextStyle(
