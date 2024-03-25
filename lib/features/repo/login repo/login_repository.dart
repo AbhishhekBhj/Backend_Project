@@ -25,6 +25,8 @@ class LoginRepository {
         await saveRefreshToken(refreshToken);
         await SharedPreferenceHelper.saveUserData(responseData['data']);
 
+        log('response data: ${responseData['data']}');
+
         UserDataManager.userData = await SharedPreferenceHelper.getUserData();
 
         saveUsername(username);

@@ -53,9 +53,9 @@ class MeasurementDataGetRepository {
     var url =
         Uri.parse("http://10.0.2.2:8000/api/measurements/getmeasurement/");
     try {
-      var response = await client.post(url,
-          body: {"user_id": userId.toString()},
-          headers: {"Authorization": "Bearer $accessToken"});
+      var response = await client.post(url, body: {
+        "user_id": userId.toString()
+      }, headers: {"Authorization": "Bearer $accessToken"});
 
       log("Token: $accessToken");
       var body = json.decode(response.body.toString());
@@ -84,8 +84,7 @@ class MeasurementDataGetRepository {
               rightCalf: data["right_calf"],
               leftForearm: data["left_forearm"],
               rightForearm: data["right_forearm"],
-              notes: data["notes"],
-              createdAt: data["created_at"]));
+              notes: data["notes"]));
         }
         return measurements;
       } else {

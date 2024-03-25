@@ -82,9 +82,10 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                   const Header(),
                   const Divider(thickness: 2),
                   Text(
-                    "Other Features",
+                    "Other Features ",
                     style: textstyle(),
                   ),
+                  Text("${UserDataManager.userData["is_pro_member"]}"),
                   buildListTile(FontAwesomeIcons.noteSticky, () {
                     Get.to(Reminders());
                   }, "Set Reminders"),
