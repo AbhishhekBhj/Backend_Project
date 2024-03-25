@@ -49,6 +49,52 @@ Future<void> saveExerciseList(List<Exercises> exerciseList) async {
   log(value.toString());
 }
 
+Future<void> saveTodaysCaloricIntake(
+    double caloricIntake, String message) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  double currentCaloricIntake = await getTodaysCaloricIntake();
+
+  if (message == "Caloric Intake Object Created") {
+    double newCaloricIntake = currentCaloricIntake + caloricIntake;
+    await prefs.setDouble('caloricIntake', newCaloricIntake);
+  } else if (message == "Caloric Intake Object Deleted") {
+    double newCaloricIntake = currentCaloricIntake - caloricIntake;
+    await prefs.setDouble('caloricIntake', newCaloricIntake);
+  } else if (message == 'Caloric Intake Object Updated') {}
+}
+
+Future<double> getTodaysCaloricIntake() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getDouble('caloricIntake') ?? 0;
+}
+
+Future<void> saveTodaysWaterIntake(double waterIntake) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  double currentWaterIntake = await getTodaysWaterIntake();
+
+  double newWaterIntake = currentWaterIntake + waterIntake;
+
+  await prefs.setDouble('waterIntake', newWaterIntake);
+}
+
+Future<double> getTodaysWaterIntake() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getDouble('waterIntake') ?? 0;
+}
+
+Future<void> saveCaloricIntakeMap(Map<String, dynamic> caloricIntakeMap) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  log((jsonEncode(caloricIntakeMap)));
+  await prefs.setString('caloricIntakeMap', jsonEncode(caloricIntakeMap));
+}
+
+Future<Map<String, dynamic>> getCaloricIntakeMap() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return jsonDecode(prefs.getString('caloricIntakeMap') ?? '{}');
+}
+
 class SharedPreferenceHelper {
   static const String _keyUserId = 'user_id';
   static const String _keyName = 'name';

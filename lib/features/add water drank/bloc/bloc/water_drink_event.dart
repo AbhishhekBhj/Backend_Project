@@ -10,3 +10,11 @@ class WaterDrinkLogEvent extends WaterDrinkEvent {
 }
 
 class WaterHistorySeeClickedEvent extends WaterDrinkEvent {}
+
+class WaterDrinkHistoryEvent extends WaterDrinkEvent {}
+
+class WaterDrinkLogDeleteEvent extends WaterDrinkEvent {
+  final dynamic intakeID;
+
+  WaterDrinkLogDeleteEvent({required this.intakeID});
+}

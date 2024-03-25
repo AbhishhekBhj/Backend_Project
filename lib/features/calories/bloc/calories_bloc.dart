@@ -17,6 +17,8 @@ class CaloriesBloc extends Bloc<CaloriesEvent, CaloriesState> {
     on<CaloriesInitalEvent>(caloriesInitalEvent);
     on<CaloriesSearchByNameEvent>(caloriesSearchByNameEvent);
     on<CaloriesConsumedLogEvent>(caloriesConsumedLogEvent);
+    on<CaloriesLogDeleteEvent>(caloriesLogDeleteEvent);
+    on<CaloriesIntakeRequestEvent>(caloriesIntakeRequestEvent);
   }
 
   void caloriesInitalEvent(
@@ -34,8 +36,7 @@ class CaloriesBloc extends Bloc<CaloriesEvent, CaloriesState> {
     emit(CaloriesFetchingState());
 
     if (foodData.isNotEmpty) {
-      await Future.delayed(
-          Duration(milliseconds: 500)); // Wait for a short delay
+      await Future.delayed(const Duration(milliseconds: 500));
       emit(CaloriesFoundSuccessState(foodModel: foodData));
     } else {
       emit(CaloriesFoundErrorState());
@@ -71,4 +72,48 @@ class CaloriesBloc extends Bloc<CaloriesEvent, CaloriesState> {
     }
     // Handle the result as needed
   }
+
+  FutureOr<void> caloriesLogDeleteEvent(
+      CaloriesLogDeleteEvent event, Emitter<CaloriesState> emit) async {
+    emit(CaloriesLogDeleteLoadingState());
+    bool caloriesLoggingSuccess =
+        await DeleteCaloriesRepository.deleteCalories(caloriesId: event.id!);
+
+    if (caloriesLoggingSuccess) {
+      emit(CaloriesLogDeleteSuccessState());
+      Fluttertoast.showToast(
+          msg: "Calories log deleted successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      emit(CaloriesLogDeleteErrorState());
+      Fluttertoast.showToast(
+          msg: "Error deleting calories log",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  FutureOr<void> caloriesIntakeRequestEvent(
+  CaloriesIntakeRequestEvent event, Emitter<CaloriesState> emit) async {
+  emit(CaloriesIntakeRequestLoadingState());
+  List<dynamic> caloricIntakeData =
+      await GetMyCaloricIntakeRepository.getMyCaloricIntake();
+  
+  if (caloricIntakeData.isNotEmpty) {
+    emit(CaloriesIntakeRequestSuccessState(
+        caloricIntakeList: caloricIntakeData));
+  } else {
+    emit(CaloriesIntakeRequestErrorState());
+  }
+}
+
 }

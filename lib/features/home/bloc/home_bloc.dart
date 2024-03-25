@@ -25,9 +25,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       final fetchedData = await homeRepository.getHomePageData();
 
-      log('Fetched Data: $fetchedData');
-
       emit(HomePageFetchDataSuccessState(fetchedData));
+      log('Data fetched successfully');
     } catch (error) {
       log('Error: $error');
       emit(HomePageFetchDataFailureState());

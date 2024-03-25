@@ -17,10 +17,15 @@ class HomeRepository {
     Map<String, dynamic> waterIntakeData = {};
     Map<String, dynamic> reminderData = {};
     Map<String, dynamic> measurementData = {};
+   
 
     try {
       var response = await client.get(Uri.parse('${baseUrl}home/$username/'),
-          headers: {"Authorization": "Bearer $accessToken"});
+          headers: {"Authorization": "Bearer $accessToken"}
+          
+          
+          
+          );
 
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       int status = responseBody['status'];

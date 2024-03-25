@@ -1,3 +1,6 @@
+import 'package:mygymbuddy/data/models/calorie_logging_model.dart';
+import 'package:mygymbuddy/data/models/log_water_model.dart';
+
 class Exercises {
   final int exerciseId;
   final String exerciseName;
@@ -149,7 +152,6 @@ class HomeModel {
     required this.waterIntakeData,
     required this.reminderData,
     required this.measurementData,
-
   });
 
   factory HomeModel.fromJson(Map<String, dynamic> json) {

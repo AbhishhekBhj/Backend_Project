@@ -27,6 +27,7 @@ class BaseClass extends StatefulWidget {
 
 class _BaseClassState extends State<BaseClass> {
   late HomeBloc homeBloc;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -81,6 +82,7 @@ class _BaseClassState extends State<BaseClass> {
         children: const [
           HomePage(),
           DrinkWater(),
+          // Workout(),
           StartWorkout(),
           // WorkoutLoggingPage(),
           StartMeditation(),

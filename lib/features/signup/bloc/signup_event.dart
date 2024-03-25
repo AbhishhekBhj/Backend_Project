@@ -27,7 +27,7 @@ class SendOtpEvent extends SignupEvent{
 
 
 class VerifyOtpButtonClickedEvent extends SignupEvent {
-  final String otp;
+ final OTPModel otp;
   VerifyOtpButtonClickedEvent({
     required this.otp,
   });

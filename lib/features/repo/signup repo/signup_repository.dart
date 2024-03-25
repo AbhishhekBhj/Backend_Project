@@ -7,18 +7,17 @@ import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 class SignupRepository {
   static Future<bool> signupUser(UserSignupModel userSignupModel) async {
     try {
-      var url = "http://10.0.2.2/api/users/register/";
+      log('Signing up user');
+
       var client = http.Client();
 
-      var jsonBody = jsonEncode(
-          userSignupModel.toJson()); // Encode userSignupModel to JSON
+      var body = jsonEncode(userSignupModel.toJson());
+      // Encode userSignupModel to JSON
+      log('Response: ${body}');
 
       var response = await client.post(
-        Uri.parse(url),
-        body: jsonBody,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
+        Uri.parse('http://10.0.2.2/api/users/register/'),
+        body: body, // Pass the JSON-encoded string directly
       );
 
       var responseBody = jsonDecode(response.body); // Decode JSON response body
@@ -72,17 +71,15 @@ class OTPVerifyRepository {
 class VerifyOtpRepository {
   static Future<bool> verifyOtp(OTPModel otpModel) async {
     try {
-      var url = "http://10.0.0.2/api/users/verify_otp/";
       var client = http.Client();
 
-      var jsonBody = jsonEncode(
-          otpModel.toJson()); // Ensure body is encoded to JSON string
+      // Ensure body is encoded to JSON string
 
       var response = await client.post(
-        Uri.parse(url),
-        body: jsonBody,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+        Uri.parse("http://10.0.2.2:8000/api/users/verify-otp/"),
+        body: {
+          'email': otpModel.email,
+          'otp': otpModel.otp,
         },
       );
 
@@ -109,21 +106,25 @@ class VerifyOtpRepository {
 class SendOtpRepository {
   static Future<bool> sendOTPToMail(String emailAddress) async {
     try {
-      var url = "http://10.0.0.2/api/users/resend-otp/";
+      var url = "http://10.0.2.2:8000/api/users/resend-otp/";
       var client = http.Client();
+
+      log('Sending OTP to $emailAddress');
 
       var response = await client.post(
         Uri.parse(url),
-        body: jsonEncode({'email': emailAddress}),
+        body: {'email': emailAddress},
       );
       var decodedResponse = jsonDecode(response.body);
 
       var status = decodedResponse['status'];
       var message = decodedResponse['message'];
 
-      if (status == '200' && message == 'OTP sent successfully') {
+      if (status == 200) {
+        log('OTP sent successfully');
         return true;
       } else {
+        log('Failed to send OTP');
         return false;
       }
     } catch (e) {

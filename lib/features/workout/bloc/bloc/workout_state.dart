@@ -5,10 +5,22 @@ sealed class WorkoutState {}
 
 final class WorkoutInitial extends WorkoutState {}
 
-class WorkoutActionState extends WorkoutState {}
+final class WorkoutPostLoadingState extends WorkoutState {}
 
-class WorkoutSavingState extends WorkoutState {}
+final class WorkoutPostLoadedSuccessState extends WorkoutState {}
 
-class WorkoutSaveSuccessState extends WorkoutState {}
+final class WorkoutPostLoadedErrorState extends WorkoutState {}
 
-class WorkoutSaveFailureState extends WorkoutState {}
+class WorkoutHistoryLoadingState extends WorkoutState {}
+
+class WorkoutHistoryLoadedState extends WorkoutState {
+  final List<WorkoutModel> workoutHistory;
+
+  WorkoutHistoryLoadedState({required this.workoutHistory});
+}
+
+class WorkoutHistoryErrorState extends WorkoutState {
+  final String errorMessage;
+
+  WorkoutHistoryErrorState({required this.errorMessage});
+}

@@ -26,7 +26,9 @@ class FirebaseAPI {
       log('Message data: ${message.data}');
 
       if (message.notification != null) {
-        log('Message also contained a notification: ${message.notification?.title}');
+        log('Message also contained a notification title: ${message.notification?.title}');
+        log("Message also contained a notification body: ${message.notification?.body}");
+        log("Message also contained a notification body: ${message.notification?.bodyLocKey}");
       }
     });
   }

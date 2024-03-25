@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -65,11 +66,21 @@ class _SignupPageState extends State<SignupPage> {
       ),
       body: BlocListener<SignupBloc, SignupState>(
         listener: (context, state) => {
-          if (state is SignupSuccessState)
+          if (state is OtpSendSuccessState)
             {
               Get.to(OtpVerifyScreen(
+                userSignupModel: UserSignupModel(
+                  username: _usernameController.text,
+                  name: _nameController.text,
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                  height: _heightController.text,
+                  weight: _weightController.text,
+                  age: _ageController.text,
+                  fitnessGoal: _fitnessGoalController.text,
+                  fitnessLevel: _currentFitnessController.text,
+                ),
                 email: _emailController.text,
-                signupBloc: _signupBloc,
               ))
             }
         },
@@ -99,7 +110,7 @@ class _SignupPageState extends State<SignupPage> {
                   }
                   return null;
                 },
-                controller: _nameController, // Step 3: Attach the controller
+                controller: _nameController,
                 decoration: const InputDecoration(
                   labelText: 'Name',
                   hintText: 'Enter your name',
@@ -207,24 +218,8 @@ class _SignupPageState extends State<SignupPage> {
               GestureDetector(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    log('Signup clicked');
-
                     _signupBloc
                         .add(SendOtpEvent(emailAddress: _emailController.text));
-
-                    // _signupBloc.add(SignUpClickedButtonEvent(
-                    //   userModel: UserSignupModel(
-                    //     username: _usernameController.text,
-                    //     name: _nameController.text,
-                    //     email: _emailController.text,
-                    //     password: _passwordController.text,
-                    //     height: (_heightController.text),
-                    //     weight: (_weightController.text),
-                    //     age: (_ageController.text),
-                    //     fitnessGoal: (_fitnessGoalController.text),
-                    //     fitnessLevel: (_currentFitnessController.text),
-                    //   ),
-                    // ));
 
                     ;
                   } else {
@@ -243,6 +238,17 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                 ),
+              ),
+              BlocConsumer<SignupBloc, SignupState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is OtpSendLoadingState) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(),
+                    );
+                  }
+                  return Container();
+                },
               )
             ],
           ),
@@ -256,62 +262,153 @@ class OtpVerifyScreen extends StatefulWidget {
   OtpVerifyScreen({
     Key? key,
     required this.email,
-    required this.signupBloc,
+    required this.userSignupModel,
   }) : super(key: key);
 
   final String email;
-  final SignupBloc signupBloc;
+  final UserSignupModel userSignupModel;
 
   @override
   State<OtpVerifyScreen> createState() => _OtpVerifyScreenState();
 }
 
 class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
+  late SignupBloc signupBloc;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _otpController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    signupBloc = BlocProvider.of<SignupBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final TextEditingController _otpController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Verify OTP'),
       ),
       body: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the OTP';
-                  }
-                  return null;
-                },
-                controller: _otpController,
-                decoration: const InputDecoration(
-                  labelText: 'OTP',
-                  hintText: 'Enter the OTP sent to your email',
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the OTP';
+                    }
+                    return null;
+                  },
+                  controller: _otpController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'OTP',
+                    hintText: 'Enter the OTP sent to your email',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  widget.signupBloc.add(VerifyOtpButtonClickedEvent(
-                    otp: _otpController.text,
-                  ));
-                },
-                child: Container(
-                  color: Colors.black,
-                  padding: const EdgeInsets.all(16),
-                  child: const Center(
-                    child: Text(
-                      'Verify OTP',
-                      style: TextStyle(color: Colors.white),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    log('Verify OTP clicked');
+                    log('''
+{"email": "${widget.email}", "otp": "${_otpController.text}"
+
+''');
+                    if (_formKey.currentState!.validate()) {
+                      signupBloc.add(
+                        VerifyOtpButtonClickedEvent(
+                            otp: OTPModel(
+                                email: widget.email, otp: _otpController.text)),
+                      );
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue, // Button background color
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    padding: const EdgeInsets.all(12.0),
+                    child: const Center(
+                      child: Text(
+                        'Verify OTP',
+                        style: TextStyle(
+                          color: Colors.white, // Text color
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              )
-            ],
+                BlocConsumer<SignupBloc, SignupState>(
+                  builder: (context, state) {
+                    if (state is VerifyOtpLoadingState) {
+                      return const Center(
+                        child: CupertinoActivityIndicator(),
+                      );
+                    }
+                    if (state is SignupLoadingState) {
+                      return const Column(
+                        children: [
+                          Text("Signing up"),
+                          Center(
+                            child: CupertinoActivityIndicator(),
+                          ),
+                        ],
+                      );
+                    }
+                    return Container();
+                  },
+                  listener: (context, state) {
+                    if (state is SignupSuccessState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Signup successful'),
+                        ),
+                      );
+                    }
+
+                    if (state is SignupErrorState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Signup failed'),
+                        ),
+                      );
+                    }
+                    if (state is VerifyOtpSuccessState) {
+                      signupBloc.add(
+                        SignUpClickedButtonEvent(
+                          userModel: UserSignupModel(
+                            username: widget.userSignupModel.username,
+                            name: widget.userSignupModel.name,
+                            email: widget.userSignupModel.email,
+                            password: widget.userSignupModel.password,
+                            height: widget.userSignupModel.height,
+                            weight: widget.userSignupModel.weight,
+                            age: widget.userSignupModel.age,
+                            fitnessGoal: widget.userSignupModel.fitnessGoal,
+                            fitnessLevel: widget.userSignupModel.fitnessLevel,
+                          ),
+                        ),
+                      );
+                    } else if (state is VerifyOtpErrorState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('OTP verification failed'),
+                        ),
+                      );
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),

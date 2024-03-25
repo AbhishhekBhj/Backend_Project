@@ -62,7 +62,7 @@ class _ChooseWorkoutState extends State<ChooseWorkout> {
                 child: ListTile(
                   trailing: const Icon(Icons.add),
                   leading: const Icon(Icons.fitness_center),
-                  title: Text("${widget.exercise[index].exerciseName}"),
+                  title: Text(widget.exercise[index].exerciseName),
                   onTap: () {
                     widget.onSelectExercise(widget.exercise[index]);
                     Navigator.of(context).pop();

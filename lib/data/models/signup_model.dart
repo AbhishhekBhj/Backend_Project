@@ -93,8 +93,8 @@ class UserSignupModel {
       'age': age,
       'weight': weight,
       'height': height,
-      'fitnessGoal': fitnessGoal,
-      'fitnessLevel': fitnessLevel,
+      'fitness_goal': fitnessGoal,
+      'fitness_level': fitnessLevel,
     };
   }
 
@@ -108,13 +108,13 @@ class UserSignupModel {
       age: map['age'],
       weight: map['weight'],
       height: map['height'],
-      fitnessGoal: map['fitnessGoal'],
-      fitnessLevel: map['fitnessLevel'],
+      fitnessGoal: map['fitness_goal'],
+      fitnessLevel: map['fitness_level'],
     );
   }
 }
 
-class OTPModel{
+class OTPModel {
   final String? email;
   final String? otp;
 

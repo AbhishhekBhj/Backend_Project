@@ -36,20 +36,20 @@ class _StartWorkoutState extends State<StartWorkout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Quit Workout"),
-          content: Text("Are you sure you want to quit the workout?"),
+          title: const Text("Quit Workout"),
+          content: const Text("Are you sure you want to quit the workout?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("No"),
+              child: const Text("No"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Yes"),
+              child: const Text("Yes"),
             ),
           ],
         );
@@ -62,20 +62,20 @@ class _StartWorkoutState extends State<StartWorkout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Add Exercise"),
-          content: Text("Are you sure you want to add an exercise?"),
+          title: const Text("Add Exercise"),
+          content: const Text("Are you sure you want to add an exercise?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("No"),
+              child: const Text("No"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Yes"),
+              child: const Text("Yes"),
             ),
           ],
         );
@@ -88,20 +88,20 @@ class _StartWorkoutState extends State<StartWorkout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Remove Exercise"),
-          content: Text("Are you sure you want to remove the exercise?"),
+          title: const Text("Remove Exercise"),
+          content: const Text("Are you sure you want to remove the exercise?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("No"),
+              child: const Text("No"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Yes"),
+              child: const Text("Yes"),
             ),
           ],
         );
@@ -114,14 +114,14 @@ class _StartWorkoutState extends State<StartWorkout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Quit Workout"),
-          content: Text("Are you sure you want to quit the workout?"),
+          title: const Text("Quit Workout"),
+          content: const Text("Are you sure you want to quit the workout?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("No"),
+              child: const Text("No"),
             ),
             TextButton(
               onPressed: () {
@@ -132,7 +132,7 @@ class _StartWorkoutState extends State<StartWorkout> {
                 });
                 Navigator.of(context).pop();
               },
-              child: Text("Yes"),
+              child: const Text("Yes"),
             ),
           ],
         );
@@ -145,20 +145,20 @@ class _StartWorkoutState extends State<StartWorkout> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Finish Workout"),
-          content: Text("Are you sure you want to finish the workout?"),
+          title: const Text("Finish Workout"),
+          content: const Text("Are you sure you want to finish the workout?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("No"),
+              child: const Text("No"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Yes"),
+              child: const Text("Yes"),
             ),
           ],
         );
@@ -181,7 +181,7 @@ class _StartWorkoutState extends State<StartWorkout> {
       setState(() {
         exerciseName.add(selectedExercise);
         addSetWidgetList.add(AddSetWidget(
-          exerciseName: selectedExercise.exerciseName,
+          exerciseName: selectedExercise,
         ));
       });
     }
@@ -189,14 +189,14 @@ class _StartWorkoutState extends State<StartWorkout> {
 
   @override
   Widget build(BuildContext context) {
-    bool startedWorkout = exerciseName.length == 0;
+    bool startedWorkout = exerciseName.isEmpty;
 
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
     return BlocBuilder<InternetBloc, InternetState>(
       builder: (context, state) {
         if (state is InternetLostState) {
-          return NoInternet();
+          return const NoInternet();
         } else {
           return BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
@@ -231,7 +231,7 @@ class _StartWorkoutState extends State<StartWorkout> {
                                 onPressed: () {
                                   _showFinishWorkoutDialog();
                                 },
-                                child: Text(
+                                child: const Text(
                                   "Finish Workout",
                                 ))
                           ],
@@ -249,7 +249,7 @@ class _StartWorkoutState extends State<StartWorkout> {
                           if (notification.scrollDelta! > 0) {
                             setState(() {
                               //user is scrolling down
-                              showAppBar = false; 
+                              showAppBar = false;
                             });
                           } else if (notification.scrollDelta! < 0) {
                             //user is scrolling up
@@ -271,7 +271,7 @@ class _StartWorkoutState extends State<StartWorkout> {
                                         ? Colors.white
                                         : Colors.blueAccent,
                                   ),
-                                  Text(
+                                  const Text(
                                     "You haven't Started Your Workout Yet",
                                     style: TextStyle(fontSize: 20),
                                   ),
@@ -285,13 +285,14 @@ class _StartWorkoutState extends State<StartWorkout> {
                                         ),
                                       );
                                     },
-                                    child: Text("Start Workout"),
+                                    child: const Text("Start Workout"),
                                   ),
                                 ],
                               ),
                             )
                           : ListView.separated(
-                              separatorBuilder: (context, index) => Divider(),
+                              separatorBuilder: (context, index) =>
+                                  const Divider(),
                               shrinkWrap: true,
                               padding: EdgeInsets.symmetric(
                                   horizontal: Get.width * 0.03,
@@ -301,6 +302,9 @@ class _StartWorkoutState extends State<StartWorkout> {
                                 return Column(
                                   children: [
                                     addSetWidgetList[index],
+
+                                    
+
                                     SizedBox(
                                       height: Get.height * 0.05,
                                     ),
@@ -328,6 +332,8 @@ class _StartWorkoutState extends State<StartWorkout> {
                                         ),
                                       ),
                                     ),
+
+                                    // ignore: avoid_function_literals_in_foreach_calls
                                   ],
                                 );
                               },

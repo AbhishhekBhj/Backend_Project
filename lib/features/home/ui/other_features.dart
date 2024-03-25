@@ -7,13 +7,10 @@ import 'package:get/get.dart';
 import 'package:mygymbuddy/features/bmi/ui/bmi_ui.dart';
 import 'package:mygymbuddy/features/exercise_library/ui/exercise_library.dart';
 import 'package:mygymbuddy/features/home/ui/edit_profile.dart';
-import 'package:mygymbuddy/features/measurements/ui/measurements_update.dart';
-import 'package:mygymbuddy/features/measurements/ui/measurements_view_history.dart';
 import 'package:mygymbuddy/features/profile/ui/view_profile.dart';
 import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/logins.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
-import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../functions/shared_preference_functions.dart';
@@ -61,7 +58,7 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
         onTap: onTap,
         child: Ink(
           child: InkWell(
-            splashColor: Color.fromARGB(255, 125, 125, 241),
+            splashColor: const Color.fromARGB(255, 125, 125, 241),
             onTap: onTap,
             child: ListTile(
               title: Text(title),
@@ -80,8 +77,8 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
             Container(
               child: Column(
                 children: [
-                  Header(),
-                  Divider(thickness: 2),
+                  const Header(),
+                  const Divider(thickness: 2),
                   Text(
                     "Other Features",
                     style: textstyle(),
@@ -95,13 +92,13 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                     ));
                   }, "Exercise Gallery"),
                   buildListTile(FontAwesomeIcons.chartColumn, () {
-                    Get.to(ViewProgressOptions());
+                    Get.to(const ViewProgressOptions());
                   }, "Progress"),
                   buildListTile(Icons.update, () {
-                    Get.to(UpdateMeasurementsScreen());
+                    Get.to(const UpdateMeasurementsScreen());
                   }, "Update Your Measurements"),
                   buildListTile(FontAwesomeIcons.calculator, () {
-                    Get.to(BMI());
+                    Get.to(const BMI());
                   }, "Calculate BMI"),
                 ],
               ),
@@ -116,19 +113,19 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                   buildListTile(FontAwesomeIcons.bookOpen, () {
                     Get.to(BlocProvider(
                       create: (context) => ProfileBloc(),
-                      child: ChangePasswordScreen(),
+                      child: const ChangePasswordScreen(),
                     ));
                   }, "Change Password"),
 
                   buildListTile(Icons.person_2, () {
-                    Get.to(EditProfileScreen());
+                    Get.to(const EditProfileScreen());
                   }, "Edit Profile"),
 
                   DarkModeSwitchTile(),
 
                  
                   buildListTile(Icons.logout_rounded, () {
-                    Get.off(DemoLoginPage());
+                    Get.off(const DemoLoginPage());
                   }, "Log out"),
                 ],
               ),
@@ -147,19 +144,19 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
             height: 200,
             child: Column(
               children: [
-                Text("Are you sure you want to log out?"),
+                const Text("Are you sure you want to log out?"),
                 ElevatedButton(
                     onPressed: () {
-                      Get.offAll(DemoLoginPage());
+                      Get.offAll(const DemoLoginPage());
                     },
-                    child: Text("Log out"))
+                    child: const Text("Log out"))
               ],
             ),
           );
         });
   }
 
-  TextStyle textstyle() => TextStyle(
+  TextStyle textstyle() => const TextStyle(
       fontFamily: "Roboto", fontSize: 24, fontWeight: FontWeight.bold);
 }
 
@@ -180,7 +177,7 @@ class Header extends StatelessWidget {
               child: Container(
                   width: Get.height * 0.12,
                   height: Get.height * 0.12,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                   ),
                   child: UserDataManager.userData["profile_picture"] != ""
@@ -191,7 +188,7 @@ class Header extends StatelessWidget {
                       : Container(
                           color: Colors.grey,
                           child:
-                              Icon(Icons.person, size: 50, color: Colors.white),
+                              const Icon(Icons.person, size: 50, color: Colors.white),
                         )),
             ),
           ),
@@ -200,13 +197,13 @@ class Header extends StatelessWidget {
             children: [
               Text(
                 UserDataManager.userData["username"],
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               TextButton(
                   onPressed: () {
                     Get.to(ViewProfile());
                   },
-                  child: Text("View Profile"))
+                  child: const Text("View Profile"))
             ],
           ),
         ],
@@ -219,8 +216,8 @@ class DarkModeSwitchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(FontAwesomeIcons.moon),
-      title: Text('Dark Mode'),
+      leading: const Icon(FontAwesomeIcons.moon),
+      title: const Text('Dark Mode'),
       trailing: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;

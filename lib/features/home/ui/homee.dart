@@ -1,14 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/colours/colours.dart';
-import 'package:mygymbuddy/features/calories/ui/calories.dart';
-import 'package:mygymbuddy/features/setgoals/ui/goal_set.dart';
-import 'package:mygymbuddy/provider/themes/theme_provider.dart';
-import 'package:mygymbuddy/utils/shared%20preferences/sharedpreferences_manager.dart';
+import 'package:mygymbuddy/features/home/bloc/home_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../../functions/shared_preference_functions.dart';
+import '../../add water drank/ui/drink_water.dart';
+import '../../calories/ui/caloric_intake.dart';
+import '../../calories/ui/calories.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,17 +22,37 @@ class _HomePageState extends State<HomePage> {
   double currentConsumedCalories = 0;
   double currentRemainingCalories = 0;
 
+  String username = '';
+
   @override
   void initState() {
     super.initState();
+
+    _updateCalorieData();
+  }
+
+  // Function to update calorie-related data
+  Future<void> _updateCalorieData() async {
+    double todayCaloricIntake = await getTodaysCaloricIntake();
+    setState(() {
+      currentConsumedCalories = todayCaloricIntake;
+      currentRemainingCalories = currentDailyCalorieGoal - todayCaloricIntake;
+    });
+  }
+
+  void getUserName() async {
+    username = await getUsername();
+  }
+
+  void updateConsumedCalories(double newConsumedCalories) {
+    setState(() {
+      currentConsumedCalories = newConsumedCalories;
+      currentRemainingCalories = currentDailyCalorieGoal - newConsumedCalories;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
-    currentRemainingCalories =
-        currentDailyCalorieGoal - currentConsumedCalories;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -41,29 +61,29 @@ class _HomePageState extends State<HomePage> {
           );
         },
         backgroundColor: Colors.deepPurple,
-        child: Icon(
+        elevation: 4.0,
+        child: const Icon(
           Icons.add,
           color: Colors.white,
         ),
-        elevation: 4.0,
       ),
       body: SafeArea(
         child: Center(
           child: ListView(
             children: [
               SizedBox(
-                height: Get.height * 0.05,
+                height: MediaQuery.of(context).size.height * 0.05,
               ),
               const Text(
                 'Calories Summary',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 22.0,
+                  fontSize: 35.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                height: Get.height * 0.45,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.45,
                 child: SfCircularChart(
                   legend: const Legend(
                     isVisible: true,
@@ -73,8 +93,8 @@ class _HomePageState extends State<HomePage> {
                     PieSeries<ChartData, String>(
                       dataSource: <ChartData>[
                         ChartData('Calories Consumed', currentConsumedCalories),
-                        ChartData(
-                            'Calories Remaining', currentRemainingCalories),
+                        ChartData('Calories Remaining',
+                            currentRemainingCalories.toPrecision(1)),
                       ],
                       xValueMapper: (ChartData data, _) => data.category,
                       yValueMapper: (ChartData data, _) => data.value,
@@ -85,8 +105,8 @@ class _HomePageState extends State<HomePage> {
                       // color for chart
                       pointColorMapper: (ChartData data, _) =>
                           data.category == 'Calories Consumed'
-                              ? MyColors.accentBlue
-                              : Colors.redAccent,
+                              ? Colors.blue // Change color to blue
+                              : Colors.red, // Change color to red
                     ),
                   ],
                 ),
@@ -100,6 +120,18 @@ class _HomePageState extends State<HomePage> {
                   textAlign: TextAlign.center, style: contentTextStyle()),
               Text('Calories Remaining: $currentRemainingCalories',
                   textAlign: TextAlign.center, style: contentTextStyle()),
+              ListTile(
+                title: const Text('Intakes'),
+                subtitle: const Text('See your intakes'),
+                onTap: () {
+                  Get.to(() => BlocProvider(
+                        create: (context) => HomeBloc(),
+                        child: CaloricIntakePage(
+                          username: username,
+                        ),
+                      ));
+                },
+              ),
             ],
           ),
         ),
@@ -110,11 +142,4 @@ class _HomePageState extends State<HomePage> {
   TextStyle contentTextStyle() {
     return const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold);
   }
-}
-
-class ChartData {
-  ChartData(this.category, this.value);
-
-  final String category;
-  final double value;
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:mygymbuddy/features/add%20water%20drank/bloc/bloc/water_drink_bloc.dart';
+import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
@@ -11,7 +12,6 @@ import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/welcome_screen.dart';
 import 'package:mygymbuddy/features/workout/bloc/bloc/workout_bloc.dart';
 import 'package:mygymbuddy/firebase_options.dart';
-import 'package:mygymbuddy/firebaseapi/firebase_api.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,27 +19,41 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'features/home/bloc/home_bloc.dart';
-import 'features/signup/ui/signup_page.dart';
+import 'features/reminder/ui/reminders.dart';
+import 'firebaseapi/firebase_api.dart';
 import 'functions/exercise.dart';
-import "firebase_options.dart";
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import 'services/notification_services.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  tz.initializeTimeZones();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  final appDocumentDir = await getApplicationDocumentsDirectory();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Initialize Firebase Messaging
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  await messaging.requestPermission();
+
+  // Initialize time zones
+  tz.initializeTimeZones();
+
+  // Initialize shared preferences
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+
+  // Get the application document directory
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+
+  // Initialize Firebase API
   await FirebaseAPI().initialize();
+  NotificationService().initNotification();
+
+  // Initialize Hive
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(ExerciseAdapter());
 
   runApp(
-    // ChangeNotifierProvider(
-    //   create: (_) => DownloadProvider(),
-    //   child: dummy(),
-    // ),
     ChangeNotifierProvider(
       create: (BuildContext context) {
         return ThemeProvider(
@@ -52,7 +66,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,18 +86,23 @@ class MyApp extends StatelessWidget {
             BlocProvider<SignupBloc>(
               create: (context) => SignupBloc(),
             ),
-            BlocProvider(create: (context) => InternetBloc()),
-            BlocProvider(create: (context) => LoginBloc()),
-            BlocProvider(create: (context) => MeasurementsBloc())
+            BlocProvider<InternetBloc>(
+              create: (context) => InternetBloc(),
+            ),
+            BlocProvider<LoginBloc>(
+              create: (context) => LoginBloc(),
+            ),
+            BlocProvider<MeasurementsBloc>(
+              create: (context) => MeasurementsBloc(),
+            ),
+            BlocProvider<CaloriesBloc>(
+              create: (context) => CaloriesBloc(),
+            ),
           ],
           child: GetMaterialApp(
             title: 'My Gym Buddy',
             theme: themeProvider.getTheme,
-            // home: UpdateMeasurements(),
-            // home: AddSetWidget(
-            //   exerciseName: "Squats",
-            // ),
-            home: const WelcomeScreen(),
+            home: SplashScreen(),
             debugShowCheckedModeBanner: false,
           ),
         );

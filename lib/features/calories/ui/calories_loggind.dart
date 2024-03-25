@@ -1,4 +1,5 @@
 import 'dart:developer';
+import "dart:ffi";
 
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
@@ -14,7 +15,9 @@ import "package:provider/provider.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 class CaloriesLoggingPage extends StatefulWidget {
-  CaloriesLoggingPage({this.data});
+  CaloriesLoggingPage({this.data, this.onPressed});
+
+  final VoidCallback? onPressed;
 
   @override
   State<CaloriesLoggingPage> createState() => _CaloriesLoggingPageState();
@@ -191,6 +194,8 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                         log(servingSizeConsume.runtimeType.toString());
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (servingSizeConsume != null) {
+
+                        
                           caloriesBloc.add(CaloriesConsumedLogEvent(
                               caloriesLog: CaloriesLog(
                                   caloriesConsumed:
@@ -208,6 +213,7 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                                   username: UserDataManager.userData["user_id"],
                                   foodConsumed: widget.data!.id,
                                   timestamp: dateTime)));
+                        
                         } else {
                           Get.snackbar(
                             "Error",
@@ -242,25 +248,6 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
                     ),
                   ),
                 ),
-                BlocBuilder(
-                    bloc: caloriesBloc,
-                    builder: (context, state) {
-                      if (state is CaloriesLoggingLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state is CaloriesLoggingSuccessState) {
-                        return const Center(
-                          child: Text("Food Logged"),
-                        );
-                      } else if (state is CaloriesLoggingErrorState) {
-                        return const Center(
-                          child: Text("Error Logging Food"),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }),
               ],
             ),
           ],

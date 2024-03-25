@@ -1,40 +1,38 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'dart:developer';
+import 'package:http/http.dart' as http;
+
+import '../../../data/models/workout_model.dart';
 
 class WorkoutRepository {
-  static Future<bool> postWorkout(
-    String? username,
-    String? exerciseName,
-    String? sets,
-    String? reps,
-    String? volume,
-  ) async {
-    var dio = Dio();
-
+  static Future<List<WorkoutModel>> postWorkout(
+      List<WorkoutModel> workoutModel) async {
     try {
-      var url = "http://10.0.2.2:8000/workout/postworkout/";
+      var client = http.Client();
 
-      FormData formData = FormData.fromMap({
-        'username': username,
-        'exerciseName': exerciseName,
-        'sets': sets,
-        'reps': reps,
-        'volume': volume
-      });
+      var url = Uri.parse("http://10.0.2.2:8000/api/workout/logworkout/");
 
-//make a post request
+      var jsonEncodedBody = jsonEncode(workoutModel);
 
-      var response = await dio.post(url, data: formData);
+      var response = await client.post(url,
+          body: jsonEncodedBody, headers: {"Content-Type": "application/json"});
 
-      if (response.statusCode == 201 ||
-          (response.statusCode! >= 200 && response.statusCode! <= 299)) {
-        return true;
+      var body = jsonDecode(response.body);
+
+      var statusCode = body['status'];
+
+      var message = body['message'];
+
+      if (statusCode == 201) {
+        return workoutModel;
       } else {
-        return false;
+        return [];
       }
     } catch (e) {
-      log(e.toString());
-      return false;
+      log("Error in postWorkout: $e");
+      return [];
     }
   }
 }

@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Check whether to navigate to Signup Page or Home Page
     if (username.isNotEmpty) {
-      Get.offAll(() => BaseClass());
+      Get.offAll(() => WelcomeScreen());
     } else {
       Get.offAll(() => WelcomeScreen());
     }

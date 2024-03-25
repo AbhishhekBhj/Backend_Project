@@ -13,13 +13,18 @@ class CaloriesSearchByNameEvent extends CaloriesEvent {
   });
 }
 
-class CaloriesConsumedLogEvent extends CaloriesEvent{
+class CaloriesConsumedLogEvent extends CaloriesEvent {
   final CaloriesLog caloriesLog;
   CaloriesConsumedLogEvent({
     required this.caloriesLog,
   });
 }
 
+class CaloriesLogDeleteEvent extends CaloriesEvent {
+  final dynamic id;
+  CaloriesLogDeleteEvent({
+    required this.id,
+  });
+}
 
-
-
+class CaloriesIntakeRequestEvent extends CaloriesEvent {}

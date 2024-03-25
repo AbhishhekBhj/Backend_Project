@@ -14,6 +14,8 @@ import 'package:provider/provider.dart';
 class CaloricInformation extends StatefulWidget {
   CaloricInformation({Key? key}) : super(key: key);
 
+  
+
   @override
   State<CaloricInformation> createState() => _CaloricInformationState();
 }
@@ -47,7 +49,7 @@ class _CaloricInformationState extends State<CaloricInformation> {
       child: BlocBuilder<InternetBloc, InternetState>(
         builder: (context, state) {
           if (state is InternetLostState) {
-            return NoInternet();
+            return const NoInternet();
           } else {
             return Scaffold(
               body: SafeArea(
@@ -61,7 +63,7 @@ class _CaloricInformationState extends State<CaloricInformation> {
                             },
                             icon: Platform.isAndroid
                                 ? const Icon(Icons.arrow_back)
-                                : Icon(Icons.arrow_back_ios)),
+                                : const Icon(Icons.arrow_back_ios)),
                         const Text(
                           "Search Calories",
                           style: TextStyle(
@@ -93,7 +95,7 @@ class _CaloricInformationState extends State<CaloricInformation> {
                                     child: buildFoodList(
                                         foodModel, context, isDarkMode),
                                   )
-                                : Center(
+                                : const Center(
                                     child: Text("Enter Food Name to Search"),
                                   );
 

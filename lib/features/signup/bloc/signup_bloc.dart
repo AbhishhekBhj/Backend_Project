@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -74,8 +74,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       VerifyOtpButtonClickedEvent event, Emitter<SignupState> emit) async {
     emit(VerifyOtpLoadingState());
     bool otp = await VerifyOtpRepository.verifyOtp(OTPModel(
-      email: event.otp,
-      otp: event.otp,
+      email: event.otp.email,
+      otp: event.otp.otp,
     ));
 
     if (otp == true) {
@@ -103,6 +103,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
   FutureOr<void> sendOtpEvent(
       SendOtpEvent event, Emitter<SignupState> emit) async {
+    log('sendOtpEvent');
     emit(OtpSendLoadingState());
 
     bool sendOTP = await SendOtpRepository.sendOTPToMail(event.emailAddress);

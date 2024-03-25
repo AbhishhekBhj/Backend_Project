@@ -21,8 +21,25 @@ class CaloriesFoundSuccessState extends CaloriesState {
 
 class CaloriesFoundErrorState extends CaloriesState {}
 
-
 class CaloriesLoggingLoadingState extends CaloriesState {}
+
 class CaloriesLoggingSuccessState extends CaloriesState {}
 
 class CaloriesLoggingErrorState extends CaloriesState {}
+
+class CaloriesLogDeleteLoadingState extends CaloriesState {}
+
+class CaloriesLogDeleteSuccessState extends CaloriesState {}
+
+class CaloriesLogDeleteErrorState extends CaloriesState {}
+
+class CaloriesIntakeRequestLoadingState extends CaloriesState {}
+
+class CaloriesIntakeRequestSuccessState extends CaloriesState {
+  final List<dynamic> caloricIntakeList;
+  CaloriesIntakeRequestSuccessState({
+    required this.caloricIntakeList,
+  });
+}
+
+class CaloriesIntakeRequestErrorState extends CaloriesState {}

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/data/models/reminder_model.dart';
-import 'package:mygymbuddy/features/reminder/bloc/reminder_bloc.dart';
+import 'package:mygymbuddy/services/notification_services.dart';
 import 'package:mygymbuddy/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import "dart:developer";
 
 class Reminders extends StatefulWidget {
   Reminders({Key? key}) : super(key: key);
@@ -15,25 +13,21 @@ class Reminders extends StatefulWidget {
 }
 
 class _RemindersState extends State<Reminders> {
-  TimeOfDay? selectedTime;
-
+  DateTime? _selectedDateTime;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   late String username;
 
-  ReminderBloc reminderBloc = ReminderBloc();
   late SharedPreferences sharedPreferences;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadSharedPreferences();
   }
 
   Future<void> loadSharedPreferences() async {
     sharedPreferences = await SharedPreferences.getInstance();
-
     loadUserName();
   }
 
@@ -71,26 +65,21 @@ class _RemindersState extends State<Reminders> {
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
-                          _selectDateTime(context);
+                          _selectDate(context);
                         },
-                        icon: Icon(Icons.alarm),
+                        icon: const Icon(Icons.alarm),
                       ),
                       border: UnderlineInputBorder(),
                       labelText: "Reminder Description",
                     ),
                   ),
                   const SizedBox(height: 20),
-                  if (selectedTime != null)
-                    Text(
-                      "Selected Date and Time: ${_formatDateTime(selectedTime!)}, $selectedTime",
-                      style: const TextStyle(fontSize: 16),
-                    ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       FocusScope.of(context).unfocus();
                       if (titleController.text.isNotEmpty &&
                           descriptionController.text.isNotEmpty) {
-                        _setReminder();
+                        await showNotificationAndSchedule();
                       } else {
                         Fluttertoast.showToast(
                             msg: "Please fill all the fields");
@@ -111,53 +100,43 @@ class _RemindersState extends State<Reminders> {
     );
   }
 
-  Future<void> _selectDateTime(BuildContext context) async {
-    final pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
+  Future<void> showNotificationAndSchedule() async {
+    String reminder = titleController.text;
+    String description = descriptionController.text;
 
-    if (pickedDate != null) {
-      final pickedTime = await showTimePicker(
-        context: context,
-        initialTime: selectedTime ?? TimeOfDay.now(),
-      );
-
-      if (pickedTime != null) {
-        setState(() {
-          selectedTime =
-              TimeOfDay(hour: pickedTime.hour, minute: pickedTime.minute);
-        });
-      }
+    if (_selectedDateTime != null &&
+        _selectedDateTime!.isAfter(DateTime.now())) {
+      await NotificationService()
+          .scheduleNotification(reminder, description, _selectedDateTime!);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Please select a future date and time for the reminder");
     }
   }
 
-  String _formatDateTime(TimeOfDay timeOfDay) {
-    final now = DateTime.now();
-    final selectedDateTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      timeOfDay.hour,
-      timeOfDay.minute,
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDateTime ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
     );
-    return selectedDateTime.toString(); // Adjust the format as needed
-  }
-
-  void _setReminder() {
-    log(username);
-    log(_formatDateTime(selectedTime!));
-    log(titleController.text);
-    log(descriptionController.text);
-    if (selectedTime != null) {
-      reminderBloc.add(SetReminderClickedEvent(
-          reminders: Reminder(
-              username: username,
-              title: titleController.text,
-              description: descriptionController.text,
-              dueDate: _formatDateTime(selectedTime!))));
+    if (pickedDate != null) {
+      TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+      if (pickedTime != null) {
+        setState(() {
+          _selectedDateTime = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+        });
+      }
     }
   }
 }
