@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,5 +38,21 @@ class MeasurementsBloc extends Bloc<MeasurementsEvent, MeasurementsState> {
   }
 
   FutureOr<void> measurementsHistoryViewEvent(
-      MeasurementsHistoryViewEvent event, Emitter<MeasurementsState> emit) {}
+      MeasurementsHistoryViewEvent event,
+      Emitter<MeasurementsState> emit) async {
+    emit(MeasurementHistoryViewLoadingState());
+    try {
+      List<BodyMeasurement> measurements =
+          await MeasurementDataGetRepository.getMeasurements();
+      if (measurements.isNotEmpty) {
+        emit(MeasurementHistoryViewSuccessState(measurements: measurements));
+      } else {
+        log('No measurements found');
+        emit(MeasurementHistoryViewFailureState());
+      }
+    } catch (e) {
+      log('Error fetching measurements: $e');
+      emit(MeasurementHistoryViewFailureState());
+    }
+  }
 }

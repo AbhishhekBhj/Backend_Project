@@ -22,9 +22,9 @@ class FinishWorkoutEvent extends WorkoutEvent {
 }
 
 class DeleteWorkoutEvent extends WorkoutEvent {
-  final int exerciseId;
+  final String workoutID;
 
-  DeleteWorkoutEvent({required this.exerciseId});
+  DeleteWorkoutEvent({required this.workoutID});
 }
 
 class UpdateWorkoutEvent extends WorkoutEvent {
@@ -33,8 +33,4 @@ class UpdateWorkoutEvent extends WorkoutEvent {
   UpdateWorkoutEvent({required this.workoutModel});
 }
 
-class GetWorkoutHistoryEvent extends WorkoutEvent {
-  final String userID;
-
-  GetWorkoutHistoryEvent({required this.userID});
-}
+class GetWorkoutHistoryEvent extends WorkoutEvent {}

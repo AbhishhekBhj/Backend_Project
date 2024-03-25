@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,10 +9,12 @@ import 'package:mygymbuddy/features/workout/ui/add_set.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/home_model.dart';
+import '../../../data/models/workout_model.dart';
 import '../../../provider/themes/theme_provider.dart';
 import '../../home/bloc/home_bloc.dart';
 import '../../internet/bloc/bloc/internet_bloc.dart';
 import '../../internet/ui/no_internet.dart';
+import '../bloc/bloc/workout_bloc.dart';
 import 'choose_exercise.dart';
 
 class StartWorkout extends StatefulWidget {
@@ -25,89 +28,15 @@ class _StartWorkoutState extends State<StartWorkout> {
   late HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
   late InternetBloc internetBloc;
 
+  late WorkoutBloc workoutBloc = BlocProvider.of<WorkoutBloc>(context);
+
   List<Workout> workout = [];
   List<Exercises> exercise = [];
 
   List<Exercises> exerciseName = [];
   List<AddSetWidget> addSetWidgetList = [];
 
-  void _showWorkoutQuitDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Quit Workout"),
-          content: const Text("Are you sure you want to quit the workout?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("No"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Yes"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showAddExerciseDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Add Exercise"),
-          content: const Text("Are you sure you want to add an exercise?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("No"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Yes"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showRemoveExerciseDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Remove Exercise"),
-          content: const Text("Are you sure you want to remove the exercise?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("No"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Yes"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  List<WorkoutModel> workoutModel = [];
 
   void _showQuitWorkoutDialog() {
     showDialog(
@@ -156,6 +85,9 @@ class _StartWorkoutState extends State<StartWorkout> {
             ),
             TextButton(
               onPressed: () {
+                log('${workoutModel.toString()} workoutModel');
+
+                workoutBloc.add(FinishWorkoutEvent(workoutEntry: workoutModel));
                 Navigator.of(context).pop();
               },
               child: const Text("Yes"),
@@ -181,6 +113,11 @@ class _StartWorkoutState extends State<StartWorkout> {
       setState(() {
         exerciseName.add(selectedExercise);
         addSetWidgetList.add(AddSetWidget(
+          updateWorkoutModel: (List<WorkoutModel> updatedWorkoutModel) {
+            setState(() {
+              workoutModel = updatedWorkoutModel;
+            });
+          },
           exerciseName: selectedExercise,
         ));
       });
@@ -214,26 +151,37 @@ class _StartWorkoutState extends State<StartWorkout> {
                           backgroundColor:
                               isDarkMode ? Colors.white : Colors.black,
                           actions: [
-                            ElevatedButton(
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(3),
+                            BlocBuilder<WorkoutBloc, WorkoutState>(
+                              builder: (context, state) {
+                                if (state is WorkoutPostLoadingState) {
+                                  return const CupertinoActivityIndicator();
+                                }
+
+                                return ElevatedButton(
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                        ),
+                                      ),
+                                      foregroundColor:
+                                          MaterialStateProperty.all(isDarkMode
+                                              ? Colors.black
+                                              : Colors.white),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(isDarkMode
+                                              ? Colors.white
+                                              : Colors.blueAccent),
                                     ),
-                                  ),
-                                  foregroundColor: MaterialStateProperty.all(
-                                      isDarkMode ? Colors.black : Colors.white),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      isDarkMode
-                                          ? Colors.white
-                                          : Colors.blueAccent),
-                                ),
-                                onPressed: () {
-                                  _showFinishWorkoutDialog();
-                                },
-                                child: const Text(
-                                  "Finish Workout",
-                                ))
+                                    onPressed: () {
+                                      _showFinishWorkoutDialog();
+                                    },
+                                    child: const Text(
+                                      "Finish Workout",
+                                    ));
+                              },
+                            )
                           ],
                           title: Text(
                             "Start Workout",
@@ -243,101 +191,81 @@ class _StartWorkoutState extends State<StartWorkout> {
                           ),
                         )
                       : null,
-                  body: NotificationListener<ScrollNotification>(
-                      onNotification: (notification) {
-                        if (notification is ScrollUpdateNotification) {
-                          if (notification.scrollDelta! > 0) {
-                            setState(() {
-                              //user is scrolling down
-                              showAppBar = false;
-                            });
-                          } else if (notification.scrollDelta! < 0) {
-                            //user is scrolling up
-                            setState(() {
-                              showAppBar = true;
-                            });
-                          }
-                        }
-                        return true;
-                      },
-                      child: startedWorkout
-                          ? Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.dumbbell,
+                  body: startedWorkout
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.dumbbell,
+                                color: isDarkMode
+                                    ? Colors.white
+                                    : Colors.blueAccent,
+                              ),
+                              const Text(
+                                "You haven't Started Your Workout Yet",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  log(exercise.toString());
+                                  Get.to(
+                                    ChooseWorkout(
+                                      exercise: exercise,
+                                      onSelectExercise: setSelectedExercise,
+                                    ),
+                                  );
+                                },
+                                child: const Text("Start Workout"),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView.separated(
+                          separatorBuilder: (context, index) => const Divider(),
+                          shrinkWrap: true,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Get.width * 0.03,
+                              vertical: Get.height * 0.03),
+                          itemCount: addSetWidgetList.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                addSetWidgetList[index],
+
+                                SizedBox(
+                                  height: Get.height * 0.05,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      addSetWidgetList.removeAt(index);
+                                      exerciseName.removeAt(index);
+                                    });
+                                  },
+                                  child: Container(
                                     color: isDarkMode
                                         ? Colors.white
                                         : Colors.blueAccent,
-                                  ),
-                                  const Text(
-                                    "You haven't Started Your Workout Yet",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      log(exercise.toString());
-                                      Get.to(
-                                        ChooseWorkout(
-                                          exercise: exercise,
-                                          onSelectExercise: setSelectedExercise,
-                                        ),
-                                      );
-                                    },
-                                    child: const Text("Start Workout"),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const Divider(),
-                              shrinkWrap: true,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: Get.width * 0.03,
-                                  vertical: Get.height * 0.03),
-                              itemCount: addSetWidgetList.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    addSetWidgetList[index],
-
-                                    
-
-                                    SizedBox(
-                                      height: Get.height * 0.05,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          addSetWidgetList.removeAt(index);
-                                          exerciseName.removeAt(index);
-                                        });
-                                      },
-                                      child: Container(
-                                        color: isDarkMode
-                                            ? Colors.white
-                                            : Colors.blueAccent,
-                                        width: Get.width * 0.39,
-                                        height: Get.height * 0.065,
-                                        child: Center(
-                                          child: Text(
-                                            "Remove Exercise",
-                                            style: TextStyle(
-                                                color: isDarkMode
-                                                    ? Colors.black
-                                                    : Colors.white),
-                                          ),
-                                        ),
+                                    width: Get.width * 0.39,
+                                    height: Get.height * 0.065,
+                                    child: Center(
+                                      child: Text(
+                                        "Remove Exercise",
+                                        style: TextStyle(
+                                            color: isDarkMode
+                                                ? Colors.black
+                                                : Colors.white),
                                       ),
                                     ),
+                                  ),
+                                ),
 
-                                    // ignore: avoid_function_literals_in_foreach_calls
-                                  ],
-                                );
-                              },
-                            )),
+                                // ignore: avoid_function_literals_in_foreach_calls
+                              ],
+                            );
+                          },
+                        ),
                   bottomSheet: !startedWorkout
                       ? Padding(
                           padding: EdgeInsets.only(bottom: Get.height * 0.035),

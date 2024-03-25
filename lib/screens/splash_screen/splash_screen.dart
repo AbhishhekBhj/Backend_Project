@@ -38,12 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkUserNameAndNavigate() async {
-    String? username = await getUsername();
+    String? username = UserDataManager.userData['username'];
     log(username!);
 
     // Check whether to navigate to Signup Page or Home Page
     if (username.isNotEmpty) {
-      Get.offAll(() => WelcomeScreen());
+      Get.offAll(() => BaseClass());
     } else {
       Get.offAll(() => WelcomeScreen());
     }

@@ -10,6 +10,7 @@ import 'package:mygymbuddy/features/home/ui/edit_profile.dart';
 import 'package:mygymbuddy/features/profile/ui/view_profile.dart';
 import 'package:mygymbuddy/features/reminder/ui/reminders.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/logins.dart';
+import 'package:mygymbuddy/features/workout/ui/view_workout_data.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ import '../../measurements/ui/update_measurement.dart';
 import '../../profile/bloc/bloc/profile_bloc.dart';
 import '../../profile/ui/change_password.dart';
 import '../../progress/ui/progress.dart';
+import 'one_rep_max.dart';
 
 class OtherFeaturePage extends StatefulWidget {
   const OtherFeaturePage({Key? key});
@@ -86,6 +88,12 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                   buildListTile(FontAwesomeIcons.noteSticky, () {
                     Get.to(Reminders());
                   }, "Set Reminders"),
+                  buildListTile(Icons.calculate_outlined, () {
+                    Get.to(const OneRepMaxCalculationScreen());
+                  }, "Calculate One Rep Max"),
+                  buildListTile(Icons.view_agenda, () {
+                    Get.to(const ViewWorkoutDetails());
+                  }, "View Workouts"),
                   buildListTile(FontAwesomeIcons.book, () {
                     Get.to(ExerciseLibrary(
                       exercise: exerciseGallery,
@@ -116,14 +124,10 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                       child: const ChangePasswordScreen(),
                     ));
                   }, "Change Password"),
-
                   buildListTile(Icons.person_2, () {
                     Get.to(const EditProfileScreen());
                   }, "Edit Profile"),
-
                   DarkModeSwitchTile(),
-
-                 
                   buildListTile(Icons.logout_rounded, () {
                     Get.off(const DemoLoginPage());
                   }, "Log out"),
@@ -187,8 +191,8 @@ class Header extends StatelessWidget {
                         )
                       : Container(
                           color: Colors.grey,
-                          child:
-                              const Icon(Icons.person, size: 50, color: Colors.white),
+                          child: const Icon(Icons.person,
+                              size: 50, color: Colors.white),
                         )),
             ),
           ),

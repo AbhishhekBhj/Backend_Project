@@ -17,7 +17,15 @@ final class MeasurementUpdateSuccessState extends MeasurementsState {
 
 final class MeasurmentsUpdateFailureState extends MeasurementsState {}
 
-final class MeasurementHistoryViewSuccessState extends MeasurementsState {}
+
+
+final class MeasurementHistoryViewSuccessState extends MeasurementsState {
+  final List<BodyMeasurement> measurements;
+
+  MeasurementHistoryViewSuccessState({
+    required this.measurements,
+  });
+}
 
 final class MeasurementHistoryViewLoadingState extends MeasurementsState {}
 

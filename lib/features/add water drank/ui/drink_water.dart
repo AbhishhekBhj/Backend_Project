@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../measurements/ui/measurements_view_history.dart';
 import 'water_intakes.dart';
 
 class DrinkWater extends StatefulWidget {

@@ -238,6 +238,7 @@ class _UpdateMeasurementsState extends State<UpdateMeasurements> {
                               measurementBloc.add(
                                 MeasurementsUpdateClickedEvent(
                                   bodyMeasurement: BodyMeasurement(
+                                    
                                     height: double.tryParse(
                                             heightController.text) ??
                                         0.0,

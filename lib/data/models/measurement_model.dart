@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class BodyMeasurement {
+  final String? measurementId; // Make measurementId optional
   final double height;
   final double weight;
   final double chestSize;
@@ -9,7 +10,6 @@ class BodyMeasurement {
   final double leftArm;
   final double rightArm;
   final int user;
-
   final double leftQuadricep;
   final double rightQuadricep;
   final double leftCalf;
@@ -17,8 +17,10 @@ class BodyMeasurement {
   final double leftForearm;
   final double rightForearm;
   final String notes;
+  final String? createdAt;
 
   BodyMeasurement({
+    this.measurementId,
     required this.height,
     required this.weight,
     required this.chestSize,
@@ -26,6 +28,7 @@ class BodyMeasurement {
     required this.hipSize,
     required this.leftArm,
     required this.rightArm,
+    required this.user,
     required this.leftQuadricep,
     required this.rightQuadricep,
     required this.leftCalf,
@@ -33,11 +36,12 @@ class BodyMeasurement {
     required this.leftForearm,
     required this.rightForearm,
     required this.notes,
-    required this.user,
+    this.createdAt,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      if (measurementId != null) 'measurementId': measurementId,
       'height': height,
       'weight': weight,
       'chestSize': chestSize,
@@ -45,6 +49,7 @@ class BodyMeasurement {
       'hipSize': hipSize,
       'leftArm': leftArm,
       'rightArm': rightArm,
+      'user': user,
       'leftQuadricep': leftQuadricep,
       'rightQuadricep': rightQuadricep,
       'leftCalf': leftCalf,
@@ -52,13 +57,13 @@ class BodyMeasurement {
       'leftForearm': leftForearm,
       'rightForearm': rightForearm,
       'notes': notes,
-      'user': user,
     };
   }
 
-  factory BodyMeasurement.fromMap(Map<String, dynamic> map) {
+  factory BodyMeasurement.fromJson(String source) {
+    final Map<String, dynamic> map = json.decode(source);
     return BodyMeasurement(
-      user: map['id'] as int,
+      measurementId: map['measurement_id'] as String?,
       height: map['height'] as double,
       weight: map['weight'] as double,
       chestSize: map['chest_size'] as double,
@@ -66,6 +71,7 @@ class BodyMeasurement {
       hipSize: map['hip_size'] as double,
       leftArm: map['left_arm'] as double,
       rightArm: map['right_arm'] as double,
+      user: map['user'] as int,
       leftQuadricep: map['left_quadricep'] as double,
       rightQuadricep: map['right_quadricep'] as double,
       leftCalf: map['left_calf'] as double,
@@ -73,11 +79,9 @@ class BodyMeasurement {
       leftForearm: map['left_forearm'] as double,
       rightForearm: map['right_forearm'] as double,
       notes: map['notes'] as String,
+      createdAt: map['created_at'] as String?,
     );
   }
 
   String toJson() => json.encode(toMap());
-
-  factory BodyMeasurement.fromJson(String source) =>
-      BodyMeasurement.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -24,3 +24,9 @@ class WorkoutHistoryErrorState extends WorkoutState {
 
   WorkoutHistoryErrorState({required this.errorMessage});
 }
+
+class WorkoutDataDeleteLoadingEvent extends WorkoutState {}
+
+class WorkoutDataDeleteSuccessEvent extends WorkoutState {}
+
+class WorkoutDataDeleteErrorEvent extends WorkoutState {}

@@ -7,8 +7,10 @@ class WorkoutModel {
   final int reps;
   final int weight;
   final int volume;
+  final String? workoutID;
 
   WorkoutModel({
+    this.workoutID,
     required this.exerciseId,
     required this.username,
     required this.createdAt,
@@ -21,6 +23,7 @@ class WorkoutModel {
 
   factory WorkoutModel.fromJson(Map<String, dynamic> json) {
     return WorkoutModel(
+      workoutID: json['workout_id'],
       exerciseId: json['exercise_id'],
       username: json['username'],
       createdAt: json['created_at'],
@@ -30,5 +33,26 @@ class WorkoutModel {
       weight: json['weight'],
       volume: json['volume'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      if (workoutID != null) 'workout_id': workoutID, 
+      'exercise_id': exerciseId,
+      'username': username,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'sets': sets,
+      'reps': reps,
+      'weight': weight,
+      'volume': volume,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'WorkoutModel(exerciseId: $exerciseId, username: $username, '
+        'createdAt: $createdAt, updatedAt: $updatedAt, sets: $sets, reps: $reps, '
+        'weight: $weight, volume: $volume)';
   }
 }

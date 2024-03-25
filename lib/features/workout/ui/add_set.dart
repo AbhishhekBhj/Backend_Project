@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -12,24 +11,17 @@ class AddSetWidget extends StatefulWidget {
   AddSetWidget({
     Key? key,
     required this.exerciseName,
+    required this.updateWorkoutModel,
   }) : super(key: key);
 
   final Exercises exerciseName;
+  final Function(List<WorkoutModel>) updateWorkoutModel;
 
   @override
   State<AddSetWidget> createState() => _AddSetWidgetState();
 }
 
 class _AddSetWidgetState extends State<AddSetWidget> {
-  final List<WorkoutModel> workoutModel = [];
-
-  void deleteSetObjectCallback(int index) {
-    setState(() {
-      log("Deleting set object at index $index");
-      exerciseSetDetailsList.removeAt(index);
-    });
-  }
-
   int initialSet = 0;
   List<ExerciseSetDetails> exerciseSetDetailsList = [];
 
@@ -62,8 +54,8 @@ class _AddSetWidgetState extends State<AddSetWidget> {
             children: [
               for (int i = 0; i < exerciseSetDetailsList.length; i++)
                 ExerciseSetDetails(
+                  updateWorkoutModel: widget.updateWorkoutModel,
                   exercise: widget.exerciseName,
-                  workoutModel: workoutModel,
                   deleteSetObjectCallback: () => deleteSetObjectCallback(i),
                   initialSet: i + 1,
                 ),
@@ -81,8 +73,8 @@ class _AddSetWidgetState extends State<AddSetWidget> {
               setState(() {
                 initialSet++;
                 exerciseSetDetailsList.add(ExerciseSetDetails(
+                  updateWorkoutModel: widget.updateWorkoutModel,
                   exercise: widget.exerciseName,
-                  workoutModel: workoutModel,
                   initialSet: initialSet,
                   deleteSetObjectCallback: () => deleteSetObjectCallback(
                       exerciseSetDetailsList.length - 1),
@@ -99,6 +91,13 @@ class _AddSetWidgetState extends State<AddSetWidget> {
       ),
     );
   }
+
+  void deleteSetObjectCallback(int index) {
+    setState(() {
+      log("Deleting set object at index $index");
+      exerciseSetDetailsList.removeAt(index);
+    });
+  }
 }
 
 class ExerciseSetDetails extends StatefulWidget {
@@ -107,13 +106,13 @@ class ExerciseSetDetails extends StatefulWidget {
     required this.initialSet,
     this.deleteSetObjectCallback,
     required this.exercise,
-    required this.workoutModel,
+    required this.updateWorkoutModel,
   }) : super(key: key);
 
   final int initialSet;
   final VoidCallback? deleteSetObjectCallback;
   final Exercises exercise;
-  final List<WorkoutModel> workoutModel;
+  final Function(List<WorkoutModel>) updateWorkoutModel;
 
   @override
   State<ExerciseSetDetails> createState() => _ExerciseSetDetailsState();
@@ -182,7 +181,7 @@ class _ExerciseSetDetailsState extends State<ExerciseSetDetails> {
             SizedBox(
               width: Get.width * 0.1,
               child: Center(
-                child: Text("${reps * weight}"),
+                child: Text("${reps * weight} "),
               ),
             ),
             SizedBox(
@@ -192,26 +191,25 @@ class _ExerciseSetDetailsState extends State<ExerciseSetDetails> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      setState(
-                        () {
-                          isSetComplete = !isSetComplete;
-                          isSetComplete
-                              ? widget.workoutModel.add(WorkoutModel(
-                                  exerciseId: widget.exercise.exerciseId,
-                                  username: 1,
-                                  createdAt: DateTime.now().toString(),
-                                  updatedAt: DateTime.now().toString(),
-                                  sets: widget.initialSet,
-                                  reps: reps,
-                                  weight: weight,
-                                  volume: reps * weight,
-                                ))
-                              : widget.workoutModel.removeWhere((element) {
-                                  return element.sets == widget.initialSet;
-                                });
-                          log((widget.workoutModel.toList().toString()));
-                        },
-                      );
+                      setState(() {
+                        isSetComplete = !isSetComplete;
+                        if (isSetComplete) {
+                          widget.updateWorkoutModel([
+                            WorkoutModel(
+                              exerciseId: widget.exercise.exerciseId,
+                              username: UserDataManager.userData['user_id'],
+                              createdAt: DateTime.now().toString(),
+                              updatedAt: DateTime.now().toString(),
+                              sets: widget.initialSet,
+                              reps: reps,
+                              weight: weight,
+                              volume: reps * weight,
+                            )
+                          ]);
+                        } else {
+                          widget.updateWorkoutModel([]);
+                        }
+                      });
                     },
                     child: Icon(
                       Icons.check,

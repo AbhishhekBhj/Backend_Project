@@ -3,80 +3,108 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/graph/ui/graph_ui.dart';
 
+import '../../measurements/ui/view_measurement_details.dart';
+
 class ViewProgressOptions extends StatelessWidget {
-  const ViewProgressOptions({super.key});
+  const ViewProgressOptions({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Progress'),
+        title: const Text('Progress Graphs'),
       ),
-      body: GridView(
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      body: SizedBox(
+        height: Get.height,
+        child: GridView(
+          padding: const EdgeInsets.all(16.0),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            mainAxisExtent: Get.height * 0.1),
-        children: [
-          ProgressCard(
-            onTap: () {},
-            title: 'Measurement Progress',
-            icon: FontAwesomeIcons.weight,
+            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 16.0,
+            childAspectRatio: 1.2,
           ),
-          ProgressCard(
-            onTap: () {},
-            title: 'Workout Progress',
-            icon: FontAwesomeIcons.dumbbell,
-          ),
-          ProgressCard(
-            onTap: () {},
-            title: 'Water Intake Progress',
-            icon: FontAwesomeIcons.glassWhiskey,
-          ),
-          ProgressCard(
-            onTap: () {
-              Get.to(Graph());
-            },
-            title: 'Nutrition Progress',
-            icon: FontAwesomeIcons.utensils,
-          ),
-        ],
+          children: [
+            ProgressCard(
+              onTap: () {
+                Get.to(const MeasurementDetails());
+              },
+              title: 'Measurement Progress',
+              icon: FontAwesomeIcons.weight,
+              color: Colors.blue,
+            ),
+            ProgressCard(
+              onTap: () {},
+              title: 'Workout Progress',
+              icon: FontAwesomeIcons.dumbbell,
+              color: Colors.green,
+            ),
+            ProgressCard(
+              onTap: () {},
+              title: 'Water Intake Progress',
+              icon: FontAwesomeIcons.glassWhiskey,
+              color: Colors.orange,
+            ),
+            ProgressCard(
+              onTap: () {
+                Get.to(const Graph());
+              },
+              title: 'Nutrition Progress',
+              icon: FontAwesomeIcons.utensils,
+              color: Colors.red,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class ProgressCard extends StatelessWidget {
-  ProgressCard(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.onTap});
+  const ProgressCard({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+    this.color = Colors.blue,
+  }) : super(key: key);
 
   final String title;
   final IconData icon;
-  VoidCallback? onTap;
+  final VoidCallback onTap;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Card(
-        child: Center(
+        elevation: 4.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Icon(
+                icon,
+                size: 48.0,
+                color: color,
+              ),
               Text(
                 title,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              Icon(icon)
             ],
           ),
         ),
-        shape:
-            ContinuousRectangleBorder(borderRadius: BorderRadius.circular(3)),
       ),
     );
   }
