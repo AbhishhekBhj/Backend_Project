@@ -20,3 +20,9 @@ class CheckPasswordClickEvent extends ProfileEvent {
 
   CheckPasswordClickEvent(this.password);
 }
+
+class ProfileUploadProfilePictureEvent extends ProfileEvent {
+  final File image;
+
+  ProfileUploadProfilePictureEvent({required this.image});
+}

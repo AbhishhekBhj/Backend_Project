@@ -11,12 +11,26 @@ Future<void> handleBackGroundMessaging(RemoteMessage message) async {
   }
 }
 
+Future<void> handleForeGroundMessaging(RemoteMessage message) async {
+  try {
+    log('Handling a foreground message ${message.messageId}');
+  } catch (e) {
+    log('Error: $e');
+  }
+}
+
 class FirebaseAPI {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> initialize() async {
     await _firebaseMessaging.requestPermission();
     final token = await _firebaseMessaging.getToken();
+
+    _firebaseMessaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
     log('Token fo fcm: $token'); //remove in production
 

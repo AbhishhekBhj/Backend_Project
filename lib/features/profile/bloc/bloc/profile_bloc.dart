@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/logins.dart';
+import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 
 import '../../../repo/profile repo/profile_repository.dart';
 
@@ -16,6 +18,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc() : super(ProfileInitial()) {
     on<ChangePasswordClickedEvent>(changePasswordClickedEvent);
     on<CheckPasswordClickEvent>(checkPasswordClickEvent);
+    on<ProfileUploadProfilePictureEvent>(uploadProfilePictureEvent);
   }
 
   FutureOr<void> changePasswordClickedEvent(
@@ -48,6 +51,29 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } else {
       emit(PasswordCheckFailureState());
       Fluttertoast.showToast(msg: 'Password is incorrect');
+    }
+  }
+
+  FutureOr<void> uploadProfilePictureEvent(
+      ProfileUploadProfilePictureEvent event,
+      Emitter<ProfileState> emit) async {
+    try {
+      var response = await ProfileRepository.uploadProfilePicture(event.image);
+
+      if (response.status == 200) {
+        emit(ProfilePictureUploadSuccessState());
+        Fluttertoast.showToast(msg: 'Profile Picture Uploaded Successfully');
+
+        var profilePictureUrl = response.profilePictureUrl;
+        UserDataManager.userData['profile_picture'] = profilePictureUrl;
+      } else {
+        emit(ProfilePictureUploadFailureState());
+        Fluttertoast.showToast(msg: 'Profile Picture Upload Failed');
+      }
+    } catch (e) {
+      emit(ProfilePictureUploadFailureState());
+      log(e.toString());
+      Fluttertoast.showToast(msg: 'Profile Picture Upload Failed');
     }
   }
 }

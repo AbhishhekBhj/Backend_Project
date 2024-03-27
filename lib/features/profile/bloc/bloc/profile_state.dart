@@ -24,3 +24,10 @@ class PasswordCheckLoadingState extends ProfileState {}
 class PasswordCheckSuccessState extends ProfileState {}
 class PasswordCheckFailureState extends ProfileState {}
 
+
+
+
+class ProfilePictureUploadLoadingState extends ProfileState {}
+class ProfilePictureUploadSuccessState extends ProfileState {}
+class ProfilePictureUploadFailureState extends ProfileState {}
+

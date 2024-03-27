@@ -105,6 +105,9 @@ class SharedPreferenceHelper {
   static const String _keyIsProMember = 'is_pro_member';
   static const String _keyFitnessGoal = 'fitness_goal';
   static const String _keyProfilePicture = 'profile_picture';
+  static const String _keyWeight = 'weight';
+  static const String _keyHeight = 'height';
+  static const String _keyGender = "gender";
 
   static Future<void> saveUserData(Map<String, dynamic> userData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -118,6 +121,9 @@ class SharedPreferenceHelper {
     prefs.setBool(_keyIsProMember, userData['is_pro_member']);
     prefs.setString(_keyFitnessGoal, userData['fitness_goal']);
     prefs.setString(_keyProfilePicture, userData['profile_picture']);
+    prefs.setDouble(_keyWeight, userData['weight']);
+    prefs.setDouble(_keyHeight, userData['height']);
+    prefs.setString(_keyGender, userData['gender']);
   }
 
   static Future<Map<String, dynamic>> getUserData() async {
@@ -133,6 +139,9 @@ class SharedPreferenceHelper {
       'is_pro_member': prefs.getBool(_keyIsProMember),
       'fitness_goal': prefs.getString(_keyFitnessGoal),
       'profile_picture': prefs.getString(_keyProfilePicture),
+      'weight': prefs.getDouble(_keyWeight),
+      'height': prefs.getDouble(_keyHeight),
+      'gender':prefs.getString(_keyGender)
     };
   }
 }

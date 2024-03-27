@@ -15,6 +15,8 @@ class NotificationService {
     initNotification();
   }
 
+
+
   Future<void> initNotification() async {
     var androidInitializationSettings = const AndroidInitializationSettings(
       '@mipmap/ic_launcher',
@@ -49,7 +51,7 @@ class NotificationService {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
       message.notification!.android!.channelId.toString(),
       message.notification!.android!.channelId.toString(),
-      importance: Importance.low,
+      importance: Importance.high,
       showBadge: true,
       playSound: true,
     );
@@ -59,8 +61,8 @@ class NotificationService {
       channel.id.toString(),
       channel.name.toString(),
       channelDescription: 'your_channel_desc',
-      importance: Importance.low,
-      priority: Priority.low,
+      importance: Importance.high,
+      priority: Priority.high,
       playSound: true,
       ticker: 'ticker',
       sound: channel.sound,
@@ -97,7 +99,7 @@ class NotificationService {
       'your_channel_id',
       'your_channel_name',
       importance: Importance.max,
-      priority: Priority.high,
+      priority: Priority.max,
       ticker: 'ticker',
       playSound: true,
     );
