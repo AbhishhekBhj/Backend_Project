@@ -36,37 +36,7 @@ class SignupRepository {
   }
 }
 
-class OTPVerifyRepository {
-  static Future<String> verifyOTP(OTPModel otpModel) async {
-    try {
-      var url = "http://10.0.0.2/api/users/verify_otp/";
-      var client = http.Client();
 
-      var jsonBody = jsonEncode(otpModel.toJson());
-      var respone = await client.post(
-        Uri.parse(url),
-        body: jsonBody,
-      );
-
-      var decodedResponse = jsonDecode(respone.body);
-      var status = decodedResponse['status'];
-      var message = decodedResponse['message'];
-      var data = decodedResponse['data'];
-      if (status == 200 && message == 'OTP verified successfully') {
-        return 'OTP verified successfully';
-      } else if (status == 400 &&
-          message == "Something went wrong" &&
-          data == "invalid otp") {
-        return 'Invalid OTP';
-      } else {
-        return 'Something went wrong';
-      }
-    } catch (e) {
-      log(e.toString());
-      return e.toString();
-    }
-  }
-}
 
 class VerifyOtpRepository {
   static Future<bool> verifyOtp(OTPModel otpModel) async {
@@ -177,4 +147,11 @@ class PhotoUploadRepository {
       return false;
     }
   }
+}
+
+
+class SendForgotPasswordOtpRepository{
+
+  
+
 }

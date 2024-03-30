@@ -23,30 +23,24 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     UserDataManager.init();
-    startTimer();
+    checkUserNameAndNavigate();
     super.initState();
   }
 
-  startTimer() {
-    timer = Timer(
-      Duration(seconds: 2),
-      () {
-        print('hi');
-        checkUserNameAndNavigate();
-      },
-    );
-  }
-
-  checkUserNameAndNavigate() async {
+  void checkUserNameAndNavigate() async {
     String? username = UserDataManager.userData['username'];
-    log(username!);
 
-    // Check whether to navigate to Signup Page or Home Page
-    if (username.isNotEmpty) {
-      Get.offAll(() => BaseClass());
-    } else {
-      Get.offAll(() => WelcomeScreen());
+    // Check if username is null or empty
+    if (username == null || username.isEmpty) {
+      // Username is null or empty, navigate to WelcomeScreen after the build phase completes
+      await Future.delayed(
+          Duration.zero); // Ensure this is executed after the build phase
+      Get.to(() => WelcomeScreen());
+      return; // Exit function early
     }
+
+    // Username is not null and not empty, navigate to BaseClass
+    Get.to(() => BaseClass());
   }
 
   @override

@@ -16,17 +16,6 @@ class ExerciseLibrary extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-            IconButton(
-                onPressed: () {
-                  Get.to(const AddCustomExercise());
-                },
-                icon: const Icon(Icons.add))
-          ],
           title: const Text("Exercise Gallery"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new),

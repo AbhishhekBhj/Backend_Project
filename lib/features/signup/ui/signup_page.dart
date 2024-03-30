@@ -6,12 +6,14 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
 import 'package:mygymbuddy/features/signup/ui/otp.dart';
 
 import '../../../data/models/signup_model.dart';
+import '../../../functions/api/google_signin_api.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -249,12 +251,45 @@ class _SignupPageState extends State<SignupPage> {
                   }
                   return Container();
                 },
-              )
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    signIn();
+                  },
+                  child: Container(
+                    color: Colors.black,
+                    padding: const EdgeInsets.all(16),
+                    child: const Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.google,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Signup with Google',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ))
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future signIn() async {
+    await GoogleSignInApi.login();
   }
 }
 

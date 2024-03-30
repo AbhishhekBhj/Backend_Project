@@ -63,11 +63,11 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
     emit(WorkoutHistoryLoadingState());
 
     try {
-      List<WorkoutModel> workoutHistory =
+      List<dynamic> workoutHistoryData =
           await WorkoutHistoryRepository.getWorkoutHistory();
 
-      if (workoutHistory.isNotEmpty) {
-        emit(WorkoutHistoryLoadedState(workoutHistory: workoutHistory));
+      if (workoutHistoryData != null) {
+        emit(WorkoutHistoryLoadedState(workoutHistory: workoutHistoryData));
       } else {
         emit(WorkoutHistoryErrorState(
             errorMessage: "Error loading workout history. Please try again."));
@@ -87,7 +87,6 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
       );
 
       if (isDeleted) {
-        
         Fluttertoast.showToast(
             msg: "Workout deleted successfully",
             toastLength: Toast.LENGTH_SHORT,

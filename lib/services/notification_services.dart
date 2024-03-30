@@ -15,8 +15,6 @@ class NotificationService {
     initNotification();
   }
 
-
-
   Future<void> initNotification() async {
     var androidInitializationSettings = const AndroidInitializationSettings(
       '@mipmap/ic_launcher',
@@ -77,7 +75,7 @@ class NotificationService {
     NotificationDetails notificationDetails = NotificationDetails(
         android: androidNotificationDetails, iOS: darwinNotificationDetails);
 
-    // Show notification without pop up
+    // Show notification without pop upe
     await _flutterLocalNotificationsPlugin.show(
       Random().nextInt(100),
       message.notification!.title.toString(),

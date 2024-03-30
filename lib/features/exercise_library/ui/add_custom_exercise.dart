@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mygymbuddy/functions/shared_preference_functions.dart';
-import 'package:mygymbuddy/widgets/image_picker_widget.dart';
 import "dart:io";
 
 class AddCustomExercise extends StatefulWidget {
@@ -13,6 +14,88 @@ class AddCustomExercise extends StatefulWidget {
 }
 
 class _AddCustomExerciseState extends State<AddCustomExercise> {
+  void showImagePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Camera'),
+              onTap: () {
+                Navigator.pop(context);
+                getImage(ImageSource.camera, context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo),
+              title: const Text('Gallery'),
+              onTap: () {
+                Navigator.pop(context);
+                getImage(ImageSource.gallery, context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> getImage(ImageSource source, BuildContext context) async {
+    final picker = ImagePicker();
+    try {
+      final pickedFile = await picker.pickImage(source: source);
+
+      if (pickedFile != null) {
+        setState(() {
+          imageFile = File(pickedFile.path);
+        });
+      } else {
+        showNoImageSelectedDialog(context);
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Failed to pick image. Please try again.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  void showNoImageSelectedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('No Image Selected'),
+          content: const Text('Please select an image to continue.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   File? imageFile;
 
   @override
@@ -24,6 +107,8 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
   TextEditingController exerciseNameController = TextEditingController();
   TextEditingController caloriesBurnedPerHourController =
       TextEditingController();
+
+  TextEditingController exerciseDescriptionController = TextEditingController();
 
   List<String> bodyParts = [];
 
@@ -42,16 +127,16 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
   }
 
   Map<int, String> exerciseData = {
-    1: 'Front Delts',
-    2: 'Rear Delts',
-    3: 'Quadriceps',
     4: 'Hamstrings',
     5: 'Glutes Maximus',
     6: 'Lower Back',
     7: 'Lats',
     8: 'Chest',
     9: 'Forearms',
-    10: "Biceps"
+    10: 'Biceps',
+    11: 'Triceps',
+    12: 'Calves',
+    13: 'Abs',
   };
 
   Map<int, String> exerciseType = {
@@ -68,19 +153,41 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add Custom Exercise'),
+          title: const Text('Add New  Exercise'),
         ),
         body: ListView(
+          shrinkWrap: true,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           children: [
-            const Text('Add Custom Exercise'),
-            PickImageWidget(
-              isProMember: isProMember,
-              onImageCropped: (File image) {
-                setState(() {
-                  imageFile = image;
-                });
+            GestureDetector(
+              onTap: () {
+                showImagePicker(context);
               },
+              child: Container(
+                alignment: Alignment.center,
+                width: Get.width * 0.5,
+                height: Get.width * 0.5,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey.shade300,
+                    width: 2,
+                  ),
+                  shape: BoxShape.circle,
+                ),
+                child: imageFile == null
+                    ? const Icon(
+                        Icons.add_a_photo,
+                        size: 50,
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: FileImage(imageFile!),
+                              fit: BoxFit.fitHeight),
+                        ),
+                      ),
+              ),
             ),
             TextFormField(
               controller: exerciseNameController,
@@ -89,10 +196,18 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
               ),
             ),
             TextFormField(
+              keyboardType: TextInputType.number,
               autofocus: true,
               controller: caloriesBurnedPerHourController,
               decoration: const InputDecoration(
                 labelText: 'Estimated Calories Burned Per Hour',
+              ),
+            ),
+            TextFormField(
+              autofocus: true,
+              controller: exerciseDescriptionController,
+              decoration: const InputDecoration(
+                labelText: 'Small Description of Exercise',
               ),
             ),
             ListTile(

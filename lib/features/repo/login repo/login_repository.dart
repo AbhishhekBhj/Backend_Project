@@ -43,3 +43,11 @@ class LoginRepository {
     }
   }
 }
+
+
+class ForgotPasswordRepository{
+
+
+
+  
+}

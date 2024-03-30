@@ -15,6 +15,8 @@ import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../functions/shared_preference_functions.dart';
+import '../../exercise_library/ui/add_custom_exercise.dart';
+import '../../food/ui/create_custom_food.dart';
 import '../../measurements/ui/update_measurement.dart';
 import '../../profile/bloc/bloc/profile_bloc.dart';
 import '../../profile/ui/change_password.dart';
@@ -31,11 +33,14 @@ class OtherFeaturePage extends StatefulWidget {
 class _OtherFeaturePageState extends State<OtherFeaturePage> {
   List<dynamic> exerciseGallery = [];
 
+  late bool isProMember;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loadData();
+    isProMember = UserDataManager.userData["is_pro_member"] ?? false;
   }
 
   void loadData() async {
@@ -85,7 +90,6 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                     "Other Features ",
                     style: textstyle(),
                   ),
-                  Text("${UserDataManager.userData["is_pro_member"]}"),
                   buildListTile(FontAwesomeIcons.noteSticky, () {
                     Get.to(Reminders());
                   }, "Set Reminders"),
@@ -115,6 +119,33 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
             Container(
               child: Column(
                 children: [
+                  const Divider(thickness: 2),
+                  Text(
+                    "Special Features",
+                    style: textstyle(),
+                  ),
+                  buildListTile(Icons.food_bank, () {
+                    isProMember
+                        ? Get.to(CreateCustomFood())
+                        : showBecomeProMemberModalBottomSheet(context);
+                  }, "Add New Food"),
+                  buildListTile(FontAwesomeIcons.weightHanging, () {
+                    isProMember
+                        ? Get.to(AddCustomExercise())
+                        : showBecomeProMemberModalBottomSheet(context);
+                  }, "Add New Exercise"),
+                  buildListTile(FontAwesomeIcons.plateWheat, () {
+                    isProMember
+                        ? null
+                        : showBecomeProMemberModalBottomSheet(context);
+                  }, "Create Custom Meals"),
+                ],
+              ),
+            ),
+            const Divider(thickness: 2),
+            Container(
+              child: Column(
+                children: [
                   Text(
                     "Account",
                     style: textstyle(),
@@ -138,6 +169,66 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
           ],
         ),
       ),
+    );
+  }
+
+  void showBecomeProMemberModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Upgrade to Pro Membership",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "Unlock premium features by becoming a Pro Member!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Add functionality to navigate to the pro membership page
+                  Navigator.pop(context); // Close the bottom sheet
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  "Become Pro Member",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

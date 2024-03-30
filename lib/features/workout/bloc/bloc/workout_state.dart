@@ -14,7 +14,7 @@ final class WorkoutPostLoadedErrorState extends WorkoutState {}
 class WorkoutHistoryLoadingState extends WorkoutState {}
 
 class WorkoutHistoryLoadedState extends WorkoutState {
-  final List<WorkoutModel> workoutHistory;
+  final List<dynamic> workoutHistory;
 
   WorkoutHistoryLoadedState({required this.workoutHistory});
 }

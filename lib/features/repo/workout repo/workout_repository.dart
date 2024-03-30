@@ -71,8 +71,10 @@ class WorkoutRepository {
   }
 }
 
+
+
 class WorkoutHistoryRepository {
-  static Future<List<WorkoutModel>> getWorkoutHistory() async {
+  static Future<List<dynamic>> getWorkoutHistory() async {
     try {
       String userID = UserDataManager.userData['user_id'].toString();
       var client = http.Client();
@@ -85,31 +87,56 @@ class WorkoutHistoryRepository {
       var message = body['message'];
 
       if (statusCode == 200) {
-        List<WorkoutModel> workoutHistory = [];
-        for (var workout in body['data']) {
-          workoutHistory.add(WorkoutModel(
-            exerciseId: workout['exercise_id'],
-            username: workout['username'],
-            createdAt: workout['created_at'],
-            updatedAt: workout['updated_at'],
-            sets: workout['sets'],
-            reps: workout['reps'],
-            weight: workout['weight'],
-            volume: workout['volume'],
-            workoutID: workout['workout_id'],
-          ));
-        }
-        return workoutHistory;
+        return body['data']; // Return the raw list of workout data
       } else {
         log("Error in getWorkoutHistory: $message");
-        return [];
+        return []; // Return an empty list if there's an error
       }
     } catch (e) {
       log("Exception in getWorkoutHistory: $e");
-      return [];
+      return []; // Return an empty list if there's an exception
     }
   }
 }
+// class WorkoutHistoryRepository {
+//   static Future<List<WorkoutModel>> getWorkoutHistory() async {
+//     try {
+//       String userID = UserDataManager.userData['user_id'].toString();
+//       var client = http.Client();
+
+//       var url = Uri.parse("http://10.0.2.2:8000/api/workout/getworkout/");
+
+//       var response = await client.post(url, body: {"user_id": userID});
+//       var body = jsonDecode(response.body);
+//       var statusCode = body['status'];
+//       var message = body['message'];
+
+//       if (statusCode == 200) {
+//         List<WorkoutModel> workoutHistory = [];
+//         for (var workout in body['data']) {
+//           workoutHistory.add(WorkoutModel(
+//             exerciseId: workout['exercise_id'],
+//             username: workout['username'],
+//             createdAt: workout['created_at'],
+//             updatedAt: workout['updated_at'],
+//             sets: workout['sets'],
+//             reps: workout['reps'],
+//             weight: workout['weight'],
+//             volume: workout['volume'],
+//             workoutID: workout['workout_id'],
+//           ));
+//         }
+//         return workoutHistory;
+//       } else {
+//         log("Error in getWorkoutHistory: $message");
+//         return [];
+//       }
+//     } catch (e) {
+//       log("Exception in getWorkoutHistory: $e");
+//       return [];
+//     }
+//   }
+// }
 
 class DeleteWorkoutObjectRepository {
   static Future<bool> deleteWorkoutObject({required String workoutID}) async {

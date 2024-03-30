@@ -81,7 +81,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               onTap: () {
                 showImagePicker(context);
               },
-              child: Text(
+              child: const Text(
                 'Change Profile Picture',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -172,14 +172,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to pick image. Please try again.'),
+            title: const Text('Error'),
+            content: const Text('Failed to pick image. Please try again.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );

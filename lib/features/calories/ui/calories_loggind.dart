@@ -52,205 +52,219 @@ class _CaloriesLoggingPageState extends State<CaloriesLoggingPage> {
     bool isDarkMode = themeProvider.getTheme == themeProvider.darkTheme;
 
     var dateTime = DateTime.now();
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: isDarkMode ? Colors.black : Colors.deepPurpleAccent,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        title: const Text(
-          "Add Food",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                height: Get.height * 0.35,
-                imageUrl: "http://10.0.2.2:8000${widget.data!.foodImage}",
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                placeholder: (context, url) =>
-                    Image.asset("assets/img/imageloading.gif"),
-              ),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: isDarkMode ? Colors.black : Colors.deepPurpleAccent,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Food Name: ${widget.data!.foodName}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text(
+            "Add Food",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  height: Get.height * 0.35,
+                  imageUrl: "http://10.0.2.2:8000${widget.data!.foodImage}",
+                  errorWidget: (context, url, error) =>
+                      Image.asset("assets/img/error.gif"),
+                  placeholder: (context, url) =>
+                      Image.asset("assets/img/imageloading.gif"),
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Food Name: ${widget.data!.foodName}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-                SizedBox(height: Get.height * 0.02),
+                  SizedBox(height: Get.height * 0.02),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Serving Size ${widget.data!.foodServingSize} gm",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Serving Size ${widget.data!.foodServingSize} gm",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: Get.height * 0.02),
+                    ],
+                  ),
+                  SizedBox(height: Get.height * 0.02),
 
-                Row(
-                  children: [
-                    const Text(
-                      "Servings",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                  Row(
+                    children: [
+                      const Text(
+                        "Servings",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: Get.width * 0.2),
-                        child: TextFormField(
-                          onChanged: (value) {
-                            if (value.isNotEmpty) {
-                              servingSizeConsume = double.parse(value);
-                            } else {
-                              servingSizeConsume = 0.0;
-                            }
-                          },
-                          style: TextStyle(
-                              color: isDarkMode
-                                  ? Colors.black
-                                  : Colors.deepPurpleAccent),
-                          controller: servingSizeController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(
+                      Expanded(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: Get.width * 0.2),
+                          child: TextFormField(
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                servingSizeConsume = double.parse(value);
+                              } else {
+                                servingSizeConsume = 0.0;
+                              }
+                            },
+                            style: TextStyle(
                                 color: isDarkMode
                                     ? Colors.black
                                     : Colors.deepPurpleAccent),
-                            hintText: "Servings",
-                            contentPadding: EdgeInsets.only(left: 35),
-                            fillColor: Colors.grey[200],
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
+                            controller: servingSizeController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                  color: isDarkMode
+                                      ? Colors.black
+                                      : Colors.deepPurpleAccent),
+                              hintText: "Servings",
+                              contentPadding: EdgeInsets.only(left: 35),
+                              fillColor: Colors.grey[200],
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                // SizedBox(height: 20),
-                SizedBox(height: Get.height * 0.01),
+                    ],
+                  ),
+                  // SizedBox(height: 20),
+                  SizedBox(height: Get.height * 0.01),
 
-                SizedBox(height: Get.height * 0.01),
+                  SizedBox(height: Get.height * 0.01),
 
-                _buildNutritionFact("Calories Per Serving",
-                    '${widget.data!.foodCaloriesPerServing}'),
-                SizedBox(height: Get.height * 0.01),
+                  _buildNutritionFact("Calories Per Serving",
+                      '${widget.data!.foodCaloriesPerServing}'),
+                  SizedBox(height: Get.height * 0.01),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text(
-                      "Time",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    Text(
-                      "${dateTime.hour}:${dateTime.minute}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: Get.height * 0.01),
-
-                Center(
-                  child: Container(
-                    width: Get.width * 0.45,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        log(servingSizeConsume.runtimeType.toString());
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        if (servingSizeConsume != null) {
-
-                        
-                          caloriesBloc.add(CaloriesConsumedLogEvent(
-                              caloriesLog: CaloriesLog(
-                                  caloriesConsumed:
-                                      widget.data!.foodCaloriesPerServing! *
-                                          servingSizeConsume!,
-                                  servingConsumed: servingSizeConsume!,
-                                  proteinConsumed:
-                                      proteinPerSize! * servingSizeConsume!,
-                                  carbsConsumed:
-                                      widget.data!.foodCarbsPerServing! *
-                                          servingSizeConsume!,
-                                  fatsConsumed:
-                                      widget.data!.foodFatPerServing! *
-                                          servingSizeConsume!,
-                                  username: UserDataManager.userData["user_id"],
-                                  foodConsumed: widget.data!.id,
-                                  timestamp: dateTime)));
-                        
-                        } else {
-                          Get.snackbar(
-                            "Error",
-                            'Please enter serving size',
-                            snackPosition: SnackPosition.BOTTOM,
-                            snackStyle: SnackStyle.GROUNDED,
-                          );
-                        }
-                      },
-                      style: isDarkMode
-                          ? ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            )
-                          : ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurpleAccent,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                      child: const Text(
-                        "LOG FOOD",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Text(
+                        "Time",
                         style: TextStyle(
+                          fontWeight: FontWeight.bold,
                           fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        "${dateTime.hour}:${dateTime.minute}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: Get.height * 0.01),
+
+                  Center(
+                    child: Container(
+                      width: Get.width * 0.45,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          log(servingSizeConsume.runtimeType.toString());
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          if (servingSizeConsume != null) {
+                            caloriesBloc.add(CaloriesConsumedLogEvent(
+                                caloriesLog: CaloriesLog(
+                                    caloriesConsumed:
+                                        widget.data!.foodCaloriesPerServing! *
+                                            servingSizeConsume!,
+                                    servingConsumed: servingSizeConsume!,
+                                    proteinConsumed:
+                                        proteinPerSize! * servingSizeConsume!,
+                                    carbsConsumed:
+                                        widget.data!.foodCarbsPerServing! *
+                                            servingSizeConsume!,
+                                    fatsConsumed:
+                                        widget.data!.foodFatPerServing! *
+                                            servingSizeConsume!,
+                                    username:
+                                        UserDataManager.userData["user_id"],
+                                    foodConsumed: widget.data!.id,
+                                    timestamp: dateTime)));
+                          } else {
+                            Get.snackbar(
+                              "Error",
+                              'Please enter serving size',
+                              snackPosition: SnackPosition.BOTTOM,
+                              snackStyle: SnackStyle.GROUNDED,
+                            );
+                          }
+                        },
+                        style: isDarkMode
+                            ? ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black,
+                                foregroundColor: Colors.white,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              )
+                            : ElevatedButton.styleFrom(
+                                backgroundColor: Colors.deepPurpleAccent,
+                                foregroundColor: Colors.white,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                )),
+                        child: const Text(
+                          "LOG FOOD",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  BlocBuilder<CaloriesBloc, CaloriesState>(
+                    builder: (context, state) {
+                      if (state is CaloriesLoggingSuccessState) {
+                        servingSizeController.clear();
+                      }
+
+                      return Container();
+                    },
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

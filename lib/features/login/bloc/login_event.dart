@@ -12,3 +12,11 @@ class LoginButtonClickedEvent extends LoginEvent {
     required this.loginModel,
   });
 }
+
+
+class ForgotPasswordButtonClickedEvent extends LoginEvent {
+  final String email;
+  ForgotPasswordButtonClickedEvent({
+    required this.email,
+  });
+}

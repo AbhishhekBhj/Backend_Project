@@ -19,6 +19,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'features/food/bloc/bloc/food_bloc.dart';
 import 'features/home/bloc/home_bloc.dart';
 import 'features/profile/bloc/bloc/profile_bloc.dart';
 import 'firebaseapi/firebase_api.dart';
@@ -100,6 +101,9 @@ class _MyAppState extends State<MyApp> {
       builder: (context, themeProvider, child) {
         return MultiBlocProvider(
           providers: [
+            BlocProvider<FoodBloc>(
+              create: (BuildContext context) => FoodBloc(),
+            ),
             BlocProvider<HomeBloc>(
               create: (BuildContext context) => HomeBloc(),
             ),

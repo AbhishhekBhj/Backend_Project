@@ -1,9 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mygymbuddy/features/add%20water%20drank/bloc/bloc/water_drink_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+
+import '../../calories/ui/caloric_pdf.dart';
 
 class WaterIntakes extends StatefulWidget {
   const WaterIntakes({super.key});
@@ -13,6 +18,47 @@ class WaterIntakes extends StatefulWidget {
 }
 
 class _WaterIntakesState extends State<WaterIntakes> {
+
+  
+  Future<void> _createPDF(List<dynamic> waterLogs) async {
+    final PdfDocument document = PdfDocument();
+    final PdfPage page = document.pages.add();
+
+    final PdfGrid grid = PdfGrid();
+
+    grid.columns.add(count: 4);
+    grid.headers.add(1);
+
+    // Add headers
+    grid.headers[0].cells[0].value = 'ID';
+    grid.headers[0].cells[1].value = 'Volume (ml)';
+    grid.headers[0].cells[2].value = 'Timestamp';
+    grid.headers[0].cells[3].value = 'User';
+
+    // Add data
+    for (int i = 0; i < waterLogs.length; i++) {
+      final Map<String, dynamic> data = waterLogs[i];
+      grid.rows.add();
+      for (int j = 0; j < data.keys.length; j++) {
+        grid.rows[i].cells[j].value = data.values.elementAt(j).toString();
+      }
+    }
+
+    // Set style
+    grid.style.cellPadding = PdfPaddings();
+    grid.style.font = PdfStandardFont(PdfFontFamily.helvetica, 8);
+
+    // Draw grid
+    grid.draw(page: page, bounds: const Rect.fromLTWH(0, 0, 0, 0));
+
+    // Save PDF
+    final List<int> bytes = await document.save();
+    document.dispose();
+
+    // Save and open PDF
+    saveAndOpenPdf(Uint8List.fromList(bytes), 'water_intake.pdf');
+  }
+
   late WaterDrinkBloc _waterDrinkBloc;
 
   @override
@@ -28,6 +74,19 @@ class _WaterIntakesState extends State<WaterIntakes> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Water Intakes'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.picture_as_pdf),
+            onPressed: () {
+              if (_waterDrinkBloc.state is WaterDrinkHistorySuccessState) {
+                final waterLogs =
+                    (_waterDrinkBloc.state as WaterDrinkHistorySuccessState)
+                        .waterLogs;
+                _createPDF(waterLogs);
+              }
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<WaterDrinkBloc, WaterDrinkState>(
         builder: (context, state) {
