@@ -2,13 +2,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // Import cached_network_image package
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mygymbuddy/features/profile/bloc/bloc/profile_bloc.dart';
-import '../../../functions/shared_preference_functions.dart';
+
+import '../../../data/models/signup_model.dart';
+import '../../profile/bloc/bloc/profile_bloc.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -18,21 +18,25 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late Map<String, dynamic> userData;
-
   late ProfileBloc profileBloc;
-
+  late Map<String, dynamic> userData;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _fitnessLevelController = TextEditingController();
+  final TextEditingController _fitnessGoalController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     profileBloc = BlocProvider.of<ProfileBloc>(context);
-    userData = UserDataManager.userData;
-    log(userData.toString());
+    fetchProfileData();
+  }
+
+  void fetchProfileData() {
+    profileBloc.add(GetProfileInfoEvent());
   }
 
   @override
@@ -41,89 +45,200 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         title: const Text('Edit Profile'),
       ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: Get.height * 0.2,
-              height: Get.height * 0.2,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey.shade300,
-                  width: 2,
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: CachedNetworkImage(
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                ),
-                imageUrl:
-                    'http://10.0.2.2:8000/media/${UserDataManager.userData['profile_picture']!}',
-                fit: BoxFit.contain,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey,
-                  child:
-                      const Icon(Icons.person, size: 50, color: Colors.white),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
-            ),
-          ),
-          InkWell(
-              onTap: () {
-                showImagePicker(context);
-              },
-              child: const Text(
-                'Change Profile Picture',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.blue,
-                ),
-              )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: '${userData['name']}' ?? 'Name',
-                  ),
-                ),
-                TextField(
-                  controller: _ageController,
-                  decoration: InputDecoration(
-                    labelText: '${userData['age']}' ?? 'Age',
-                  ),
-                ),
-                TextField(
-                  controller: _weightController,
-                  decoration: InputDecoration(
-                    labelText: '${userData['weight']}' ?? 'Weight',
-                  ),
-                ),
-                TextField(
-                  controller: _heightController,
-                  decoration: const InputDecoration(
-                    labelText: 'Height',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          if (state is ProfileInfoLoadingState) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is ProfileInfoSuccessState) {
+            userData = state.profileModel['data'];
+            _updateTextControllers(userData);
+            return _buildEditProfileForm(userData);
+          } else if (state is ProfileInfoFailureState) {
+            return Center(child: Text(state.errorMessage));
+          }
+          return Container();
+        },
       ),
     );
+  }
+
+  Widget _buildEditProfileForm(Map<String, dynamic> userData) {
+    return ListView(
+      padding: const EdgeInsets.all(8.0),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: Get.height * 0.2,
+            height: Get.height * 0.2,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey.shade300,
+                width: 2,
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: CachedNetworkImage(
+              imageUrl:
+                  'http://10.0.2.2:8000/${userData['profile_picture'] ?? ''}',
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            showImagePicker(context);
+          },
+          child: const Text(
+            'Change Profile Picture',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.blue,
+              decoration: TextDecoration.underline,
+              decorationColor: Colors.blue,
+            ),
+          ),
+        ),
+        _buildEditableFormField("Username", _nameController),
+        _buildEditableFormField("Full Name", _ageController),
+        _buildEditableFormField("Age", _weightController),
+        _buildEditableFormField("Weight", _heightController),
+        _buildFitnessLevelTextField(userData['fitness_level'] ?? ''),
+        _buildFitnessGoalTextField(userData['fitness_goal'] ?? ''),
+        _buildGenderTextField(userData['gender'] ?? ''),
+        ElevatedButton(
+          onPressed: () {
+            profileBloc.add(EditProfileInformationClickedEvent(
+              userModel: UserModel(
+                name: _nameController.text,
+                age: _ageController.text,
+                weight: _weightController.text,
+                height: _heightController.text,
+                fitnessGoal: _fitnessGoalController.text,
+                fitnessLevel: _fitnessLevelController.text,
+                gender: _genderController.text,
+              ),
+            ));
+          },
+          child: Text("Save Changes"),
+        ),
+        BlocConsumer<ProfileBloc, ProfileState>(
+          listener: (context, state) {
+            if (state is ProfileEditSuccessState) {
+              profileBloc.add(GetProfileInfoEvent());
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Profile updated successfully'),
+                ),
+              );
+            }
+
+            if (state is ProfileEditFailureState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Failed to update profile: "),
+                ),
+              );
+              fetchProfileData();
+            }
+          },
+          builder: (context, state) {
+            if (state is ProfileInfoLoadingState) {
+              return const CircularProgressIndicator();
+            }
+            if (state is ProfileEditLoadingState) {
+              return const CircularProgressIndicator();
+            }
+
+            return Container();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEditableFormField(
+      String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFitnessLevelTextField(String initialValue) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: TextFormField(
+        controller: _fitnessLevelController,
+        decoration: InputDecoration(
+          labelText: 'Fitness Level',
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your fitness level';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildFitnessGoalTextField(String initialValue) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: TextFormField(
+        controller: _fitnessGoalController,
+        decoration: InputDecoration(
+          labelText: 'Fitness Goal',
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your fitness goal';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildGenderTextField(String initialValue) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: TextFormField(
+        controller: _genderController,
+        decoration: InputDecoration(
+          labelText: 'Gender',
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your gender';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  void _updateTextControllers(Map<String, dynamic> userData) {
+    _nameController.text = userData['name'] ?? '';
+    _ageController.text = userData['age'].toString() ?? '';
+    _weightController.text = userData['weight'].toString() ?? '';
+    _heightController.text = userData['height'].toString() ?? '';
+    _fitnessLevelController.text = userData['fitness_level'] ?? '';
+    _fitnessGoalController.text = userData['fitness_goal'] ?? '';
+    _genderController.text = userData['gender'] ?? '';
   }
 
   void showImagePicker(BuildContext context) {

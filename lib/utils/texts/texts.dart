@@ -114,3 +114,10 @@ const appScreenText =
     "Track workouts, watch your progress on interactive graphs, set workout reminders, monitor nutrition, and crush your fitness goals. Let's kickstart your journey to a healthier, happier you with My Gym Buddy!";
 
 const baseUrl = "http://10.0.2.2:8000/api/";
+
+const monthlyPack = 10;
+const sixMonthPack = 45;
+const yearlyPack = 75;
+
+const String CLIENT_ID = "JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R";
+const String SECRET_KEY = "BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==";

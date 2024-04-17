@@ -153,7 +153,7 @@ class _AddCustomExerciseState extends State<AddCustomExercise> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add New  Exercise'),
+          title: const Text('Add Custom  Exercise'),
         ),
         body: ListView(
           shrinkWrap: true,

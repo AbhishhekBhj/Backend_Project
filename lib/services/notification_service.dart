@@ -98,8 +98,8 @@ class NotificationServices {
         AndroidNotificationDetails(
             channel.id.toString(), channel.name.toString(),
             channelDescription: 'your channel description',
-            importance: Importance.high,
-            priority: Priority.high,
+            importance: Importance.max,
+            priority: Priority.max,
             playSound: true,
             ticker: 'ticker',
             sound: channel.sound

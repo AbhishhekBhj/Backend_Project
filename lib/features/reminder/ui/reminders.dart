@@ -73,6 +73,11 @@ class _RemindersState extends State<Reminders> {
                       labelText: "Reminder Description",
                     ),
                   ),
+                  Text(
+                    _selectedDateTime == null
+                        ? "No date and time selected"
+                        : "Selected date and time: ${_selectedDateTime!.toLocal()}",
+                  ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {

@@ -1,70 +1,85 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive/hive.dart';
+import 'dart:developer';
 import 'package:mygymbuddy/features/add%20water%20drank/bloc/bloc/water_drink_bloc.dart';
 import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
 import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
 import 'package:mygymbuddy/features/signup/bloc/signup_bloc.dart';
-import 'package:mygymbuddy/features/workout/bloc/bloc/workout_bloc.dart';
 import 'package:mygymbuddy/firebase_options.dart';
+import 'package:mygymbuddy/firebaseapi/firebase_api.dart';
+import 'package:mygymbuddy/functions/exercise.dart';
 import 'package:mygymbuddy/provider/themes/theme_provider.dart';
-import 'package:mygymbuddy/screens/splash_screen/splash_screen.dart';
 import 'package:mygymbuddy/services/notification_service.dart';
+import 'package:mygymbuddy/services/notification_services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timezone/data/latest.dart' as tz;
+
 import 'features/food/bloc/bloc/food_bloc.dart';
 import 'features/home/bloc/home_bloc.dart';
 import 'features/profile/bloc/bloc/profile_bloc.dart';
-import 'firebaseapi/firebase_api.dart';
-import 'functions/exercise.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'features/workout/bloc/bloc/workout_bloc.dart';
+import 'screens/splash_screen/splash_screen.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:mygymbuddy/services/notification_service.dart';
 
-import 'services/notification_services.dart';
+// Import other necessary files and packages
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // await messaging.requestPermission(
+
+  // );
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
   );
 
-  // Initialize Firebase Messaging
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  await messaging.requestPermission();
+  log('User granted permission: ${settings.authorizationStatus}');
 
-  // Initialize time zones
   tz.initializeTimeZones();
 
-  // Initialize shared preferences
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
-  // Get the application document directory
-  final appDocumentDir = await getApplicationDocumentsDirectory();
-
-  // Initialize Firebase API
   await FirebaseAPI().initialize();
   NotificationService().initNotification();
 
-  // Initialize Hive
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(ExerciseAdapter());
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (BuildContext context) {
-        return ThemeProvider(
-            isDarkMode: preferences.getBool('isDarkTheme') ??
-                false); // dark or light theme based on the value of the shared preference
-      },
-      child: const MyApp(),
-    ),
-  );
+  runApp(KhaltiScope(
+    // Replace publicKey with your actual Khalti public key
+    publicKey: "test_public_key_b6776fa7f40440ff864e4b820202c91e",
+    builder: (context, navigatorKey) {
+      return ChangeNotifierProvider(
+        create: (BuildContext context) {
+          return ThemeProvider(
+            isDarkMode: preferences.getBool('isDarkTheme') ?? false,
+          );
+        },
+        child: const MyAppContent(),
+      );
+    },
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -79,8 +94,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    // Initialize your notification services here
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();
     notificationServices.firebaseInit(context);
@@ -97,10 +112,26 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    return MyAppContent();
+  }
+}
+
+class MyAppContent extends StatefulWidget {
+  const MyAppContent({Key? key}) : super(key: key);
+
+  @override
+  State<MyAppContent> createState() => _MyAppContentState();
+}
+
+class _MyAppContentState extends State<MyAppContent> {
+  final navigatorKey = GlobalKey<NavigatorState>();
+  @override
+  Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MultiBlocProvider(
           providers: [
+            // Add all your Bloc providers here
             BlocProvider<FoodBloc>(
               create: (BuildContext context) => FoodBloc(),
             ),
@@ -108,31 +139,36 @@ class _MyAppState extends State<MyApp> {
               create: (BuildContext context) => HomeBloc(),
             ),
             BlocProvider<WaterDrinkBloc>(
-              create: (context) => WaterDrinkBloc(),
+              create: (BuildContext context) => WaterDrinkBloc(),
             ),
             BlocProvider<WorkoutBloc>(
-              create: (context) => WorkoutBloc(),
+              create: (BuildContext context) => WorkoutBloc(),
             ),
             BlocProvider<SignupBloc>(
-              create: (context) => SignupBloc(),
+              create: (BuildContext context) => SignupBloc(),
             ),
             BlocProvider<InternetBloc>(
-              create: (context) => InternetBloc(),
+              create: (BuildContext context) => InternetBloc(),
             ),
             BlocProvider<LoginBloc>(
-              create: (context) => LoginBloc(),
+              create: (BuildContext context) => LoginBloc(),
             ),
             BlocProvider<MeasurementsBloc>(
-              create: (context) => MeasurementsBloc(),
+              create: (BuildContext context) => MeasurementsBloc(),
             ),
             BlocProvider<CaloriesBloc>(
-              create: (context) => CaloriesBloc(),
+              create: (BuildContext context) => CaloriesBloc(),
             ),
             BlocProvider<ProfileBloc>(
-              create: (context) => ProfileBloc(),
-            )
+              create: (BuildContext context) => ProfileBloc(),
+            ),
+            // Add more Bloc providers as needed
           ],
           child: GetMaterialApp(
+            localizationsDelegates: [
+              KhaltiLocalizations.delegate,
+            ],
+            navigatorKey: navigatorKey,
             title: 'My Gym Buddy',
             theme: themeProvider.getTheme,
             home: SplashScreen(),

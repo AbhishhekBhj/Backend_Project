@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:mygymbuddy/data/models/signup_model.dart';
 import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 import 'package:mygymbuddy/utils/texts/texts.dart';
 import 'package:path/path.dart' as path;
@@ -96,9 +98,8 @@ class ProfileRepository {
         var data = responseData['data'];
 
         if (data.containsKey('profile_picture')) {
-          return ProfilePictureUploadResponse( 
+          return ProfilePictureUploadResponse(
             profilePictureUrl: data['profile_picture'],
-
             status: responseData['status'],
             message: responseData['message'],
           );
@@ -107,5 +108,78 @@ class ProfileRepository {
     }
 
     throw Exception('Failed to upload profile picture: ${response.body}');
+  }
+
+  static Future<Map<String, dynamic>> getProfileInfo() async {
+    try {
+      var token = await getAccessToken();
+      var client = http.Client();
+      var id = UserDataManager.userData['user_id'];
+      var url = Uri.parse('${baseUrl}users/getuserdata/');
+
+      var response = await client.post(
+        url,
+        body: {'user_id': id.toString()},
+        headers: {"Authorization": "Bearer $token"},
+      );
+
+      var decodedResponse = jsonDecode(response.body);
+
+      var status = decodedResponse['status'];
+
+      if (status == 200) {
+        return decodedResponse;
+      } else {
+        return {'status': status, 'message': 'Failed to get profile info'};
+      }
+    } catch (e) {
+      print('Exception occurred: $e');
+      return {'status': -1, 'message': 'Exception occurred: $e'};
+    }
+  }
+}
+
+class EditProfileRepository {
+  static Future<bool> editMyProfile(UserModel userModel) async {
+    var url = Uri.parse('${baseUrl}users/editprofile/');
+
+    log(url.toString());
+
+    var token = await getAccessToken();
+
+    var userId = UserDataManager.userData['user_id'];
+
+    log(userId.toString());
+
+    var client = http.Client();
+
+    try {
+      var response = await http.patch(url, body: {
+        "user_id": userId.toString(),
+        "name": userModel.name!,
+        "age": userModel.age!,
+        "weight": userModel.weight!,
+        "height": userModel.height,
+        "fitness_goal": userModel.fitnessGoal!,
+        "fitness_level": userModel.fitnessLevel!,
+      }, headers: {
+        "Authorization": "Bearer $token"
+      });
+
+      var decodedResponse = jsonDecode(response.body);
+
+      log(decodedResponse.toString());
+
+      var status = decodedResponse['status'];
+
+      if (status == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (Exception) {
+      Fluttertoast.showToast(msg: 'Failed to edit profile');
+      return false;
+    }
   }
 }

@@ -7,7 +7,12 @@ class ViewProfileClickedEvent extends ProfileEvent {}
 
 class NavigateToViewProfileClickedEvent extends ProfileEvent {}
 
-class EditProfileInformationClickedEvent extends ProfileEvent {}
+class EditProfileInformationClickedEvent extends ProfileEvent {
+
+  final UserModel userModel;
+
+  EditProfileInformationClickedEvent({required this.userModel});
+}
 
 class ChangePasswordClickedEvent extends ProfileEvent {
   final String newPassword;
@@ -26,3 +31,5 @@ class ProfileUploadProfilePictureEvent extends ProfileEvent {
 
   ProfileUploadProfilePictureEvent({required this.image});
 }
+
+class GetProfileInfoEvent extends ProfileEvent {}

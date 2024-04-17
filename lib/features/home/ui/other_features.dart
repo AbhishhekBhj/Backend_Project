@@ -18,6 +18,7 @@ import '../../../functions/shared_preference_functions.dart';
 import '../../exercise_library/ui/add_custom_exercise.dart';
 import '../../food/ui/create_custom_food.dart';
 import '../../measurements/ui/update_measurement.dart';
+import '../../payment.dart/payment_screen.dart';
 import '../../profile/bloc/bloc/profile_bloc.dart';
 import '../../profile/ui/change_password.dart';
 import '../../progress/ui/progress.dart';
@@ -208,8 +209,7 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Add functionality to navigate to the pro membership page
-                  Navigator.pop(context); // Close the bottom sheet
+                  Get.to(PaymentPage());
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,

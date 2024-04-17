@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:mygymbuddy/features/profile/bloc/bloc/profile_bloc.dart';
 
+import '../../signup/ui/welcome_screen.dart/logins.dart';
+
 class PasswordChange extends StatefulWidget {
   const PasswordChange({super.key});
 
@@ -65,7 +67,22 @@ class PasswordChangeState extends State<PasswordChange> {
                   }
                 },
                 child: Text("Change Password"),
-              )
+              ),
+              BlocListener<ProfileBloc, ProfileState>(
+                listener: (context, state) {
+                  if (state is PasswordChangeSuccessState) {
+                    Get.offAll(DemoLoginPage());
+                  }
+                },
+                child: BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) {
+                    if (state is PasswordChangeLoadingState) {
+                      return CircularProgressIndicator();
+                    }
+                    return Container();
+                  },
+                ),
+              ),
             ],
           ),
         ),

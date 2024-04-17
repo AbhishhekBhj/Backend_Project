@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
+import 'package:mygymbuddy/data/models/signup_model.dart';
 import 'package:mygymbuddy/features/signup/ui/welcome_screen.dart/logins.dart';
 import 'package:mygymbuddy/functions/shared_preference_functions.dart';
 
@@ -19,6 +20,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ChangePasswordClickedEvent>(changePasswordClickedEvent);
     on<CheckPasswordClickEvent>(checkPasswordClickEvent);
     on<ProfileUploadProfilePictureEvent>(uploadProfilePictureEvent);
+    on<GetProfileInfoEvent>(getProfileInfoEvent);
+    on<EditProfileInformationClickedEvent>(editProfileInformationClickedEvent);
   }
 
   FutureOr<void> changePasswordClickedEvent(
@@ -74,6 +77,34 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfilePictureUploadFailureState());
       log(e.toString());
       Fluttertoast.showToast(msg: 'Profile Picture Upload Failed');
+    }
+  }
+
+  FutureOr<void> getProfileInfoEvent(
+      GetProfileInfoEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInfoLoadingState());
+
+    var profileModel = await ProfileRepository.getProfileInfo();
+    if (profileModel != null) {
+      emit(ProfileInfoSuccessState(profileModel: profileModel));
+    } else {
+      emit(ProfileInfoFailureState(errorMessage: 'Failed to get profile info'));
+    }
+  }
+
+  FutureOr<void> editProfileInformationClickedEvent(
+      EditProfileInformationClickedEvent event,
+      Emitter<ProfileState> emit) async {
+    emit(ProfileEditLoadingState());
+
+    var response = await EditProfileRepository.editMyProfile(event.userModel);
+
+    if (response) {
+      emit(ProfileEditSuccessState());
+      Fluttertoast.showToast(msg: 'Profile Information Updated Successfully');
+    } else {
+      emit(ProfileEditFailureState());
+      Fluttertoast.showToast(msg: 'Failed to update profile information');
     }
   }
 }

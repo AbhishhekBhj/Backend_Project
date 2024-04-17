@@ -31,3 +31,17 @@ class ProfilePictureUploadLoadingState extends ProfileState {}
 class ProfilePictureUploadSuccessState extends ProfileState {}
 class ProfilePictureUploadFailureState extends ProfileState {}
 
+
+
+class ProfileInfoLoadingState extends ProfileState {}
+class ProfileInfoSuccessState extends ProfileState {
+  final Map<String,dynamic> profileModel;
+
+  ProfileInfoSuccessState({required this.profileModel});
+}
+
+class ProfileInfoFailureState extends ProfileState {
+  final String errorMessage;
+
+  ProfileInfoFailureState({required this.errorMessage});
+}

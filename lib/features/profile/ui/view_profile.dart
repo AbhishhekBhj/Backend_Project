@@ -1,83 +1,101 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:mygymbuddy/features/profile/ui/edit_profile.dart';
-import 'package:mygymbuddy/functions/shared_preference_functions.dart';
-import 'package:mygymbuddy/utils/texts/texts.dart';
+import 'package:mygymbuddy/features/profile/bloc/bloc/profile_bloc.dart';
 
-class ViewProfile extends StatefulWidget {
-  @override
-  State<ViewProfile> createState() => _ViewProfileState();
-}
-
-class _ViewProfileState extends State<ViewProfile> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
+class ViewProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Column(
+        child: BlocProvider(
+          create: (context) => ProfileBloc()..add(GetProfileInfoEvent()),
+          child: ProfileInfoView(),
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileInfoView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        if (state is ProfileInfoLoadingState) {
+          // Show loading indicator
+          return Center(child: CircularProgressIndicator());
+        } else if (state is ProfileInfoSuccessState) {
+          // Show user profile information
+          final profileData = state.profileModel['data'];
+          return _buildProfileInfo(profileData);
+        } else if (state is ProfileInfoFailureState) {
+          // Show error message
+          return Center(child: Text(state.errorMessage));
+        }
+        return Container();
+      },
+    );
+  }
+
+  // Function to build user profile information
+  Widget _buildProfileInfo(Map<String, dynamic> profileData) {
+    return Center(
+      child: Column(
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                  ),
-                  const Text(
-                    "Profile Information",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(Icons.arrow_back),
               ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: ClipOval(
-                  child: Container(
-                    width: 250, // Adjust the width and height as needed
-                    height: 250, // to control the circular shape
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: UserDataManager.userData["profile_picture"] != ""
-                        ? Image.network(
-                            'http://10.0.2.2:8000/media/${UserDataManager.userData['profile_picture']!}',
-                            fit: BoxFit.cover,
-                          )
-                        : Container(
-                            color: Colors.grey,
-                            child: Icon(Icons.person,
-                                size: 50, color: Colors.white),
-                          ),
-                  ),
-                ),
+              const Text(
+                "Profile Information",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 20),
-              _buildText("UserName", UserDataManager.userData['username']!),
-              _buildText("Full Name", UserDataManager.userData['name']!),
-              _buildText("Age", UserDataManager.userData['age'].toString()!),
-              _buildText("Current Fitness Goal",
-                  UserDataManager.userData['fitness_goal']!),
-              _buildText("Email", UserDataManager.userData['email']!),
-              _buildText("Pro Member Since",
-                  UserDataManager.userData['is_pro_member']! ? "Yes" : "No"),
-              _buildText(
-                  "Fitness Level", UserDataManager.userData['fitness_level']!),
             ],
           ),
-        ),
+          const SizedBox(height: 20),
+          // Display profile information directly
+
+          CachedNetworkImage(
+            imageBuilder: (context, imageProvider) => Container(
+              width: 100.0,
+              height: 100.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
+            imageUrl:
+                "http://10.0.2.2:8000/${profileData['profile_picture']}" ?? '',
+            width: 100,
+            height: 100,
+            placeholder: (context, url) => CircleAvatar(
+              radius: 50,
+              child: CircularProgressIndicator(),
+            ),
+            errorWidget: (context, url, error) => CircleAvatar(
+              radius: 50,
+              child: Icon(Icons.person),
+            ),
+          ),
+
+          _buildText("UserName", profileData['username'] ?? ''),
+          _buildText("Full Name", profileData['name'] ?? ''),
+          _buildText("Age", profileData['age'].toString() ?? ''),
+          _buildText("Current Fitness Goal", profileData['fitness_goal'] ?? ''),
+          _buildText("Email", profileData['email'] ?? ''),
+          _buildText("Pro Member ",
+              profileData['is_pro_member'] ?? false ? "Yes" : "No"),
+          _buildText("Fitness Level", profileData['fitness_level'] ?? ''),
+          _buildText("Weight", profileData['weight'].toString() ?? ''),
+          _buildText("Height", profileData['height'].toString() ?? ''),
+          _buildText("Fitness Goal", profileData['fitness_goal'] ?? ''),
+        ],
       ),
     );
   }
