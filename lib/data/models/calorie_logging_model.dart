@@ -6,7 +6,7 @@ class CaloriesLog {
   final double fatsConsumed;
   final DateTime timestamp;
 
-  final int username;
+  final dynamic username;
   final int foodConsumed;
 
   CaloriesLog({

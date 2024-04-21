@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'dart:developer';
 import 'package:mygymbuddy/features/add%20water%20drank/bloc/bloc/water_drink_bloc.dart';
 import 'package:mygymbuddy/features/calories/bloc/calories_bloc.dart';
+import 'package:mygymbuddy/features/custommeal/bloc/custommeal_bloc.dart';
 import 'package:mygymbuddy/features/internet/bloc/bloc/internet_bloc.dart';
 import 'package:mygymbuddy/features/login/bloc/login_bloc.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
@@ -162,7 +163,9 @@ class _MyAppContentState extends State<MyAppContent> {
             BlocProvider<ProfileBloc>(
               create: (BuildContext context) => ProfileBloc(),
             ),
-            // Add more Bloc providers as needed
+            BlocProvider<CustommealBloc>(
+              create: (context) => CustommealBloc(),
+            )
           ],
           child: GetMaterialApp(
             localizationsDelegates: [

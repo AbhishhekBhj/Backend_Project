@@ -1,9 +1,13 @@
 //only include read for this action
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:mygymbuddy/features/graph/ui/measurement_graph.dart';
 import 'package:mygymbuddy/features/measurements/bloc/bloc/measurements_bloc.dart';
 
 class MeasurementDetails extends StatefulWidget {
@@ -30,9 +34,14 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
         appBar: AppBar(
           title: const Text('Measurement Details'),
           actions: [
-            Padding(
-                padding: EdgeInsets.only(right: 16.0),
-                child: Text("View Graph")),
+            GestureDetector(
+              onTap: () {
+                Get.to(const MeasurementGraph());
+              },
+              child: Padding(
+                  padding: EdgeInsets.only(right: 16.0),
+                  child: Text("View Graph")),
+            ),
           ],
         ),
         body: BlocConsumer<MeasurementsBloc, MeasurementsState>(
@@ -43,6 +52,7 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                 child: CupertinoActivityIndicator(),
               );
             } else if (state is MeasurementHistoryViewSuccessState) {
+              log(state.measurements.toString());
               return ListView.separated(
                 padding: const EdgeInsets.all(16.0),
                 separatorBuilder: (context, index) {

@@ -93,7 +93,7 @@ class _CaloricIntakePageState extends State<CaloricIntakePage> {
               listener: (context, state) {
                 if (state is CaloriesIntakeRequestSuccessState) {
                   caloricIntakeList = state.caloricIntakeList;
-                  print(caloricIntakeList.toString());
+                  log(caloricIntakeList.toString());
                 }
               },
               child: TextButton(

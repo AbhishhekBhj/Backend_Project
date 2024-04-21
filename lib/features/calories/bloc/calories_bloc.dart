@@ -45,32 +45,40 @@ class CaloriesBloc extends Bloc<CaloriesEvent, CaloriesState> {
 
   FutureOr<void> caloriesConsumedLogEvent(
       CaloriesConsumedLogEvent event, Emitter<CaloriesState> emit) async {
-    emit(CaloriesLoggingLoadingState());
-    bool caloriesLoggingSuccess = await CaloriesLogRepository.logCalories(
-        caloriesLog: event.caloriesLog!);
+    try {
+      emit(CaloriesLoggingLoadingState());
+      bool caloriesLoggingSuccess = await CaloriesLogRepository.logCalories(
+        caloriesLog: event.caloriesLog!,
+      );
 
-    if (caloriesLoggingSuccess) {
-      emit(CaloriesLoggingSuccessState());
-      Fluttertoast.showToast(
+      if (caloriesLoggingSuccess) {
+        emit(CaloriesLoggingSuccessState());
+        Fluttertoast.showToast(
           msg: "Calories logged successfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-          fontSize: 16.0);
-    } else {
+          fontSize: 16.0,
+        );
+      } else {
+        emit(CaloriesLoggingErrorState());
+      }
+    } catch (error) {
+      // Handle the error here
       emit(CaloriesLoggingErrorState());
+
       Fluttertoast.showToast(
-          msg: "Error logging calories",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+        msg: "Error logging calories: $error",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
-    // Handle the result as needed
   }
 
   FutureOr<void> caloriesLogDeleteEvent(
@@ -103,17 +111,16 @@ class CaloriesBloc extends Bloc<CaloriesEvent, CaloriesState> {
   }
 
   FutureOr<void> caloriesIntakeRequestEvent(
-  CaloriesIntakeRequestEvent event, Emitter<CaloriesState> emit) async {
-  emit(CaloriesIntakeRequestLoadingState());
-  List<dynamic> caloricIntakeData =
-      await GetMyCaloricIntakeRepository.getMyCaloricIntake();
-  
-  if (caloricIntakeData.isNotEmpty) {
-    emit(CaloriesIntakeRequestSuccessState(
-        caloricIntakeList: caloricIntakeData));
-  } else {
-    emit(CaloriesIntakeRequestErrorState());
-  }
-}
+      CaloriesIntakeRequestEvent event, Emitter<CaloriesState> emit) async {
+    emit(CaloriesIntakeRequestLoadingState());
+    List<dynamic> caloricIntakeData =
+        await GetMyCaloricIntakeRepository.getMyCaloricIntake();
 
+    if (caloricIntakeData.isNotEmpty) {
+      emit(CaloriesIntakeRequestSuccessState(
+          caloricIntakeList: caloricIntakeData));
+    } else {
+      emit(CaloriesIntakeRequestErrorState());
+    }
+  }
 }

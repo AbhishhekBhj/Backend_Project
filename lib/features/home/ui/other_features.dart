@@ -15,6 +15,7 @@ import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../functions/shared_preference_functions.dart';
+import '../../custommeal/ui/mycustom_meal.dart';
 import '../../exercise_library/ui/add_custom_exercise.dart';
 import '../../food/ui/create_custom_food.dart';
 import '../../measurements/ui/update_measurement.dart';
@@ -140,6 +141,11 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                         ? null
                         : showBecomeProMemberModalBottomSheet(context);
                   }, "Create Custom Meals"),
+                  buildListTile(Icons.cookie, () {
+                    isProMember
+                        ? Get.to(MyCustomMealPage())
+                        : showBecomeProMemberModalBottomSheet(context);
+                  }, "Custom Meal")
                 ],
               ),
             ),

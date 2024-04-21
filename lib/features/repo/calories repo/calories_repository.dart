@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:mygymbuddy/data/models/calorie_logging_model.dart';
 import 'package:mygymbuddy/data/models/food_model.dart';
@@ -49,16 +51,14 @@ class CaloriesLogRepository {
       var response = await client.post(
         Uri.parse("http://10.0.2.2:8000/api/calories/logcalories/"),
         headers: {
-          'Content-Type': 'application/json',
           "Authorization": "Bearer ${token!}",
         },
-        body: jsonEncode(caloriesLog!.toJson()),
+        body: (caloriesLog!.toJson()),
       );
 
       var data = json.decode(response.body);
 
       var statusCode = data["status"];
-      log(data['data']['calories_consumed'].runtimeType.toString());
 
       if (statusCode == 201) {
         List<CaloriesLog> loggedCalories =
@@ -69,9 +69,20 @@ class CaloriesLogRepository {
 
         return true;
       } else {
+        Fluttertoast.showToast(
+            msg: "Error logging calories: ${data['message']}");
+
         return false;
       }
     } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Error logging calories: ${e.toString()}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       log("${e}error");
       return false;
     } finally {
@@ -199,4 +210,3 @@ class GetMyCaloricIntakeRepository {
     }
   }
 }
-

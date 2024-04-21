@@ -57,6 +57,7 @@ class BodyMeasurement {
       'leftForearm': leftForearm,
       'rightForearm': rightForearm,
       'notes': notes,
+      "created_at": createdAt
     };
   }
 
@@ -79,6 +80,7 @@ class BodyMeasurement {
       leftForearm: map['left_forearm'] as double,
       rightForearm: map['right_forearm'] as double,
       notes: map['notes'] as String,
+      createdAt: map['created_at'] as String?,
     );
   }
 
