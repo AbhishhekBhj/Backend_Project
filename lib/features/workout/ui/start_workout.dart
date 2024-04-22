@@ -29,7 +29,6 @@ class _WorkoutLoggingPageState extends State<WorkoutLoggingPage> {
 
   List<String> exerciseName = [];
 
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);

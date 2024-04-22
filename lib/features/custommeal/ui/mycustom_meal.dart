@@ -161,14 +161,13 @@ class _MyCustomMealPageState extends State<MyCustomMealPage> {
                                         foodConsumed: meal.id)));
                               },
                               child: Container(
-                                width: 50,
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: Colors.blue,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: const Text(
-                                  'Add',
+                                  'Consume Food',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),

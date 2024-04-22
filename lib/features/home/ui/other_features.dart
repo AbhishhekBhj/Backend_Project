@@ -15,8 +15,10 @@ import 'package:mygymbuddy/provider/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../functions/shared_preference_functions.dart';
+import '../../custommeal/ui/add_custom_meal.dart';
 import '../../custommeal/ui/mycustom_meal.dart';
 import '../../exercise_library/ui/add_custom_exercise.dart';
+import '../../feedback/ui/feedback.dart';
 import '../../food/ui/create_custom_food.dart';
 import '../../measurements/ui/update_measurement.dart';
 import '../../payment.dart/payment_screen.dart';
@@ -115,6 +117,9 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                   buildListTile(FontAwesomeIcons.calculator, () {
                     Get.to(const BMI());
                   }, "Calculate BMI"),
+                  buildListTile(Icons.feedback, () {
+                    Get.to(FeedbackPage());
+                  }, "Feedback or Request a Feature")
                 ],
               ),
             ),
@@ -138,7 +143,7 @@ class _OtherFeaturePageState extends State<OtherFeaturePage> {
                   }, "Add New Exercise"),
                   buildListTile(FontAwesomeIcons.plateWheat, () {
                     isProMember
-                        ? null
+                        ? Get.to(Addcustommeal())
                         : showBecomeProMemberModalBottomSheet(context);
                   }, "Create Custom Meals"),
                   buildListTile(Icons.cookie, () {

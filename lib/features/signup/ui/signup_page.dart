@@ -323,7 +323,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verify OTP'),
+        title: const Text('Verify OTP '),
       ),
       body: Center(
         child: Padding(

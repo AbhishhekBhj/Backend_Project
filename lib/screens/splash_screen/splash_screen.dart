@@ -33,8 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // Check if username is null or empty
     if (username == null || username.isEmpty) {
       // Username is null or empty, navigate to WelcomeScreen after the build phase completes
-      await Future.delayed(
-          Duration.zero); // Ensure this is executed after the build phase
+      await Future.delayed(Duration(
+          seconds: 3)); // Ensure this is executed after the build phase
       Get.to(() => WelcomeScreen());
       return; // Exit function early
     }

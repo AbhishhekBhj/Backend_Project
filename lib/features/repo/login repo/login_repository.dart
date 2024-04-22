@@ -13,6 +13,8 @@ class LoginRepository {
           Uri.parse("http://10.0.2.2:8000/api/users/login/"),
           body: {"username": username, "password": password});
 
+      log('response: ${response.body}');
+
       Map<String, dynamic> responseData = jsonDecode(response.body);
 
       String message = responseData['message'];
@@ -44,10 +46,4 @@ class LoginRepository {
   }
 }
 
-
-class ForgotPasswordRepository{
-
-
-
-  
-}
+class ForgotPasswordRepository {}

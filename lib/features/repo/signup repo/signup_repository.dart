@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:mygymbuddy/data/models/signup_model.dart';
 import 'package:mygymbuddy/functions/shared_preference_functions.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupRepository {
   static Future<bool> signupUser(UserSignupModel userSignupModel) async {
@@ -16,7 +18,10 @@ class SignupRepository {
       log('Response: ${body}');
 
       var response = await client.post(
-        Uri.parse('http://10.0.2.2/api/users/register/'),
+        Uri.parse('http://10.0.2.2:8000/api/users/register/'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: body, // Pass the JSON-encoded string directly
       );
 
@@ -24,19 +29,46 @@ class SignupRepository {
       var message =
           responseBody['message']; // Extract message from response body
 
+      log('Response: ${responseBody}');
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
       if (message == 'User registered successfully') {
+        Fluttertoast.showToast(
+          msg: 'Signup successful',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
         return true;
       } else {
         return false;
       }
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Error signing up: ${e.toString()}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       log(e.toString());
       return false;
     }
   }
 }
-
-
 
 class VerifyOtpRepository {
   static Future<bool> verifyOtp(OTPModel otpModel) async {
@@ -149,9 +181,4 @@ class PhotoUploadRepository {
   }
 }
 
-
-class SendForgotPasswordOtpRepository{
-
-  
-
-}
+class SendForgotPasswordOtpRepository {}
