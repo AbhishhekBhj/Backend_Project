@@ -33,8 +33,7 @@ class NotificationService {
 
     await _flutterLocalNotificationsPlugin.initialize(initializationSetting,
         onDidReceiveNotificationResponse: (payload) {
-      // handle interaction when the app is active for android
-      // This callback is only called on Android when the app is in the foreground.
+      
     });
   }
 

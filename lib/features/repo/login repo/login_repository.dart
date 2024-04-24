@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mygymbuddy/functions/shared_preference_functions.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginRepository {
   static Future<bool> loginUser({String? username, String? password}) async {
@@ -20,6 +22,16 @@ class LoginRepository {
       String message = responseData['message'];
       String refreshToken = responseData['refresh_token'];
       String accessToken = responseData['access_token'];
+      if (message == "invalid credentials") {
+        Fluttertoast.showToast(
+            msg: "Invalid username or password",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white);
+        return false;
+      }
       if (message == "Login Successful") {
         log('hey');
 
