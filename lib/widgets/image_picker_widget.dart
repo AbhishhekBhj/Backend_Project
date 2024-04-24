@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-
 class PickImageWidget extends StatefulWidget {
+
+  //check for isProMember
   final bool isProMember;
   final Function(File) onImageCropped; // Callback function
 
